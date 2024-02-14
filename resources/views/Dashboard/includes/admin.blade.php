@@ -55,6 +55,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin/vendors/css/extensions/timedropper.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin/css-rtl/plugins/calendars/fullcalendar.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-default/default.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
@@ -75,10 +77,35 @@
             height: 400px;
             width: 100%;
         }
+
+        .parent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150%;
+            z-index: 1051;
+            background-color: rgb(0, 0, 0);
+            opacity: 0.8;
+            display: none;
+        }
+
+        .center-elemnt {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
     </style>
 </head>
 <body class="vertical-layout vertical-menu 2-columns  @if(Request::is('admin/users/tickets/reply*')) chat-application @endif menu-expanded fixed-navbar"
       data-open="click" data-menu="vertical-menu" data-col="2-columns">
+<div class="over-loading center-elemnt">
+    <div><img id="img-loader" class="" src="{{asset('assets/admin/images/loading.gif')}}" style="height:100px;"/></div>
+</div>
 <!-- fixed-top-->
 @include('Dashboard.includes.header')
 <!-- ////////////////////////////////////////////////////////////////////////////-->

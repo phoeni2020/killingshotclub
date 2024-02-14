@@ -452,6 +452,11 @@
                 select: function (start) {
                     $("#calendarModal").modal("show");
                     $("#saveEvent").click(function () {
+
+                        $('.over-loading').addClass('parent');;
+                        $('#img-loader').addClass('center-elemnt');
+                        $('.over-loading').show();
+
                         var day = $.fullCalendar.formatDate(start, 'Y-MM-DD ');
                         var stadium_id = $('#stadium_id').val();
                         var hour_rate = $('#hour_rate').val();
@@ -500,14 +505,17 @@
                                 } else {
                                     calendar.fullCalendar('refetchEvents');
                                     $("#calendarModal").modal("hide");
-                                    location.reload();
+
+                                    $('.over-loading').removeClass('parent');
+                                    $('#img-loader').removeClass('center-elemnt');
+
+                                    Swal.fire("Done !!", "", "success");
+
                                 }
 
                             }
 
                         });
-
-
                     });
 
                 },
