@@ -71,7 +71,7 @@ class TrainerAndPlayerController extends Controller
                 $tranier = $event->traniers;
                 $stad = $event->stadiums->name;
                 $sports = $event->sports->name;
-                dd($tranier);
+                dd($tranier['name']);
                 $events[] = [
                     "id" => $event->id,
                     'title' => $stad . '. C:' . $tranier->name . '. S:' . $sports,
