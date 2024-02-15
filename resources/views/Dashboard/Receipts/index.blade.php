@@ -214,11 +214,9 @@
                                                     <td>{{$receipt->user->name}}</td>
 
                                                     @php
-                                                        $id =  $receipt->from;
                                                         $name ='';
                                                         if($receipt->type_of_from=='players'){
-                                                           $player = \App\models\Players::find($id);
-                                                           $name = $player->name;
+                                                           $name = is_null($receipt->player)?'--':$receipt->player->name;
                                                         }
                                                         else{
                                                             $name = $receipt->receiptTypeFrom?->name;
