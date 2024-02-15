@@ -69,7 +69,7 @@ class TrainerAndPlayerController extends Controller
             foreach ($data as $event) {
                // dd($event->stadiums);
                 $stad = $event->stadiums->name;
-                $tranier = $event->traniers->name;
+                $tranier = $event->traniers['name'];
                 $sports = $event->sports->name;
 
                 $events[] = [
