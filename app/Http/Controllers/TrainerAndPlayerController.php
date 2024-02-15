@@ -69,12 +69,12 @@ class TrainerAndPlayerController extends Controller
             foreach ($data as $event) {
 
                 $nameStadium = $event->stadiums->name;
-                $nameTranier = is_null($event->traniers)?'test':$event->traniers->name;
+                $nameTranier = is_null($event->traniers)?'tranier':$event->traniers->name;
                 $nameSport = $event->sports->name;
 
                 $events[] = [
                     "id" => $event->id,
-                    'title' => $nameStadium . '. C:' . $nameTranier. '. S:' . $nameSport,
+                    'title' => $nameStadium . ' . C: ' . $nameTranier. '. S:' . $nameSport,
                     'start' => $event->time_from,
                     'end' => $event->time_to,
                 ];
