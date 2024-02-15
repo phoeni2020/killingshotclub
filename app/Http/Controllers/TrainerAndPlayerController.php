@@ -67,12 +67,13 @@ class TrainerAndPlayerController extends Controller
             $events = [];
             $data = TrainerAndPlayer::whereIn('branch_id',$branchIds)->get();
             foreach ($data as $event) {
-                $tranier = User::query()->where('id','=',$event->trainer_id)->get();
+                $tranier = User::query()->where('id','=',$event->trainer_id)->first();
+                dd($tranier);
                 $stad = $event->stadiums->name;
                 $sports = $event->sports->name;
                 $events[] = [
                     "id" => $event->id,
-                    'title' => $stad . '. C:' . $tranier[0]->name . '. S:' . $sports,
+                    'title' => $stad . '. C:' . $tranier->name . '. S:' . $sports,
                     'start' => $event->time_from,
                     'end' => $event->time_to,
                 ];
