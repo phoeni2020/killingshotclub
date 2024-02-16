@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
 class Report extends Model
 {
     public static function MergeReceipts(){
-        $receipts =  Receipts::get();
-//        dd($receipts);
+        $receipts =  Receipts::with(['player'])->get();
+       //dd($receipts);
         $receiptsPay = ReceiptsPay::get();
             $receiptsAll = $receiptsPay->merge($receipts);
         return $receiptsAll;

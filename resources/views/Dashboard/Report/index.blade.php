@@ -215,6 +215,7 @@
                                                         $id =  $report->from;
                                                         $name ='';
                                                         if($report->type_of_from=='players'){
+                                                            dd($report);
                                                            $name = is_null($report->player)?'--':$report->player->name;
                                                         }
                                                         if($report->type_of_from=='others'){
