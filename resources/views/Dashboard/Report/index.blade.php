@@ -215,8 +215,7 @@
                                                         $id =  $report->from;
                                                         $name ='';
                                                         if($report->type_of_from=='players'){
-                                                           $player = \App\Models\Players::find($id);
-                                                           $name = $player->name;
+                                                           $name = is_null($report->player)?'--':$report->player->name;
                                                         }
                                                         if($report->type_of_from=='others'){
                                                           $reportType = \App\Models\ReceiptTypes::find($id);
