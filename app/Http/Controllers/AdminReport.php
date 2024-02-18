@@ -19,7 +19,7 @@ class AdminReport extends Controller
      */
     public function subscription_reports(Request $request)
     {
-        //
+
         if (\Auth::user()->hasRole('administrator')) {
             $branchIds = Branchs::get()->pluck('id')->toArray();
         } else {
