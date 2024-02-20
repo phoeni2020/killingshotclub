@@ -205,18 +205,25 @@ class StadiumsRentTableController extends Controller
                 ->where(function ($query) use ($from,$to) {
                     $query->where(function ($q) use ($from) {
                         $q->where('time_from', '<=', $from)->where('time_to', '>', $from)->where('time_from', '>', $from);
-                    })->orWhere(function ($q) use ($to) {
+                    })
+                        ->orWhere(function ($q) use ($to) {
                         $q->where('time_from', '<', $to)->where('time_to', '>', $to);
-                    });
+                    })
+                        ->orWhere(function ($q) use ($to,$from) {
+                            $q->where('time_from', '=>', $from)
+                                ->where('time_to', '<=', $to);});
                 })->toSql();
-            dd($from,$to);
+            //dd($from,$to);
             $conflictssr = StadiumsRentTable::where('stadium_id', $request->stadium_id)
                 ->where(function ($query) use ($from,$to) {
                     $query->where(function ($q) use ($from) {
                         $q->where('time_from', '<=', $from)->where('time_to', '>', $from);})
                         ->orWhere(function ($q) use ($to) {
                         $q->where('time_from', '<', $to)
-                            ->where('time_to', '>', $to);});
+                            ->where('time_to', '>', $to);})
+                        ->orWhere(function ($q) use ($to,$from) {
+                        $q->where('time_from', '>', $from)
+                            ->where('time_to', '<', $to);});
                 })
                 ->toSql();
             dd($conflictstp,$conflictssr);
