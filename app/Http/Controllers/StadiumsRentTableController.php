@@ -204,22 +204,23 @@ class StadiumsRentTableController extends Controller
             $conflictstp = TrainerAndPlayer::where('stadium_id', $request->stadium_id)
                 ->where(function ($query) use ($from,$to) {
                     $query->where(function ($q) use ($from) {
-                        $q->where('time_from', '<=', $from)->where('time_to', '>', $from);
+                        $q->where('time_from', '<=', $from)->where('time_to', '>', $from)->where('time_from', '>', $from);
                     })->orWhere(function ($q) use ($to) {
                         $q->where('time_from', '<', $to)->where('time_to', '>', $to);
                     });
                 })->toSql();
-
+            dd($from,$to);
             $conflictssr = StadiumsRentTable::where('stadium_id', $request->stadium_id)
                 ->where(function ($query) use ($from,$to) {
                     $query->where(function ($q) use ($from) {
-                        $q->where('time_from', '<=', $from)->where('time_to', '>', $from);
-                    })->orWhere(function ($q) use ($to) {
-                        $q->where('time_from', '<', $to)->where('time_to', '>', $to);
-                    });
+                        $q->where('time_from', '<=', $from)->where('time_to', '>', $from);})
+                        ->orWhere(function ($q) use ($to) {
+                        $q->where('time_from', '<', $to)
+                            ->where('time_to', '>', $to);});
                 })
                 ->toSql();
             dd($conflictstp,$conflictssr);
+            //select * from `trainer_and_players` where `stadium_id` = ? and ((`time_from` <= ? and `time_to` > ?) or (`time_from` < ? and `time_to` > ?))
             if ($conflictstp > 0 || $conflictssr > 0) {
                 return response()->json([
                     'status' => 400,
