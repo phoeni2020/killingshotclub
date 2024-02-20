@@ -208,8 +208,7 @@ class StadiumsRentTableController extends Controller
                     })->orWhere(function ($q) use ($to) {
                         $q->where('time_from', '<', $to)->where('time_to', '>', $to);
                     });
-                })
-                ->count();
+                })->toSql();
 
             $conflictssr = StadiumsRentTable::where('stadium_id', $request->stadium_id)
                 ->where(function ($query) use ($from,$to) {
@@ -219,7 +218,7 @@ class StadiumsRentTableController extends Controller
                         $q->where('time_from', '<', $to)->where('time_to', '>', $to);
                     });
                 })
-                ->count();
+                ->toSql();
 
             if ($conflictstp > 0 || $conflictssr > 0) {
                 return response()->json([
@@ -488,7 +487,6 @@ line;
             $events = [];
             $data = StadiumsRentTable::with('stadiums')->with('traniers')
                 ->where('id', $request->id)->first();
-dd($data);
             $players = '';
             $stadium_name = '';
             $trainer_name = '';
