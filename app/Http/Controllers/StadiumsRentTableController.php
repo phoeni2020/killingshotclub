@@ -204,26 +204,27 @@ class StadiumsRentTableController extends Controller
             $conflictstp = TrainerAndPlayer::where('stadium_id', $request->stadium_id)
                 ->where(function ($query) use ($from,$to) {
                     $query->where(function ($q) use ($from) {
-                        $q->where('time_from', '<=', $from)->where('time_to', '>', $from)->where('time_from', '>', $from);
+                        $q->where('time_from', '<=', $from)->where('time_to', '>=', $from);
                     })
                         ->orWhere(function ($q) use ($to) {
-                        $q->where('time_from', '<', $to)->where('time_to', '>', $to);
+                        $q->where('time_from', '<=', $to)->where('time_to', '>=', $to);
                     })
                         ->orWhere(function ($q) use ($to,$from) {
-                            $q->where('time_from', '>', $from)
-                                ->where('time_to', '<', $to);});
+                            $q->where('time_from', '>=', $from)
+                                ->where('time_to', '<=', $to);});
                 })->count();
             //dd($from,$to);
             $conflictssr = StadiumsRentTable::where('stadium_id', $request->stadium_id)
                 ->where(function ($query) use ($from,$to) {
                     $query->where(function ($q) use ($from) {
-                        $q->where('time_from', '<=', $from)->where('time_to', '>', $from);})
+                        $q->where('time_from', '<=', $from)
+                            ->where('time_to', '>=', $from);})
                         ->orWhere(function ($q) use ($to) {
-                        $q->where('time_from', '<', $to)
-                            ->where('time_to', '>', $to);})
+                        $q->where('time_from', '<=', $to)
+                            ->where('time_to', '>=', $to);})
                         ->orWhere(function ($q) use ($to,$from) {
-                        $q->where('time_from', '>', $from)
-                            ->where('time_to', '<', $to);});
+                        $q->where('time_from', '>=', $from)
+                            ->where('time_to', '<=', $to);});
                 })
                 ->count();
             dd($conflictssr,$conflictstp);
