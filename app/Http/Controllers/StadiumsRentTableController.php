@@ -210,8 +210,8 @@ class StadiumsRentTableController extends Controller
                         $q->where('time_from', '<', $to)->where('time_to', '>', $to);
                     })
                         ->orWhere(function ($q) use ($to,$from) {
-                            $q->where('time_from', '=>', $from)
-                                ->where('time_to', '<=', $to);});
+                            $q->where('time_from', '>', $from)
+                                ->where('time_to', '<', $to);});
                 })->count();
             //dd($from,$to);
             $conflictssr = StadiumsRentTable::where('stadium_id', $request->stadium_id)
@@ -226,7 +226,7 @@ class StadiumsRentTableController extends Controller
                             ->where('time_to', '<', $to);});
                 })
                 ->count();
-            //dd($conflictstp,$conflictssr);
+            dd($conflictssr,$conflictstp);
             //select * from `trainer_and_players` where `stadium_id` = ? and ((`time_from` <= ? and `time_to` > ?) or (`time_from` < ? and `time_to` > ?))
             if ($conflictstp > 0 || $conflictssr > 0) {
                 return response()->json([
