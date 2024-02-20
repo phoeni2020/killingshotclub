@@ -226,7 +226,7 @@ class StadiumsRentTableController extends Controller
                             ->where('time_to', '<', $to);});
                 })
                 ->count();
-            dd($conflictssr,$conflictstp);
+
             //select * from `trainer_and_players` where `stadium_id` = ? and ((`time_from` <= ? and `time_to` > ?) or (`time_from` < ? and `time_to` > ?))
             if ($conflictstp > 0 || $conflictssr > 0) {
                 return response()->json([
