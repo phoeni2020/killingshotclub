@@ -500,6 +500,8 @@
                                 } else {
                                     calendar.fullCalendar('refetchEvents');
                                     Swal.fire("Done !!", "", "success");
+                                    $("#calendarModal").modal("hide");
+                                    location.reload();
 
                                 }
 
