@@ -119,9 +119,13 @@ class TrainerAndPlayerController extends Controller
             ->where(function ($query) use ($time_from,$time_to) {
                 $query->where(function ($q) use ($time_from) {
                     $q->where('time_from', '<=', $time_from)->where('time_to', '>', $time_from);
-                })->orWhere(function ($q) use ($time_to) {
+                })
+                    ->orWhere(function ($q) use ($time_to) {
                     $q->where('time_from', '<', $time_to)->where('time_to', '>', $time_to);
-                });
+                })
+                    ->orWhere(function ($q) use ($time_to,$time_from) {
+                        $q->where('time_from', '>=', $time_from)
+                            ->where('time_to', '<=', $time_to);});
             })
             ->count();
 
@@ -129,9 +133,14 @@ class TrainerAndPlayerController extends Controller
             ->where(function ($query) use ($time_from,$time_to) {
                 $query->where(function ($q) use ($time_from) {
                     $q->where('time_from', '<=', $time_from)->where('time_to', '>', $time_from);
-                })->orWhere(function ($q) use ($time_to) {
-                    $q->where('time_from', '<', $time_to)->where('time_to', '>', $time_to);
-                });
+                })
+                    ->orWhere(function ($q) use ($time_to) {
+                    $q->where('time_from', '<', $time_to)
+                        ->where('time_to', '>', $time_to);
+                })
+                    ->orWhere(function ($q) use ($time_to,$time_from) {
+                        $q->where('time_from', '>=', $time_from)
+                            ->where('time_to', '<=', $time_to);});
             })
             ->count();
         if ($conflictstp > 0 || $conflictssr > 0) {
