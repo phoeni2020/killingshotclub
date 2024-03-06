@@ -114,6 +114,7 @@ use App\Models\Branchs;
                 'payer'=>$request->payer,
                 'branch_id'=>$request->branch_id,
                 'serial_number'=>$request->serial,
+                'receipt_type'=>1,
             ]);
             return redirect()->route('receipt.index')->with('message','تم اضافه الايصال بنجاح ');
 

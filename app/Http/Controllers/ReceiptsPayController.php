@@ -91,6 +91,7 @@ class ReceiptsPayController extends Controller
             'statement'=>$request->statement,
             'date_receipt'=>$request->date,
             'buyer'=>$request->buyer,
+            'receipt_type'=>1,
         ]);
 
      if($request->employee_id){
