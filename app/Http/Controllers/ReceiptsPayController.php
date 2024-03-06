@@ -44,8 +44,7 @@ class ReceiptsPayController extends Controller
                 return Excel::download($ExportToExcelSheet , 'ايصالات الصرف.xlsx');
             }
         } else  {
-            $receipts = ReceiptsPay::paginate(10);
-
+            $receipts = ReceiptsPay::where('receipt_type',2)->paginate(10);
         }
         $players =Players::whereIn('branch_id', $branchIds)->get();
         $receiptTypesFrom= ReceiptTypePay::whereIn('type',['Save_money','bank'])->get();
@@ -85,8 +84,7 @@ class ReceiptsPayController extends Controller
     {
      $receipt_pay =    ReceiptsPay::create([
             'user_id'=>auth()->user()->id,
-
-            'type_of_to'=>$request->to_type,
+            'type_of'=>$request->to_type,
             'from'=>$request->from,
             'to'=>$request->to,
             'amount'=> -$request->amount,

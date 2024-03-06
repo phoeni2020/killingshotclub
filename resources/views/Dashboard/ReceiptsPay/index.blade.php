@@ -233,11 +233,11 @@
                                                 @php
                                                     $id =  $receipt->to;
                                                     $name ='';
-                                                    if($receipt->type_of_to=='players'){
+                                                    if($receipt->type_of=='players'){
                                                        $player = \App\models\Players::find($id);
                                                        $name = $player?->name;
                                                     }
-                                                    if($receipt->type_of_to=='others'){
+                                                    if($receipt->type_of=='others'){
                                                       $receiptType = \App\Models\ReceiptTypePay::find($id);
                                                        $name = $receiptType ->name;
 
