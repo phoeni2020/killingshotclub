@@ -79,6 +79,8 @@ use App\Models\Branchs;
 
     //        dd($players[0]->PlayerSportPrice->price);
             $receiptTypes= ReceiptTypes::whereIn('branch_id',$branchIds)->get();
+            dd($receiptTypes);
+
             return view('Dashboard.Receipts.create',compact('players','receiptTypes' , 'branches'));
         }
 
