@@ -65,7 +65,6 @@ use App\Models\Branchs;
         {
             if(\Auth::user()->hasRole('administrator')){
                 $branchIds = Branchs::get()->pluck('id')->toArray();
-                dd($branchIds);
             }
             else{
                 $branchIds = \Auth::user()->branches->pluck('id')->toArray();
@@ -80,7 +79,6 @@ use App\Models\Branchs;
 
     //        dd($players[0]->PlayerSportPrice->price);
             $receiptTypes= ReceiptTypes::whereIn('branch_id',$branchIds)->get();
-            dd($receiptTypes);
 
             return view('Dashboard.Receipts.create',compact('players','receiptTypes' , 'branches'));
         }
