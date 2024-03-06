@@ -65,6 +65,7 @@ use App\Models\Branchs;
         {
             if(\Auth::user()->hasRole('administrator')){
                 $branchIds = Branchs::get()->pluck('id')->toArray();
+                dd($branchIds);
             }
             else{
                 $branchIds = \Auth::user()->branches->pluck('id')->toArray();
