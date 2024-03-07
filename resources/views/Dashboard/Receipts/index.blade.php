@@ -215,7 +215,7 @@
 
                                                     @php
                                                         $name ='';
-                                                        if($receipt->type_of_from=='players'){
+                                                        if($receipt->type_of=='players'){
                                                            $name = is_null($receipt->player)?'--':$receipt->player->name;
                                                         }
                                                         else{

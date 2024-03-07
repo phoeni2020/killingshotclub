@@ -75,9 +75,9 @@
                                                 <div class="col-md-3 mt-2" >
                                                     <div class="form-group">
                                                         <label>الي الاعبين</label>
-                                                        <input class="from_type " type="radio" id="players"  @if($receiptsPay->type_of_to == 'players') checked @endif  name="to_type" value="players">
+                                                        <input class="from_type " type="radio" id="players"  @if($receiptsPay->type_of == 'players') checked @endif  name="to_type" value="players">
                                                         <label> الي اخري </label>
-                                                        <input class=" from_type" type="radio" id="others"   @if($receiptsPay->type_of_to == 'others') checked @endif  name="to_type" value="others">
+                                                        <input class=" from_type" type="radio" id="others"   @if($receiptsPay->type_of == 'others') checked @endif  name="to_type" value="others">
 
                                                     </div>
                                                 </div>
@@ -87,7 +87,7 @@
                                                         <select class=" form-control"  name="to" >
                                                             @foreach($players as $player)
                                                                 <option
-                                                                    @if($receiptsPay->to == $player->id &&  $receiptsPay->type_of_to == 'players') selected @endif
+                                                                    @if($receiptsPay->to == $player->id &&  $receiptsPay->type_of == 'players') selected @endif
                                                                 value="{{$player->id}}">{{$player->name}}</option>
 
                                                             @endforeach
@@ -101,7 +101,7 @@
                                                         <select class="form-control"  name="to" id="others_to" >
                                                             @foreach($receiptTypes as $type)
                                                                 <option
-                                                                    @if($receiptsPay->to == $type->id &&  $receiptsPay->type_of_to == 'others') selected @endif
+                                                                    @if($receiptsPay->to == $type->id &&  $receiptsPay->type_of == 'others') selected @endif
                                                                 data-type="{{$type->type}}"    value="{{$type->id}}">{{$type->name}}</option>
 
                                                             @endforeach

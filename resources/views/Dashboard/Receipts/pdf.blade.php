@@ -52,11 +52,11 @@
             @php
                 $id =  $receipt->from;
                 $name ='';
-                if($receipt->type_of_from=='players'){
+                if($receipt->type_of=='players'){
                    $player = \App\models\Players::find($id);
                    $name = $player->name;
                 }
-                if($receipt->type_of_from=='others'){
+                if($receipt->type_of=='others'){
                   $receiptType = \App\Models\ReceiptTypes::find($id);
                    $name = $receiptType->name;
 

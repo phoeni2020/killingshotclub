@@ -10,6 +10,7 @@ class ReceiptsPay extends Model
     use HasFactory;
     protected $guarded=[];
     protected $dates = ['date_receipt'];
+    protected $table ='receipt';
 
 
     public  function user(){
