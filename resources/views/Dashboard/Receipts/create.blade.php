@@ -343,14 +343,14 @@
         });
 
         $('#discount_rate').change(function () {
-            console.log('ssssssssss')
             var amount = $('#amount').val();
             if($('#discount').val() == 'amount'){
                 if(amount < $(this).val()){
                     if($('.error-hodler').length > 0){
                         $('.error-holder').remove();
                     }
-                    $(this).parent().after().append('<div class="error-holder"><br><br><lable class="alert alert-danger">error</lable></div>')
+                    $(this).parent().after().append('<div class="error-holder"><br><br>' +
+                        '<lable class="alert alert-danger">الخصم اكبر من المبلغ المدفوع</lable></div>')
                     return false;
                 }
             }else if($('#discount').val() == 'percentage'){
@@ -358,7 +358,8 @@
                     if($('.error-hodler').length > 0){
                         $('.error-holder').remove();
                     }
-                    $(this).parent().after().append('<div class="error-holder"><br><br><lable class="alert alert-danger">error</lable></div>')
+                    $(this).parent().after().append('<div class="error-holder"><br><br>' +
+                        '<lable class="alert alert-danger">نسبة الخصم اكبر من 100%</lable></div>')
                     return false;
                 }
             }
