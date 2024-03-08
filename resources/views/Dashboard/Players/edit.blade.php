@@ -217,8 +217,9 @@
                                                                         data-sport_id="{{$price_list->sport_id}}"
                                                                         data-level_id="{{$price_list->level_id}}"
                                                                         data-id="{{$price_list->id}}"
-                                                                        name="branch_id[]">
+                                                                        name="branch_id">
                                                                     <option value=""> حدد الفرع</option>
+
                                                                     @foreach($branches as $branch)
                                                                         <option
                                                                             value="{{$branch->id}}"
@@ -234,7 +235,7 @@
                                                             <div class="form-group">
                                                                 <label for="projectinput2"> اللعبه</label>
                                                                 <select class=" form-control select2-placeholder-multiple  sport_id"
-                                                                        name="sport_id[]">
+                                                                        name="sport_id">
                                                                     <option value=""></option>
                                                                 </select>
 
@@ -244,8 +245,15 @@
                                                             <div class="form-group">
                                                                 <label for="projectinput2"> المستويات</label>
                                                                 <select class="select2-placeholder-multiple form-control level_id"
-                                                                        name="level_id[]">
-                                                                    <option value="" selected>اختر مستوي</option>
+                                                                        name="level_id">
+                                                                    @if(!is_null($player->level_id))
+                                                                        @php
+                                                                            $level = \App\Models\Levels::query()->find($player->level_id);
+                                                                        @endphp
+                                                                        <option value="{{$player->level_id}}" selected>{{$level->name}}</option>
+                                                                    @else
+                                                                        <option value="" selected>اختر مستوي</option>
+                                                                    @endif
                                                                 </select>
 
                                                             </div>
@@ -277,8 +285,8 @@
                                                         </div>--}}
                                                         <div class="col-md-1 mt-2">
                                                             @if($key == $player->playerPriceLists->count() - 1)
-                                                                <button type="button" class="btn btn-success btn-add"><i
-                                                                        class="fa fa-plus" aria-hidden="true"></i></button>
+                                                                {{--<button type="button" class="btn btn-success btn-add"><i
+                                                                        class="fa fa-plus" aria-hidden="true"></i></button>--}}
                                                             @else
 
                                                                 <button type="button" class="btn btn-danger btn-remove"><i
@@ -294,7 +302,7 @@
                                                                 <div class="form-group">
                                                                     <label for="projectinput2"> الفرع</label>
                                                                     <select class=" form-control branch_id" id="branch_id"
-                                                                            name="branch_id[]">
+                                                                            name="branch_id">
                                                                         <option value="0"> حدد الفرع</option>
                                                                         @foreach($branches as $branch)
                                                                             <option
@@ -309,7 +317,7 @@
                                                                 <div class="form-group">
                                                                     <label for="projectinput2"> اللعبه</label>
                                                                     <select class=" form-control select2-placeholder-multiple  sport_id"
-                                                                            id="sport_id" name="sport_id[]">
+                                                                            id="sport_id" name="sport_id">
                                                                         <option value=""></option>
                                                                     </select>
 
@@ -319,8 +327,15 @@
                                                                 <div class="form-group">
                                                                     <label for="projectinput2"> المستويات</label>
                                                                     <select class="select2-placeholder-multiple form-control level_id"
-                                                                            id="level_id" name="level_id[]">
-                                                                        <option value="" selected>اختر مستوي</option>
+                                                                            id="level_id" name="level_id">
+                                                                        @if(!is_null($player->level_id))
+                                                                            @php
+                                                                                $level = \App\Models\Levels::query()->find($player->level_id);
+                                                                            @endphp
+                                                                            <option value="{{$player->level_id}}" selected>{{$level->name}}</option>
+                                                                        @else
+                                                                            <option value="" selected>اختر مستوي</option>
+                                                                        @endif
                                                                     </select>
 
                                                                 </div>
@@ -344,7 +359,7 @@
                                                                     <input class="form-control price form-control"
                                                                            id="price"
                                                                            disabled
-                                                                           name="price[]">
+                                                                           name="price">
 
                                                                 </div>
                                                             </div>
@@ -361,14 +376,15 @@
 
                                                                 </div>
                                                             </div>--}}
-                                                            <div class="col-md-1 mt-2">
+                                                           {{-- <div class="col-md-1 mt-2">
                                                                 <button type="button" class="btn btn-success btn-add"><i
                                                                             class="fa fa-plus" aria-hidden="true"></i></button>
-                                                            </div>
+                                                            </div>--}}
                                                         </div>
                                                     </div>
                                                 @endif
                                             </div>
+                                            {{------------------------------------------------------------------------------------------------------------------}}
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="projectinput2">  الباكدج</label>
@@ -495,7 +511,7 @@
                                 type: 'GET',  // http method
                                 data: {"sport_id": ids,'level_id': level},
                                 success: function (data) {// success callback function
-                                    level_id.html(data.data);
+                                    level_id.append(data.data);
 
                                     var price_list = level_id.parents('.entry').find(".price_list");
                                     var route = "{{route('get-price-list-player')}}";

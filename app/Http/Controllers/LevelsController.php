@@ -213,14 +213,9 @@ class LevelsController extends Controller
         $option = ' <option value="" >اختر مستوي </option>';
 
         foreach ($levels as $level) {
-            if($request->user_sport_id == $level->id)
-                $selected = 'selected';
-            if ($request->level_id == $level->id) {
-                $selected = 'selected';
-            }
+
             $option .= "
-      <option $selected value=$level->id > $level->name </option> ";
-            $selected = '';
+      <option  value=$level->id > $level->name </option> ";
 
         }
 

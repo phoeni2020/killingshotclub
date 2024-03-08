@@ -138,7 +138,6 @@ class PlayersController extends Controller
                     ]);
             }
 
-
         }
         return redirect()->route('player.index')->with('message','تم اضافه اللاعب بنجاح ');
 
@@ -182,7 +181,7 @@ class PlayersController extends Controller
      */
     public function update(UpdatePlayersRequest $request, Players $player)
     {
-//        dd($request->all());
+       // dd($request->all());
 
         $player->name = $request->name;
         $player->birth_day = $request->birth_day;
@@ -194,9 +193,9 @@ class PlayersController extends Controller
         $player->anther_phone = $request->anther_phone;
         $player->father_job = $request->father_job;
         $player->father_email = $request->father_email;
-        $player->branch_id = $request->branches_id;
-//        $player->sport_id = $request->sport_id;
-//        $player->level_id = $request->level_id;
+        $player->branch_id = $request->branch_id;
+        $player->sport_id = $request->sport_id;
+        $player->level_id = $request->level_id;
         $player->package_id = $request->package_id;
         $player->anther_sport = $request->anther_sports;
         $player->join_by = $request->join_by;
@@ -231,7 +230,6 @@ class PlayersController extends Controller
         if($request->price_list){
             PlayerPriceList::where('player_id',$player->id)->delete();
             $priceListCount = count($request->input('price_list'));
-
             for($counter = 0 ; $counter < $priceListCount;  $counter++ ){
                 if($request->price_list[$counter])
                     PlayerPriceList::create([
@@ -240,7 +238,6 @@ class PlayersController extends Controller
                     ]);
 
             }
-
         }
         return redirect()->route('player.index')->with('message','تم تعديل اللاعب بنجاح ');
 
@@ -280,7 +277,6 @@ class PlayersController extends Controller
         })->get();
         if($request->player_id){
             $player = Players::find($request->player_id);
-
         }
 
         $selected='';
