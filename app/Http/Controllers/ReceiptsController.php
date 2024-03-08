@@ -112,6 +112,8 @@ use App\Models\Branchs;
                 'date_receipt'=>$request->date,
                 'price_list_id'=>$priceListId,
                 'package_id'=>$packageId,
+                'discount_type'=>$request->discount,
+                'discount'=>$request->discount_rate,
                 'payer'=>$request->payer,
                 'branch_id'=>$request->branch_id,
                 'serial_number'=>$request->serial,
@@ -165,6 +167,8 @@ use App\Models\Branchs;
                 $packageId = $request->price_list;
 
             }
+            $receipt->discount_type=$request->discount;
+            $receipt->discount=$request->discount_rate;
             $receipt->user_id=auth()->user()->id;
             $receipt->from=$request->from;
             $receipt->to=$request->to;

@@ -34,43 +34,43 @@
                                         @csrf
                                         <div class="form-body">
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="projectinput2">  اسم محرر الايصال </label>
-                                                        <input type="text" class="form-control" disabled name="name" value="{{ auth()->user()->name }}" required>
-
+                                                <fieldset class="row col-12" style="border: 1px solid;margin-right: 0px;">
+                                                    <legend>Basic info:</legend>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="projectinput2">  اسم محرر الايصال </label>
+                                                            <input type="text" class="form-control" disabled name="name" value="{{ auth()->user()->name }}" required>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-0">
-
-                                                    <div class="form-group">
-                                                        <label for="projectinput2">   جزئي </label>
-                                                        <input type="checkbox" class="form-control"  id="type_of_amount" name="type_of_amount"  value="part" >
-
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="projectinput2">  تاريخ الايصال</label>
+                                                            <input type="date" name="date"
+                                                                   class="form-control"
+                                                                   {{--                                                               @if(auth()->user()->hasPermission('date-receipts-create') || auth()->user()->hasRole(['administrator','superadministrator']))   @else disabled  @endif--}}
+                                                                   placeholder="dd-mm-yyyy" value = "{{ Carbon\Carbon::today()->format('Y-m-d') }}"
+                                                                   min="{{ Carbon\Carbon::today()->format('Y')}}-01-01" max="2030-12-31">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="projectinput2">  تاريخ الايصال</label>
-                                                        <input type="date" name="date"
-                                                               class="form-control"
-{{--                                                               @if(auth()->user()->hasPermission('date-receipts-create') || auth()->user()->hasRole(['administrator','superadministrator']))   @else disabled  @endif--}}
-                                                               placeholder="dd-mm-yyyy" value = "{{ Carbon\Carbon::today()->format('Y-m-d') }}"
-                                                               min="1997-01-01" max="2030-12-31">
+                                                    <div class="col-md-0">
+                                                        <div class="form-group">
+                                                            <label for="projectinput2">   جزئي </label>
+                                                            <input type="checkbox" class="form-control"  id="type_of_amount" name="type_of_amount"  value="part" >
+                                                        </div>
                                                     </div>
-                                                </div>
-
+                                                    <div class="col-md-2" >
+                                                        <h6>نوع الوصل :</h6>
+                                                        <div class="form-group">
+                                                            <label>من الاعبين</label>
+                                                            <input class="from_type " type="radio"  checked  id="players" name="from_type" value="players">
+                                                            <label>اخري </label>
+                                                            <input class=" from_type" type="radio" id="others" name="from_type" value="others">
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
                                             </div>
+                                            <hr>
                                             <div class="row">
-                                                <div class="col-md-2 mt-2" >
-                                                    <div class="form-group">
-                                                    <label>من الاعبين</label>
-                                                        <input class="from_type " type="radio"  checked  id="players" name="from_type" value="players">
-                                                        <label>اخري </label>
-                                                        <input class=" from_type" type="radio" id="others" name="from_type" value="others">
-
-                                                    </div>
-                                                </div>
                                                 <div class="col-md-4"  style="display: none" id="from_players">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  من  </label>
@@ -97,35 +97,18 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  الي   </label>
                                                         <select class="select2-placeholder-multiple form-control"  name="to" >
                                                             @foreach($receiptTypes as $type)
                                                                 <option value="{{$type->id}}">{{$type->name}}</option>
-
                                                             @endforeach
                                                         </select>
 
                                                     </div>
                                                 </div>
-
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                            <label for="projectinput2">  تصنيف الادخال</label>
-                                                            <select class=" form-control"  id="price_list" name="price_list" >
-                                                                <option value="" selected>اختر  تصنيف الادخال
-                                                                </option>
-                                                            </select>
-                                                        <input type="hidden" name="typePrice" id="type_price">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  الفرع</label>
                                                         <select class="select2-placeholder-multiple form-control" id="branch_id"  name="branch_id" >
@@ -140,26 +123,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row align-items-end">
-                                                <div class="col-md-5">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                            <label for="projectinput2">  تصنيف الادخال</label>
+                                                            <select class=" form-control"  id="price_list" name="price_list" >
+                                                                <option value="" selected>اختر  تصنيف الادخال
+                                                                </option>
+                                                            </select>
+                                                        <input type="hidden" name="typePrice" id="type_price">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="payer">  اسم القائم بالدفع </label>
                                                         <input type="text" name="payer" id="payer" value="{{old('payer')}}" class="form-control">
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" name="payment_type" id="payment_type" class="checkbox">
-                                                        <label for="payer">  الدفع بالفيزا </label>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5"  id="serial" style="display: none">
-                                                    <div class="form-group">
-                                                        <label for="payer">  رقم الايصال </label>
-                                                        <input type="text" name="serial" id="serial" value="{{old('serial')}}" class="form-control">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -179,7 +157,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="ol-md-3">
-
                                                 <div class="form-group">
                                                         <label for="">  المتبقي </label>
                                                         <input type="number" name="remain" id="remain" readonly class="form-control part">
@@ -187,8 +164,39 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row align-items-end">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" name="payment_type" id="payment_type" class="checkbox">
+                                                        <label for="payer">  الدفع بالفيزا </label>
 
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5"  id="serial" style="display: none">
+                                                    <div class="form-group">
+                                                        <label for="payer">  رقم الايصال </label>
+                                                        <input type="text" name="serial" id="serial" value="{{old('serial')}}" class="form-control">
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
+                                                <div class="col-md-4" >
+                                                    <div class="form-group">
+                                                        <label for="projectinput2">الخصم</label>
+                                                        <select class=" form-control"  id="discount" name="discount" >
+                                                            <option value="none" selected>بلا خصم</option>
+                                                            <option value="amount" >مبلغ مباشر</option>
+                                                            <option value="percentage" >نسبة من المبلغ</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4" >
+                                                        <div class="form-group">
+                                                            <label for="projectinput2">الخصم</label>
+                                                            <input type="number" min="0"  name="discount_rate" id="discount_rate" value="{{old('discount_rate')}}" class="form-control">
+                                                        </div>
+                                                    </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for=""> البيان</label>
@@ -196,7 +204,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="form-actions center">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -229,8 +236,6 @@
             typeOfAmount();
             calcPaidAndRemain();
 
-
-
             $('.from_type').change(function (){
                 checkfromType();
             });
@@ -254,7 +259,7 @@
             getPlayersData();
 
         });
-       $("#price_list").change(function(){
+        $("#price_list").change(function(){
 
            get_price();
        });
@@ -334,6 +339,28 @@
                 $('#serial').show();
             } else {
                 $('#serial`').hide();
+            }
+        });
+
+        $('#discount_rate').change(function () {
+            console.log('ssssssssss')
+            var amount = $('#amount').val();
+            if($('#discount').val() == 'amount'){
+                if(amount < $(this).val()){
+                    if($('.error-hodler').length > 0){
+                        $('.error-holder').remove();
+                    }
+                    $(this).parent().after().append('<div class="error-holder"><br><br><lable class="alert alert-danger">error</lable></div>')
+                    return false;
+                }
+            }else if($('#discount').val() == 'percentage'){
+                if(100 < $(this).val()){
+                    if($('.error-hodler').length > 0){
+                        $('.error-holder').remove();
+                    }
+                    $(this).parent().after().append('<div class="error-holder"><br><br><lable class="alert alert-danger">error</lable></div>')
+                    return false;
+                }
             }
         });
     </script>
