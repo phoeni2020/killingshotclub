@@ -157,7 +157,7 @@
                                                     <div class="form-group">
                                                         <label for="projectinput2">الخصم</label>
                                                         <input type="number" min="0"  name="discount_rate" id="discount_rate" value="{{old('discount_rate')}}" class="form-control">
-                                                        <input type="hidden" min="0"  name="discount_amount_value" id="discount_amount_value">
+                                                        <input type="hidden" name="discount_amount_value" id="discount_amount_value">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -170,8 +170,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="">  المدفوع </label>
-                                                        <input type="number"  disabled name="paid" id="paid" class="form-control part">
-
+                                                        <input type="number"  readonly name="paid" id="paid" class="form-control part">
                                                     </div>
                                                 </div>
                                                 <div class="ol-md-3">
@@ -324,7 +323,6 @@
             else
             {
 
-                $('#paid').attr("disabled",'disabled');
                 var amount = $("#amount").val()*1;
                 if($('#discount').val() == 'amount')
                 {
@@ -373,7 +371,38 @@
               type: 'GET',  // http method
              data:{"player_id":player_id, "id":id,"typePrice":typePrice},
               success: function(data){
+                  var amount = data.price;
                   $('#amount').val(data.price)
+                  if($('#discount').val() == 'amount')
+                  {
+                      if(amount < $('#discount_rate').val())
+                      {
+                          if($('.error-hodler').length > 0)
+                              $('.error-holder').remove();
+
+                          $('#discount_rate').parent().after().append('<div class="error-holder"><br><br>' +
+                              '<lable class="alert alert-danger">الخصم اكبر من المبلغ المدفوع</lable></div>')
+                          return false;
+                      }
+                      var paid = parseInt(amount) - parseInt($('#discount_rate').val());
+                      $('#discount_amount_value').val(parseInt(amount))
+                      $('#paid').val(paid)
+                  }
+                  else if($('#discount').val() == 'percentage')
+                  {
+                      if(100 < $('#discount_rate').val())
+                      {
+                          if($('.error-hodler').length > 0)
+                              $('.error-holder').remove();
+
+                          $('#discount_rate').parent().after().append('<div class="error-holder"><br><br>' +
+                              '<lable class="alert alert-danger">نسبة الخصم اكبر من 100%</lable></div>')
+                          return false;
+                      }
+                      var paid = amount - ($('#discount_rate').val()/100 * amount);
+                      $('#discount_amount_value').val(parseInt(amount))
+                      $('#paid').val(paid)
+                  }
               }
           });
         }
@@ -398,8 +427,8 @@
             }
         });
 
-        $('#amount').change(function () {
-            var amount = $(this).val();
+        $('#discount_rate').change(function () {
+            var amount = $('#amount').val();
 
             if($('#discount').val() == 'amount'){
                 if(amount < $('#discount_rate').val()){
@@ -411,6 +440,7 @@
                     return false;
                 }
                 paid = parseInt(amount) - parseInt($('#discount_rate').val());
+                $('#discount_amount_value').val(parseInt(amount))
                 $('#paid').val(paid)
             }
             else if($('#discount').val() == 'percentage'){
@@ -422,6 +452,9 @@
                         '<lable class="alert alert-danger">نسبة الخصم اكبر من 100%</lable></div>')
                     return false;
                 }
+                var paid = amount - ($('#discount_rate').val()/100 * amount);
+                $('#discount_amount_value').val(parseInt(amount))
+                $('#paid').val(paid)
             }
         });
     </script>

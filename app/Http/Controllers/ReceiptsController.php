@@ -91,9 +91,9 @@ use ZanySoft\LaravelPDF\PDF;
          * @param  \App\Http\Requests\StoreReceiptsRequest  $request
          * @return \Illuminate\Http\Response
          */
-        public function store(StoreReceiptsRequest $request)
+        public function store(Request $request)
         {
-    //        dd($request->all());
+            //dd($request->all());
             $priceListId=null;
             $packageId=null;
 
