@@ -157,6 +157,7 @@
                                                     <div class="form-group">
                                                         <label for="projectinput2">الخصم</label>
                                                         <input type="number" min="0"  name="discount_rate" id="discount_rate" value="{{old('discount_rate')}}" class="form-control">
+                                                        <input type="hidden" min="0"  name="discount_amount_value" id="discount_amount_value">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -262,6 +263,7 @@
                         return false;
                     }
                     var paid = parseInt(amount) - parseInt($('#discount_rate').val());
+                    $('#discount_amount_value').val(parseInt(amount))
                     $('#paid').val(paid)
                 }
                 else if($('#discount').val() == 'percentage')
@@ -276,6 +278,7 @@
                         return false;
                     }
                     var paid = amount - ($('#discount_rate').val()/100 * amount);
+                    $('#discount_amount_value').val(parseInt(amount))
                     $('#paid').val(paid)
                 }
             });

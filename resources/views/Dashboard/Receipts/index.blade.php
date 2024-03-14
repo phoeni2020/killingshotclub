@@ -197,6 +197,7 @@
                                             <th class="border-top-0">   كلي\جزئي</th>
                                             <th class="border-top-0">    نوع الخصم</th>
                                             <th class="border-top-0">   نسبة الخصم</th>
+                                            <th class="border-top-0">   المبلغ قبل الخصم</th>
                                             <th class="border-top-0">   المدفوع</th>
                                             <th class="border-top-0">   المتبقي</th>
                                             <th class="border-top-0">   المبلغ</th>
@@ -239,14 +240,17 @@
                                                             case 'none' :
                                                                 $discountType = 'لا يوجد خصم';
                                                                 $discount = 'لا يوجد خصم';
+                                                                $discountAmount = 'لا يوجد خصم';
                                                                 break;
                                                             case 'amount':
                                                                 $discountType = 'خصم مبلغ مباشر';
                                                                 $discount = $receipt->discount . ' EGP/ جنيه';
+                                                                $discountAmount = $receipt->discount_amount_value . ' EGP/ جنيه';
                                                                 break;
                                                             case 'percentage' :
                                                                  $discountType = 'خصم نسبة مئوية';
                                                                  $discount = $receipt->discount . '%';
+                                                                 $discountAmount = $receipt->discount_amount_value . ' EGP/ جنيه';
                                                                 break;
                                                         }
                                                     @endphp
@@ -254,6 +258,8 @@
                                                         {{$discountType}}
                                                     </td>
                                                     <td>{{ $discount }}</td>
+
+                                                    <td>{{ $discountAmount }}</td>
 
                                                     <td>{{ $receipt->paid ?? $receipt->amount }}</td>
 

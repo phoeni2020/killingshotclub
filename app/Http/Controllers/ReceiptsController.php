@@ -116,6 +116,7 @@ use ZanySoft\LaravelPDF\PDF;
                 'package_id'=>$packageId,
                 'discount_type'=>$request->discount,
                 'discount'=>$request->discount_rate,
+                'discount_amount_value'=>$request->discount_amount_value,
                 'payer'=>$request->payer,
                 'branch_id'=>$request->branch_id,
                 'serial_number'=>$request->serial,
@@ -169,8 +170,6 @@ use ZanySoft\LaravelPDF\PDF;
                 $packageId = $request->price_list;
 
             }
-            $receipt->discount_type=$request->discount;
-            $receipt->discount=$request->discount_rate;
             $receipt->user_id=auth()->user()->id;
             $receipt->from=$request->from;
             $receipt->to=$request->to;
@@ -180,6 +179,9 @@ use ZanySoft\LaravelPDF\PDF;
             $receipt->paid=$request->paid;
             $receipt->statement=$request->statement;
             $receipt->price_list_id=$priceListId;
+            $receipt->discount_type=$request->discount;
+            $receipt->discount=$request->discount_rate;
+            $receipt->discount_amount_value=$request->discount_amount_value;
             $receipt->package_id=$packageId;
             $receipt->branch_id=$request->branch_id;
             $receipt->date_receipt=$request->date;
