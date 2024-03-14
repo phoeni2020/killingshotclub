@@ -15,6 +15,7 @@ use App\Models\ReceiptTypes;
 use App\Models\User;
 use App\Services\PDF\ConvertDataToPDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -188,17 +189,19 @@ class ReceiptsPayController extends Controller
         $toDate = $request->toDate;
         $type = $request->type;
         $ReceiptsPay = new ReceiptsPay();
-//dd($request->all());
-        if($fromDate && $toDate && $fromDate <  $toDate){
 
-            $ReceiptsPay = $ReceiptsPay->
-                whereHas('to',function($q) use ($branchIds){
-                $q->whereIn('branch_id',$branchIds);
-            })
-                ->whereBetween("$request->type_date", [$fromDate, $toDate]);
+        $ReceiptsPay = $ReceiptsPay->where('receipt_type',1);
 
-        }
+        $ReceiptsPay = $ReceiptsPay->whereHas('to',function($q) use ($branchIds){
+            $q->whereIn('branch_id',$branchIds);
+        });
 
+        if(!is_null($toDate)&&!is_null($fromDate))
+            $ReceiptsPay->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $toDate.' 23:59:59']);
+        elseif (!is_null($fromDate))
+            $ReceiptsPay->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $fromDate.' 23:59:59']);
+        else
+            $ReceiptsPay->whereBetween("$request->type_date", [$toDate.' 00:00:00', $toDate.' 23:59:59']);
 
         if($type){
             $ReceiptsPay = $ReceiptsPay
@@ -217,7 +220,7 @@ class ReceiptsPayController extends Controller
             $ReceiptsPay = $ReceiptsPay->where("to", $request->to_player)->where('type_of_to',"players");
         }
 
-        $ReceiptsPay =$ReceiptsPay->paginate(10);
+        $ReceiptsPay = $ReceiptsPay->paginate(10);
         return $ReceiptsPay;
 
 

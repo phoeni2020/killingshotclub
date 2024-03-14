@@ -19,7 +19,7 @@ class ReceiptsPay extends Model
     public function receiptType(){
         return $this->belongsTo('App\Models\ReceiptTypePay' , 'from','id');
     }
-    public function receiptTypeTO(){
+    public function to(){
         return $this->belongsTo('App\Models\ReceiptTypePay' , 'to','id');
     }
 }

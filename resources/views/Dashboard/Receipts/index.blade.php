@@ -195,6 +195,8 @@
                                             <th class="border-top-0"> الي </th>
 
                                             <th class="border-top-0">   كلي\جزئي</th>
+                                            <th class="border-top-0">    نوع الخصم</th>
+                                            <th class="border-top-0">   نسبة الخصم</th>
                                             <th class="border-top-0">   المدفوع</th>
                                             <th class="border-top-0">   المتبقي</th>
                                             <th class="border-top-0">   المبلغ</th>
@@ -232,6 +234,26 @@
                                                     <td>{{$receipt->receiptType->name ?? '---'}}</td>
 
                                                     <td>{{ $receipt->type_of_amount == '' ? 'كلي ' : 'جزئي' }}</td>
+                                                    @php
+                                                        switch ($receipt->discount_type){
+                                                            case 'none' :
+                                                                $discountType = 'لا يوجد خصم';
+                                                                $discount = 'لا يوجد خصم';
+                                                                break;
+                                                            case 'amount':
+                                                                $discountType = 'خصم مبلغ مباشر';
+                                                                $discount = $receipt->discount . ' EGP/ جنيه';
+                                                                break;
+                                                            case 'percentage' :
+                                                                 $discountType = 'خصم نسبة مئوية';
+                                                                 $discount = $receipt->discount . '%';
+                                                                break;
+                                                        }
+                                                    @endphp
+                                                    <td>
+                                                        {{$discountType}}
+                                                    </td>
+                                                    <td>{{ $discount }}</td>
 
                                                     <td>{{ $receipt->paid ?? $receipt->amount }}</td>
 

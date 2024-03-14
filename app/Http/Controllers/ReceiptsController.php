@@ -14,7 +14,8 @@ use App\Models\Branchs;
         use Facade\FlareClient\Http\Response;
         use Illuminate\Http\Request;
         use App\Services\PDF\ConvertDataToPDF;
-        use ZanySoft\LaravelPDF\PDF;
+use Illuminate\Support\Facades\DB;
+use ZanySoft\LaravelPDF\PDF;
         use App\Exports\ExportToExcelSheet;
         use Maatwebsite\Excel\Facades\Excel;
   class ReceiptsController extends Controller{
@@ -42,7 +43,8 @@ use App\Models\Branchs;
                     $ExportToExcelSheet  = new ExportToExcelSheet($receipts ,'Dashboard.Receipts.pdf');
                      return Excel::download($ExportToExcelSheet , 'ايصالات التوريد.xlsx');
                 }
-            } else{
+            }
+            else{
                 $receipts = Receipts::orderBy('id','desc')
                     ->whereIn('branch_id', $branchIds)->where('receipt_type',1)
                     ->paginate(10);
@@ -52,7 +54,7 @@ use App\Models\Branchs;
                 ->whereIn('branch_id', $branchIds)
                 ->get();
     //        dd($players[0]->PlayerSportPrice->price);
-            $receiptTypes= ReceiptTypes::get();
+            $receiptTypes= ReceiptTypes::where('is_pay',1)->get();
             return view('Dashboard.Receipts.index',compact('receipts','players','receiptTypes'));
         }
 
@@ -78,7 +80,7 @@ use App\Models\Branchs;
                 $branches =  \Auth::user()->branches;
 
     //        dd($players[0]->PlayerSportPrice->price);
-            $receiptTypes= ReceiptTypes::whereIn('branch_id',$branchIds)->get();
+            $receiptTypes= ReceiptTypes::whereIn('branch_id',$branchIds)->where('is_pay',1)->get();
 
             return view('Dashboard.Receipts.create',compact('players','receiptTypes' , 'branches'));
         }
@@ -225,11 +227,14 @@ use App\Models\Branchs;
             $Receipts = new Receipts();
 
     //dd($request->all());
-            if($fromDate && $toDate && $fromDate <=  $toDate){
-                $Receipts = $Receipts->whereBetween("$request->type_date", [$fromDate, $toDate]);
-            }
+            $Receipts = $Receipts->where('receipt_type',1);
 
-
+            if(!is_null($toDate)&&!is_null($fromDate))
+                $Receipts->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $toDate.' 23:59:59']);
+            elseif (!is_null($fromDate))
+                $Receipts->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $fromDate.' 23:59:59']);
+            else
+                $Receipts->whereBetween("$request->type_date", [$toDate.' 00:00:00', $toDate.' 23:59:59']);
 
             if($type){
                 $Receipts = $Receipts->whereHas('receiptType' , function($query) use ($type){
@@ -246,9 +251,9 @@ use App\Models\Branchs;
             if($request->to){
                 $Receipts = $Receipts->where("to", $request->to);
             }
-            $Receipts =$Receipts->paginate(10);
-            return $Receipts;
 
+            $Receipts = $Receipts->paginate(10);
+            return $Receipts;
 
         }
 
