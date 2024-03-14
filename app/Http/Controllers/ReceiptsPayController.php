@@ -179,12 +179,11 @@ class ReceiptsPayController extends Controller
     }
 
     public function filter($request){
-        if(\Auth::user()->hasRole('administrator')){
+        if(\Auth::user()->hasRole('administrator'))
             $branchIds = Branchs::get()->pluck('id')->toArray();
-        }
-        else{
+        else
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
-        }
+
         $fromDate = $request->fromDate;
         $toDate = $request->toDate;
         $type = $request->type;
@@ -200,25 +199,24 @@ class ReceiptsPayController extends Controller
             $ReceiptsPay->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $toDate.' 23:59:59']);
         elseif (!is_null($fromDate))
             $ReceiptsPay->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $fromDate.' 23:59:59']);
-        else
+        elseif(!is_null($toDate))
             $ReceiptsPay->whereBetween("$request->type_date", [$toDate.' 00:00:00', $toDate.' 23:59:59']);
 
-        if($type){
+        if($type)
             $ReceiptsPay = $ReceiptsPay
                 ->whereIn('branch_id',$branchIds)
                 ->where('type_of','others')->whereHas('receiptTypeTO' , function($query) use ($type){
                 $query->where('type',$type);
             });
-        }
-        if($request->from){
+
+        if($request->from)
             $ReceiptsPay = $ReceiptsPay->where("from", $request->from);
-        }
-        if($request->to_others){
+
+        if($request->to_others)
             $ReceiptsPay = $ReceiptsPay->where("to", $request->to_others)->where('type_of',"others");
-        }
-        if($request->to_player){
+
+        if($request->to_player)
             $ReceiptsPay = $ReceiptsPay->where("to", $request->to_player)->where('type_of',"players");
-        }
 
         $ReceiptsPay = $ReceiptsPay->paginate(10);
         return $ReceiptsPay;

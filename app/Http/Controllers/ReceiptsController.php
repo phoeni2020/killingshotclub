@@ -225,6 +225,7 @@ use ZanySoft\LaravelPDF\PDF;
             $toDate = $request->toDate;
             $type = $request->type;
             $Receipts = new Receipts();
+            //DB::connection()->enableQueryLog();
 
     //dd($request->all());
             $Receipts = $Receipts->where('receipt_type',1);
@@ -233,26 +234,28 @@ use ZanySoft\LaravelPDF\PDF;
                 $Receipts->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $toDate.' 23:59:59']);
             elseif (!is_null($fromDate))
                 $Receipts->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $fromDate.' 23:59:59']);
-            else
+            elseif (!is_null($toDate))
                 $Receipts->whereBetween("$request->type_date", [$toDate.' 00:00:00', $toDate.' 23:59:59']);
 
-            if($type){
+            if($type)
                 $Receipts = $Receipts->whereHas('receiptType' , function($query) use ($type){
                     $query->where('type',$type);
                 });
-            }
 
-            if($request->from_others){
+
+            if($request->from_others)
                 $Receipts = $Receipts->where("from", $request->from_others)->where('type_of',"others");
-            }
-            if($request->from_player){
+
+
+            if($request->from_player)
                 $Receipts = $Receipts->where("from", $request->from_player)->where('type_of',"players");
-            }
-            if($request->to){
+
+            if($request->to)
                 $Receipts = $Receipts->where("to", $request->to);
-            }
 
             $Receipts = $Receipts->paginate(10);
+
+            //$queries = DB::getQueryLog();
             return $Receipts;
 
         }
