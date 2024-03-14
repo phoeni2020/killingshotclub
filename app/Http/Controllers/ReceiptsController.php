@@ -174,7 +174,7 @@ use ZanySoft\LaravelPDF\PDF;
             $receipt->user_id=auth()->user()->id;
             $receipt->from=$request->from;
             $receipt->to=$request->to;
-            $receipt->type_of_from=$request->from_type;
+            $receipt->type_of=$request->from_type;
             $receipt->type_of_amount=$request->type_of_amount;
             $receipt->amount=$request->amount;
             $receipt->paid=$request->paid;
@@ -243,10 +243,10 @@ use ZanySoft\LaravelPDF\PDF;
             }
 
             if($request->from_others){
-                $Receipts = $Receipts->where("from", $request->from_others)->where('type_of_from',"others");
+                $Receipts = $Receipts->where("from", $request->from_others)->where('type_of',"others");
             }
             if($request->from_player){
-                $Receipts = $Receipts->where("from", $request->from_player)->where('type_of_from',"players");
+                $Receipts = $Receipts->where("from", $request->from_player)->where('type_of',"players");
             }
             if($request->to){
                 $Receipts = $Receipts->where("to", $request->to);

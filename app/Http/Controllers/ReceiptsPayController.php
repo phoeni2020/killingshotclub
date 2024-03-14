@@ -147,7 +147,7 @@ class ReceiptsPayController extends Controller
         $receiptsPay->user_id=auth()->user()->id;
         $receiptsPay->from=$request->from;
         $receiptsPay->to=$request->to;
-        $receiptsPay->type_of_to=$request->to_type;
+        $receiptsPay->type_of=$request->to_type;
         $receiptsPay->amount= (-$request->amount);
         $receiptsPay->date_receipt=$request->date;
         $receiptsPay->buyer =$request->buyer;
@@ -206,7 +206,7 @@ class ReceiptsPayController extends Controller
         if($type){
             $ReceiptsPay = $ReceiptsPay
                 ->whereIn('branch_id',$branchIds)
-                ->where('type_of_to','others')->whereHas('receiptTypeTO' , function($query) use ($type){
+                ->where('type_of','others')->whereHas('receiptTypeTO' , function($query) use ($type){
                 $query->where('type',$type);
             });
         }
@@ -214,10 +214,10 @@ class ReceiptsPayController extends Controller
             $ReceiptsPay = $ReceiptsPay->where("from", $request->from);
         }
         if($request->to_others){
-            $ReceiptsPay = $ReceiptsPay->where("to", $request->to_others)->where('type_of_to',"others");
+            $ReceiptsPay = $ReceiptsPay->where("to", $request->to_others)->where('type_of',"others");
         }
         if($request->to_player){
-            $ReceiptsPay = $ReceiptsPay->where("to", $request->to_player)->where('type_of_to',"players");
+            $ReceiptsPay = $ReceiptsPay->where("to", $request->to_player)->where('type_of',"players");
         }
 
         $ReceiptsPay = $ReceiptsPay->paginate(10);
