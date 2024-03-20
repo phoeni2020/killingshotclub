@@ -414,6 +414,7 @@
                                                                 <button type="button" class="btn btn-success btn-add"><i
                                                                             class="fa fa-plus" aria-hidden="true"></i></button>
                                                             </div>
+                                                            <br>
                                                         </div>
                                                     </div>
                                                 @endif
