@@ -323,10 +323,12 @@
                                                             @if($key == $player->playerPriceLists->count() - 1)
                                                                 <button type="button" class="btn btn-success btn-add"><i
                                                                         class="fa fa-plus" aria-hidden="true"></i></button>
+                                                                <br>
                                                             @else
 
                                                                 <button type="button" class="btn btn-danger btn-remove"><i
                                                                         class="fa fa-minus" aria-hidden="true"></i></button>
+                                                                <br>
                                                             @endif
                                                         </div>
                                                     </div>
