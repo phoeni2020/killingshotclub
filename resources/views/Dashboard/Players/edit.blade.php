@@ -207,7 +207,7 @@
                                             </div>
                                             <h4 class="form-section"><i class="icon-game-controller"></i>تخصيص لعبة</h4>
                                             <div id="group1" class="fvrduplicate">
-                                                @dd($player->playerPriceLists)
+                                                @dd($player)
                                                 @if($player->playerPriceLists->isNotEmpty())
                                                     {{--@foreach($player->playerPriceLists as $key => $price_list)--}}
                                                     @foreach($playerSports as $key => $playerSport)
