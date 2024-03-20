@@ -34,6 +34,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
     route::get('get-stadium', "\App\Http\Controllers\StadiumController@getStadium")->name('get-stadiums');
     route::get('get-players', "\App\Http\Controllers\PlayersController@getPlayers")->name('get-players');
     route::get('get-sports-player', "\App\Http\Controllers\PlayersController@getSports")->name('get-sports-player');
+    route::get('migrate-player', "\App\Http\Controllers\PlayersController@migratePlayersData")->name('get-sports-player');
     route::get('get-levels', "\App\Http\Controllers\LevelsController@getLevels")->name('get-levels');
     route::get('get-price-list', "\App\Http\Controllers\PackagesController@getPriceList")->name('get-price-list');
     route::get('get-price', "\App\Http\Controllers\PackagesController@getPrice")->name('get-price');

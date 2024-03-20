@@ -200,7 +200,7 @@ class PlayersController extends Controller
      */
     public function update(UpdatePlayersRequest $request, Players $player)
     {
-        dd($request->all());
+        //dd($request->all());
 
         $player->name = $request->name;
         $player->birth_day = $request->birth_day;
@@ -259,7 +259,6 @@ class PlayersController extends Controller
 
             }
         }
-
         if($request->price_list){
             PlayerPriceList::where('player_id',$player->id)->delete();
             $priceListCount = count($request->input('price_list'));
@@ -366,6 +365,24 @@ class PlayersController extends Controller
         $selected = "";
         return     \Response::json(['optionPriceList'=>$optionPriceList])  ;
 
+    }
+
+    public function migratePlayersData(){
+        $players = Players::whereNotNull('branch_id')->get();
+        //dd($players);
+        foreach ($players as $player){
+            if(count($player->playerPriceLists) > 0){
+                foreach ($player->playerPriceLists as $priceList){
+                    Player_Sport::create([
+                        'player'=> $player->id,
+                        'branch_id'=>$player->branch_id,
+                        'level_id'=> $priceList->level_id,
+                        'sport'=>$priceList->sport_id,
+                        'price_list'=>$priceList->id,
+                    ]);
+                }
+            }
+        }
     }
 
 }
