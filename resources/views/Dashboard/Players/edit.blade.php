@@ -208,23 +208,24 @@
                                             <h4 class="form-section"><i class="icon-game-controller"></i>تخصيص لعبة</h4>
                                             <div id="group1" class="fvrduplicate">
                                                 @if($player->playerPriceLists->isNotEmpty())
-                                                @foreach($player->playerPriceLists as $key => $price_list)
+                                                {{--@foreach($player->playerPriceLists as $key => $price_list)--}}
+                                                @foreach($playerSports as $key => $playerSport)
                                                     <div class="row entry">
                                                         <div class="col-md-6 ">
                                                             <div class="form-group">
                                                                 <label for="projectinput2"> الفرع</label>
                                                                 <select class=" form-control branch_id" id="branch_id"
-                                                                        data-sport_id="{{$price_list->sport_id}}"
-                                                                        data-level_id="{{$price_list->level_id}}"
-                                                                        data-id="{{$price_list->id}}"
-                                                                        name="branch_id">
+                                                                        data-sport_id="{{$playerSport->sport_id}}"
+                                                                        data-level_id="{{$playerSport->level_id}}"
+                                                                        data-id="{{$playerSport->price_list}}"
+                                                                        name="branch_id[]">
                                                                     <option value=""> حدد الفرع</option>
 
                                                                     @foreach($branches as $branch)
                                                                         <option
                                                                             value="{{$branch->id}}"
 
-                                                                        {{$player->branches?->id == $branch->id ? 'selected' : ''}}>{{$branch->name}}</option>
+                                                                        {{$playerSport->branch_id == $branch->id ? 'selected' : ''}}>{{$branch->name}}</option>
 
                                                                     @endforeach
                                                                 </select>
@@ -234,23 +235,48 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="projectinput2"> اللعبه</label>
-                                                                <select class=" form-control select2-placeholder-multiple  sport_id"
-                                                                        name="sport_id">
-                                                                    <option value=""></option>
+                                                                @php
+                                                                    $branch =$playerSport->branch_id;
+                                                                    $sports = \App\Models\Sports::whereHas('branches', function ($query) use ($branch) {
+                                                                                  if (is_array($branch))
+                                                                                  {
+                                                                                      $query->whereIn('branch_id', $branch);
+                                                                                  }
+                                                                                  else
+                                                                                  {
+                                                                                      $query->where('branch_id', $branch);
+                                                                                  }
+                                                                              })->get();
+                                                                @endphp
+                                                                <select class=" form-control select2-placeholder-multiple sport_id"
+                                                                        name="sport_id[]">
+                                                                <option value="" selected>اختر مستوي</option>
+                                                                    @foreach($sports as $sport)
+                                                                        @if($playerSport->sport)
+                                                                            <option value="{{$playerSport->sport}}" {{$sport->id ==$playerSport->sport ? 'selected':''}}>{{$sport->name}}</option>
+                                                                        @elseif(!is_null($player->sport_id))
+                                                                            <option value="{{$player->sport_id}}" selected>{{$sport->name}}</option>
+                                                                        @endif
+                                                                    @endforeach
                                                                 </select>
-
                                                             </div>
                                                         </div>
+
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label for="projectinput2"> المستويات</label>
                                                                 <select class="select2-placeholder-multiple form-control level_id"
-                                                                        name="level_id">
+                                                                        name="level_id[]">
                                                                     @if(!is_null($player->level_id))
                                                                         @php
                                                                             $level = \App\Models\Levels::query()->find($player->level_id);
                                                                         @endphp
                                                                         <option value="{{$player->level_id}}" selected>{{$level->name}}</option>
+                                                                    @elseif($playerSport->level_id)
+                                                                        @php
+                                                                            $level = \App\Models\Levels::query()->find($playerSport->level_id);
+                                                                        @endphp
+                                                                        <option value="{{$playerSport->level_id}}" selected>{{$level->name}}</option>
                                                                     @else
                                                                         <option value="" selected>اختر مستوي</option>
                                                                     @endif
@@ -258,16 +284,25 @@
 
                                                             </div>
                                                         </div>
-
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label for="projectinput2"> قائمه الاسعار</label>
-                                                                <select class="select2-placeholder-multiple price_list form-control"
 
+                                                                <select class="select2 price_list form-control"
                                                                         name="price_list[]">
-                                                                    <option value="" selected>اختر قائمه سعر</option>
-                                                                </select>
+                                                                    <option value="" >اختار السعر</option>
+                                                                    @php
+                                                                        $priceLists = \App\Models\PriceList::where(['sport_id'=> $playerSport->sport,'level_id'=>$playerSport->level_id])->get();
+                                                                    @endphp
+                                                                    @foreach($priceLists as $priceList)
+                                                                        @if(!is_null($playerSport->price_list)&&$playerSport->price_list == $priceList->id )
+                                                                            <option value="{{$playerSport->price_list}}" selected>{{$priceList->name}}</option>
+                                                                        @else
+                                                                            <option value="{{$playerSport->price_list}}" >{{$priceList->name}}</option>
+                                                                        @endif
+                                                                    @endforeach
 
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         {{--<div class="col-md-4">
@@ -285,8 +320,8 @@
                                                         </div>--}}
                                                         <div class="col-md-1 mt-2">
                                                             @if($key == $player->playerPriceLists->count() - 1)
-                                                                {{--<button type="button" class="btn btn-success btn-add"><i
-                                                                        class="fa fa-plus" aria-hidden="true"></i></button>--}}
+                                                                <button type="button" class="btn btn-success btn-add"><i
+                                                                        class="fa fa-plus" aria-hidden="true"></i></button>
                                                             @else
 
                                                                 <button type="button" class="btn btn-danger btn-remove"><i
@@ -486,62 +521,6 @@
 
     <script>
 
-        $('.branch_id').each(function(){
-            var ids = $(this).val();
-            var route = "{{route('get-sports')}}";
-            var sport_id = $(this).parents('.entry').find(".sport_id");
-            var sport = $(this).data('sport_id')
-            var level = $(this).data('level_id')
-            var id = $(this).data('id')
-            $.ajax(route,   // request url
-                {
-                    type: 'GET',  // http method
-                    data: {"branch_id[]": ids,'sport_id': sport},
-                    success: function (data) {// success callback function
-                        sport_id.html(data.data);
-                        var ids = sport_id.select2("val");
-                        var route = "{{route('get-levels')}}";
-
-                        var level_id = sport_id.parents('.entry').find(".level_id");
-                        var price = sport_id.parents('.entry').find(".price");
-
-                        console.log( level_id)
-                        $.ajax(route,   // request url
-                            {
-                                type: 'GET',  // http method
-                                data: {"sport_id": ids,'level_id': level},
-                                success: function (data) {// success callback function
-                                    level_id.append(data.data);
-
-                                    var price_list = level_id.parents('.entry').find(".price_list");
-                                    var route = "{{route('get-price-list-player')}}";
-                                    $.ajax(route,   // request url
-                                        {
-                                            type: 'GET',  // http method
-                                            data: {"sport_id": sport, "level_id": level, "price_list": id },
-                                            success: function (data, status, xhr) {// success callback function
-                                                price_list.html(data.price_list);
-                                                price_list.change(function () {
-                                                    var route = "{{route('get-price')}}";
-                                                    $.ajax(route,   // request url
-                                                        {
-                                                            type: 'GET',  // http method
-                                                            data: {"id": $(this).val()},
-                                                            success: function (data, status, xhr) {// success callback function
-                                                                price.val(data.price);
-                                                            }
-
-                                                        })
-                                                });
-                                            }
-                                        });
-                                }
-                            });
-                    }
-                });
-        })
-
-
         $(document).on('change', '.branch_id', function (e) {
             var ids = $(this).val();
             var route = "{{route('get-sports')}}";
@@ -558,6 +537,7 @@
         });
 
         $(document).on('change', '.sport_id', function (e) {
+            console.log("sssssssssssssssssssssss")
             var ids = $(this).select2("val");
             var level_id = $(this).parents('.entry').find(".level_id");
             var route = "{{route('get-levels')}}";
@@ -570,17 +550,19 @@
 
                     }
                 });
-            getPriceList(level_id);
+            var sport =  level_id.parents('.entry').find(".sport_id").select2("val");
+            getPriceList(sport,level_id.select2("val"));
         });
 
         $(document).on('change', '.level_id', function (e) {
-            var level = $(this);
-            getPriceList(level);
+            var level = $(this).val();
+            var sport =  $(this).parents('.entry').find(".sport_id").select2("val");
+            getPriceList(sport,level);
         });
 
 
         function getPriceList(level) {
-
+            console.log('wwwwwwwwwwwwwwwwwwwwwwwwww')
             var sport_id = level.parents('.entry').find(".sport_id").select2("val");
             var level_id = level.parents('.entry').find(".level_id").select2("val");
             var price_list = level.parents('.entry').find(".price_list");
@@ -620,6 +602,7 @@
             $('#row_file').after(html);
 
         });
+
         $(document).on('click', ".remove_ele", function () {
             $(this).parent().parent().parent().remove();
         });
@@ -713,21 +696,21 @@
 
     <script>
 
-        $(window).on( 'load', function () {
-            getSports();
-
-
-            // getPriceList();
-        });
         $('#branch_id').on('change', function () {
             getSports()
         });
 
-
         $('#sport_id').on('change', function () {
             getLevels();
-            getPriceList();
+            console.log('sssssssssssssssssssss')
+            getPriceList($(this),$(this).find('.level_id').closest());
         });
+
+        $("#level_id").on('change',function (){
+            console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwww')
+            getPriceList($(this).find('.sport_id').closest(),$(this));
+        });
+
         function getSports(){
             var ids =$("#branch_id").val();
             var  route = "{{route('get-sports-player')}}";
@@ -741,6 +724,7 @@
                     }
                 });
         }
+
         function getLevels(){
             var ids =$("#sport_id").select2("val");
             var level_id =$("#level_id").data("level_id");
@@ -756,12 +740,14 @@
                 });
         }
 
-        $("#level_id").on('change',function (){
-            getPriceList();
-        });
-        function  getPriceList() {
-            var sport_id = $("#sport_id").select2("val");
-            var level_id = $("#level_id").select2("val");
+        //TODO:HERE
+        function  getPriceList(sport_id,level_id) {
+            console.log(sport_id);
+            console.log("====================================================");
+            console.log(level_id);
+            console.log("====================================================");
+            var sport_id = sport_id;
+            var level_id = level_id;
 
             var route = "{{route('get-price-list-player')}}";
             $.ajax(route,   // request url
@@ -774,6 +760,7 @@
                     }
                 });
         }
+
         $('#add_ele').click(function(){
             var html = ' <div class="row remve_ele"> <div class="col-6"><div class="form-group"> <label for="" class="control-label mb-1"> Name Of File:</label> <input  name="name_of_file[]" type="text" class="form-control" required   value="" placeholder="type your File">  </div>';
             html += '</div><div class="col-5"> <div class="form-group"><label for="cc-payment" class="control-label mb-1">File :</label><input  name="file[]" type="file" class="form-control" required  value=""></div></div> <div class="col-1">';
@@ -782,6 +769,7 @@
             $('#row_file').after(html);
 
         });
+
         $(document).on('click' , ".remove_ele",function(){
             $(this).parent().parent().parent().remove();
         });
