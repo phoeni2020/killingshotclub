@@ -46,7 +46,7 @@ use ZanySoft\LaravelPDF\PDF;
             }
             else{
                 $receipts = Receipts::orderBy('id','desc')
-                    ->whereIn('branch_id', $branchIds)->where('receipt_type',1)
+                    ->whereIn('branch_id', $branchIds)->where('receipt_type',2)
                     ->paginate(10);
 
             }
@@ -120,7 +120,7 @@ use ZanySoft\LaravelPDF\PDF;
                 'payer'=>$request->payer,
                 'branch_id'=>$request->branch_id,
                 'serial_number'=>$request->serial,
-                'receipt_type'=>1,
+                'receipt_type'=>2,
             ]);
             return redirect()->route('receipt.index')->with('message','تم اضافه الايصال بنجاح ');
 
@@ -230,7 +230,7 @@ use ZanySoft\LaravelPDF\PDF;
             //DB::connection()->enableQueryLog();
 
     //dd($request->all());
-            $Receipts = $Receipts->where('receipt_type',1);
+            $Receipts = $Receipts->where('receipt_type',2);
 
             if(!is_null($toDate)&&!is_null($fromDate))
                 $Receipts->whereBetween("$request->type_date", [$fromDate.' 00:00:00', $toDate.' 23:59:59']);

@@ -44,8 +44,9 @@ class ReceiptsPayController extends Controller
                 $ExportToExcelSheet  = new ExportToExcelSheet($receipts ,'Dashboard.ReceiptsPay.pdf');
                 return Excel::download($ExportToExcelSheet , 'ايصالات الصرف.xlsx');
             }
-        } else  {
-            $receipts = ReceiptsPay::where('receipt_type',2)->paginate(10);
+        }
+        else  {
+            $receipts = ReceiptsPay::where('receipt_type',1)->paginate(10);
         }
         $players =Players::whereIn('branch_id', $branchIds)->get();
         $receiptTypesFrom= ReceiptTypePay::whereIn('type',['Save_money','bank'])->get();
