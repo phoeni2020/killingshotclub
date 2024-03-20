@@ -208,8 +208,8 @@
                                             <h4 class="form-section"><i class="icon-game-controller"></i>تخصيص لعبة</h4>
                                             <div id="group1" class="fvrduplicate">
                                                 @if($player->playerPriceLists->isNotEmpty())
-                                                {{--@foreach($player->playerPriceLists as $key => $price_list)--}}
-                                                @foreach($playerSports as $key => $playerSport)
+                                                    {{--@foreach($player->playerPriceLists as $key => $price_list)--}}
+                                                    @foreach($playerSports as $key => $playerSport)
                                                     <div class="row entry">
                                                         <div class="col-md-6 ">
                                                             <div class="form-group">
