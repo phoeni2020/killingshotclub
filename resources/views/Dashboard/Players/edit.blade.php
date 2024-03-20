@@ -341,9 +341,7 @@
                                                                             name="branch_id">
                                                                         <option value="0"> حدد الفرع</option>
                                                                         @foreach($branches as $branch)
-                                                                            <option
-                                                                                    value="{{$branch->id}}">{{$branch->name}}</option>
-
+                                                                            <option value="{{$branch->id}}">{{$branch->name}}</option>
                                                                         @endforeach
                                                                     </select>
 
@@ -412,10 +410,10 @@
 
                                                                 </div>
                                                             </div>--}}
-                                                           {{-- <div class="col-md-1 mt-2">
+                                                            <div class="col-md-1 mt-2">
                                                                 <button type="button" class="btn btn-success btn-add"><i
                                                                             class="fa fa-plus" aria-hidden="true"></i></button>
-                                                            </div>--}}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 @endif
