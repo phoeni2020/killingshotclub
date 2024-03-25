@@ -183,12 +183,13 @@
 
                                             <tr class="row1">
                                                 <td>
-                                                    الايردات
+                                                    <strong>الايردات</strong>
                                                 </td>
+                                                <td></td>
                                             </tr>
                                             <tr class="row2">
                                                 <td>
-                                                    الاشتراكات
+                                                   <strong>الاشتراكات</strong>
                                                 </td>
                                                 <td>
                                                     {{$subscriptionsSum}}
@@ -196,7 +197,7 @@
                                             </tr>
                                             <tr class="row3">
                                                 <td>
-                                                   ايرادات اخري
+                                                   <strong>ايرادات اخري </strong>
                                                 </td>
                                                 <td>
                                                     {{$otherIncome}}
@@ -204,15 +205,19 @@
                                             </tr>
                                             <tr class="row4">
                                                 <td>
-                                                   اجمالي ايرادات
+                                                  <strong>اجمالي ايرادات</strong>
                                                 </td>
                                                 <td>
                                                     {{$subscriptionsSum + $otherIncome }}
                                                 </td>
                                             </tr>
+                                            <tr class="row3">
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
                                             <tr class="row5">
                                                 <td>
-                                                   ايجارات و صيانه
+                                                    <strong>ايجارات و صيانه</strong>
                                                 </td>
                                                 <td>
                                                     {{$rentAndMaintance}}
@@ -220,23 +225,28 @@
                                             </tr>
                                             <tr class="row6">
                                                 <td>
-                                                    المصروفات
+                                                   <strong>المصروفات</strong>
                                                 </td>
                                                 <td>
                                                     {{$otherExpense}}
                                                 </td>
                                             </tr>
+
                                             <tr class="row7">
                                                 <td>
-                                                    الاجمالي
+                                                     <strong>الاجمالي</strong>
                                                 </td>
                                                 <td>
                                                     {{$otherExpense + $rentAndMaintance}}
                                                 </td>
                                             </tr>
+                                            <tr class="row3">
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
                                             <tr class="row8">
                                                 <td>
-                                                    صافي الربح
+                                                   <strong>صافي الربح</strong>
                                                 </td>
                                                 <td>
                                                     {{$total}}
