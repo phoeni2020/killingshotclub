@@ -151,11 +151,11 @@ class AdminReport extends Controller
             $playerExpense->where('branch_id', $branch);
         }
         if ($startDate && $endDate) {
-            $subscriptions->whereBetween('date', [$startDate, $endDate]);
-            $otherIncome->whereBetween('date', [$startDate, $endDate]);
-            $rentAndMaintance->whereBetween('date', [$startDate, $endDate]);
-            $otherExpense->whereBetween('date', [$startDate, $endDate]);
-            $playerExpense->whereBetween('date', [$startDate, $endDate]);
+            $subscriptions->whereBetween('date_receipt', [$startDate, $endDate]);
+            $otherIncome->whereBetween('date_receipt', [$startDate, $endDate]);
+            $rentAndMaintance->whereBetween('date_receipt', [$startDate, $endDate]);
+            $otherExpense->whereBetween('date_receipt', [$startDate, $endDate]);
+            $playerExpense->whereBetween('date_receipt', [$startDate, $endDate]);
         }
         if ($sport_id) {
             $subscriptions->whereIn('price_list_id', $price_lists[$request->sport_id]);
