@@ -83,7 +83,9 @@ class AdminReport extends Controller
     public function income_list(Request $request)
     {
         DB::connection()->enableQueryLog();
+        if (\Auth::user()->hasRole('administrator') || auth()->user()->hasPermission('income_list')) {
 
+        }
         //dd('tst');
         if (\Auth::user()->hasRole('administrator')) {
             $branchIds = Branchs::get()->pluck('id')->toArray();
