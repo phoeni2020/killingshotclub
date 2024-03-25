@@ -257,7 +257,7 @@ use ZanySoft\LaravelPDF\PDF;
 
             $Receipts = $Receipts->paginate(10);
 
-            //$queries = DB::getQueryLog();
+            //$queries = DB::getQueryLog();*
             return $Receipts;
 
         }

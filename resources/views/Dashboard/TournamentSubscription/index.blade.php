@@ -82,7 +82,6 @@
                                                 <td>
 
                                                     @foreach($tournament->tournament_subscriptions as $player)
-
                                                         <strong> ,{{$player->players[0]->name}}  </strong>
                                                     @endforeach
                                                 </td>

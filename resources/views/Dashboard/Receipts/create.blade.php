@@ -88,7 +88,7 @@
                                                 <div class="col-md-4" style="display: none" id="from_others">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  من  </label>
-                                                        <select class="form-control" >
+                                                        <select class="form-control" name="from">
                                                             @foreach($receiptTypes as $type)
                                                                 <option value="{{$type->id}}">{{$type->name}}</option>
 
