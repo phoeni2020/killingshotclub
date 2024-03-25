@@ -372,12 +372,11 @@
 {{--                </ul>--}}
 {{--            </li>--}}
             {{-- @if(auth()->user()->hasPermission('finance'))--}}
-                }
 
             <li class=" nav-item"><a href="#"><i class="la la-clone"></i><span class="menu-title"
                                                                                data-i18n="nav.flot_charts.main"> القوائم الماليه </span></a>
                 <ul class="menu-content">
-                    @if(auth()->user()->hasPermission('income_list') )
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('income_list') )
                         <li><a class="menu-item" href="{{route('lists.income_list')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                 قائمة الدخل</a>
                         </li>
