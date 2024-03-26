@@ -495,6 +495,15 @@
                                                 </div>
                                                 <div class="col-md-3 mb-3">
                                                     <div class="checkbox">
+                                                        <h5 for="">الماليات</h5>
+                                                        <label><input name="permession[]" type="checkbox" value="income-list" />قائمة الدخل</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="finance" />القوائم الماليه</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <div class="checkbox">
                                                         <h5 for="">المسابقات</h5>
                                                         <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('tournament-create')) checked  @endif value="tournament-create" />انشاء</label>
                                                     </div>
