@@ -68,11 +68,16 @@ class ReceiptsPayController extends Controller
         else{
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
+        if (\Auth::user()->hasRole('administrator'))
+            $branches = Branchs::get();
+        else
+            $branches = \Auth::user()->branches;
+
         $players =Players::whereIn('branch_id', $branchIds)->get();
         $receiptTypesFrom= ReceiptTypePay::whereIn('type',['Save_money','bank'])->get();
         $receiptTypes= ReceiptTypePay::get();
         $employees = User::get();
-        return view('Dashboard.ReceiptsPay.create',compact('employees','players','receiptTypes','receiptTypesFrom'));
+        return view('Dashboard.ReceiptsPay.create',compact('employees','branches','players','receiptTypes','receiptTypesFrom'));
     }
 
 
@@ -87,6 +92,7 @@ class ReceiptsPayController extends Controller
      $receipt_pay =    ReceiptsPay::create([
             'user_id'=>auth()->user()->id,
             'type_of'=>$request->to_type,
+            'branch_id'=>$request->branch_id,
             'from'=>$request->from,
             'to'=>$request->to,
             'amount'=> -$request->amount,

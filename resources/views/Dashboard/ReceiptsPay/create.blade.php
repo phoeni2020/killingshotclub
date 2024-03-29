@@ -104,6 +104,18 @@
 
                                                     </div>
                                                 </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="projectinput2">  الي فرع   </label>
+                                                        <select class="form-control"  name="branch_id">
+                                                            @foreach($branches as $branche)
+                                                                <option data-type="{{$branche->id}}"  value="{{$branche->id}}">{{$branche->name}}</option>
+
+                                                            @endforeach
+                                                        </select>
+
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6" style="display: none" id="employees">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  الموظف المسئول عن العهده  </label>
@@ -116,10 +128,6 @@
 
                                                     </div>
                                                 </div>
-
-
-
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
