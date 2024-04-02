@@ -160,7 +160,8 @@ class AdminReport extends Controller
             $playerExpense->whereBetween('date_receipt', [$startDate, $endDate]);
         }
         if ($sport_id) {
-            $subscriptions->whereIn('price_list_id', $price_lists[$request->sport_id]);
+            $key = isset($price_lists[$request->sport_id]) ?$price_lists[$request->sport_id] : [];
+            $subscriptions->whereIn('price_list_id', $key);
         }
         // Add more filter conditions for other parameters
         $trainers = User::where('is_trainer','1')

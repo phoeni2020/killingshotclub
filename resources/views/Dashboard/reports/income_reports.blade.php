@@ -131,20 +131,6 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label for="" class="control-label mb-1"> المدرب </label>
-                                                        <select class="form-control" name="trainer">
-                                                            <option value="">اختر</option>
-                                                            @foreach($trainers as $trainer)
-                                                                <option value="{{$trainer->id}}"
-                                                                    {{ $trainer->id == request('trainer') ? 'selected' : '' }}
-                                                                >{{$trainer->name}}</option>
-
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-group">
                                                         <label for="" class="control-label mb-1">من التاريخ:</label>
                                                         <input class="form-control" type="date" name="fromDate"
                                                                value="{{request('fromDate')}}">
