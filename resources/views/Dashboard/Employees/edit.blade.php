@@ -490,15 +490,17 @@
                                                         <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('stadiums-rent-read')) checked  @endif value="stadiums-rent-read" />عرض</label>
                                                     </div>
                                                     <div class="checkbox">
-                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('income-list')) checked  @endif value="stadiums-rent-delete" />حذف</label>
+                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('stadiums-rent-delete')) checked  @endif value="stadiums-rent-delete" />حذف</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 mb-3">
                                                     <div class="checkbox">
                                                         <h5 for="">الماليات</h5>
-                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('stadiums-rent-delete')) checked  @endif  value="income-list" />قائمة الدخل</label>
+                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('income-list')) checked  @endif  value="income-list" />قائمة الدخل</label>
+                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('recipt_report')) checked  @endif  value="income-list" />تقرير الخزن</label>
                                                     </div>
                                                     <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="finance" />القوائم الماليه</label>
                                                         <label><input name="permession[]" type="checkbox" value="finance" />القوائم الماليه</label>
                                                     </div>
                                                 </div>

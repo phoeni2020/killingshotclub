@@ -515,6 +515,7 @@
                                                     <div class="checkbox">
                                                         <h5 for="">الماليات</h5>
                                                         <label><input name="permession[]" type="checkbox" value="income-list" />قائمة الدخل</label>
+                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('recipt_report')) checked  @endif  value="income-list" />تقرير الخزن</label>
                                                     </div>
                                                     <div class="checkbox">
                                                         <label><input name="permession[]" type="checkbox" value="finance" />القوائم الماليه</label>
