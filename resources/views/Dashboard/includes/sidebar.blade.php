@@ -381,6 +381,11 @@
                                 قائمة الدخل</a>
                         </li>
                     @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('recipt_report') )
+                        <li><a class="menu-item" href="{{route('lists.recipt_report')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                            تقارير الخزن</a>
+                        </li>
+                    @endif
                 </ul>
             </li>
             {{-- @endif--}}
