@@ -207,7 +207,8 @@ class AdminReport extends Controller
         //dd('tst');
         if (\Auth::user()->hasRole('administrator')) {
             $branchIds = Branchs::get()->pluck('id')->toArray();
-        } else {
+        }
+        else {
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
         $price_list = PriceList::select(['id','sport_id'])->get()->toArray();
@@ -218,6 +219,7 @@ class AdminReport extends Controller
                 $sport_id = $item['sport_id'];
             $price_lists[$item['sport_id']][] = $item['id'];
         }
+
         // Retrieve and process filter parameters from the request
         $branch = $request->input('branch_id');
         $sport_id = $request->input('sport_id');
@@ -230,7 +232,6 @@ class AdminReport extends Controller
         // Add more filter parameters as needed
 
         $receipts = Receipts::query();//->sum('amount');
-
         if ($player) {
             $receipts->whereHas('players', function ($q) use ($player) {
                 $q->where('player_id', $player);
@@ -240,21 +241,27 @@ class AdminReport extends Controller
         if ($trainer) {
             $receipts->where('trainer_id',$trainer);
         }
+
         if ($branch) {
             $receipts->where('branch_id', $branch);
         }
+
         if ($startDate && $endDate) {
             $receipts->whereBetween('date_receipt', [$startDate, $endDate]);
         }
+
         if ($sport_id) {
             $key = isset($price_lists[$request->sport_id]) ?$price_lists[$request->sport_id] : [];
             $receipts->whereIn('price_list_id', $key);
         }
+
         if($type)
             $Receipts = $receipts->whereHas('receiptType' , function($query) use ($type){
                 $query->where('type',$type);
             });
+
         // Add more filter conditions for other parameters
+
         $trainers = User::where('is_trainer','1')
             ->whereHas('branches',function ($q) use ($branchIds) {
                 $q->whereIn('branchs.id',$branchIds);
@@ -271,9 +278,7 @@ class AdminReport extends Controller
         else
             $branches = \Auth::user()->branches;
 
-        $receipts = $receipts->orderBy('id','desc')->paginate(10);
-        $queries = DB::getQueryLog();
-
+        $receipts = $receipts->orderBy('id','desc')->get();
 //        dd($queries);
         $receiptTypes= ReceiptTypes::query()->get();
         // Return the report view with the filtered data
@@ -381,5 +386,63 @@ class AdminReport extends Controller
             $branches = \Auth::user()->branches;
         return view('Dashboard.reports.stadiums_reports',
             compact('reports', 'branches', 'stadiums'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function subscription_income_reports(Request $request)
+    {
+        //dd('tst');
+        if (\Auth::user()->hasRole('administrator')) {
+            $branchIds = Branchs::get()->pluck('id')->toArray();
+        } else {
+            $branchIds = \Auth::user()->branches->pluck('id')->toArray();
+        }
+        // Retrieve and process filter parameters from the request
+        $branch = $request->input('branch_id');
+        $startDate = $request->input('fromDate');
+        $endDate = $request->input('toDate');
+        $search_keyword = $request->input('search_keyword');
+        $player = $request->input('player');
+        $trainer = $request->input('trainer');
+        // Add more filter parameters as needed
+
+        $trainer_players = TrainerAndPlayer::query()
+            ->whereIn('branch_id',$branchIds)
+            ->orderBy('id', 'DESC');
+        if ($player) {
+            $trainer_players->whereHas('players', function ($q) use ($player) {
+                $q->where('player_id', $player);
+            });
+        }
+        if ($trainer) {
+            $trainer_players->where('trainer_id',$trainer);
+        }
+        if ($branch) {
+            $trainer_players->where('branch_id', $branch);
+        }
+        if ($startDate && $endDate) {
+            $trainer_players->whereBetween('date', [$startDate, $endDate]);
+        }
+        // Add more filter conditions for other parameters
+        $trainers = User::where('is_trainer','1')
+            ->whereHas('branches',function ($q) use ($branchIds) {
+                $q->whereIn('branchs.id',$branchIds);
+            })
+            ->get();
+        $players = Players::whereIn('branch_id', $branchIds)->get();
+        // Fetch the filtered report data
+        $reportsData = $trainer_players->paginate(25);
+        if (\Auth::user()->hasRole('administrator'))
+            $branches = Branchs::get();
+        else
+            $branches = \Auth::user()->branches;
+        // Return the report view with the filtered data
+        return view('Dashboard.reports.subscription_income_reports',
+            compact('reportsData', 'branches',
+                'trainers','players'));
     }
 }

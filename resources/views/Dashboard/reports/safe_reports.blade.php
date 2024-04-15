@@ -72,19 +72,6 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 mt-2">
-                                                    <div class="form-group">
-                                                        <label for="" class="control-label mb-1">لعبه:</label>
-                                                        <select class="form-control" name="sport_id">
-                                                            <option value="">اختر لعبه</option>
-                                                            @foreach($sports as $sport)
-                                                                <option value="{{$sport->id}}"
-                                                                    {{ $sport->id == request('sport_id') ? 'selected' : '' }}
-                                                                >{{$sport->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="" class="control-label mb-1">من التاريخ:</label>
@@ -133,44 +120,109 @@
                                         <thead>
                                         <tr>
                                             <th class="border-top-0">رقم</th>
+                                            <th class="border-top-0">نوع</th>
                                             <th class="border-top-0">  اسم المستلم</th>
                                             <th class="border-top-0"> من </th>
                                             <th class="border-top-0"> الي </th>
                                             <th class="border-top-0">   المبلغ</th>
+                                            <th class="border-top-0">   البيان</th>
+                                            <th class="border-top-0">   رصيد الخزنه</th>
 
                                             <th class="border-top-0">   تاريخ العملية</th>
                                             <th class="border-top-0">   تاريخ الانشاء</th>
                                             <th class="border-top-0">   تاريخ التعديل</th>
                                         </tr>
                                         </thead>
+                                        @php
+                                            $total = 0;
+                                            $savesBalance = [];
+                                        @endphp
                                         <tbody>
                                         @forelse($receipts as $receipt )
-
+                                            @php
+                                            if($receipt->receipt_type == 1)
+                                            {
+                                                if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
+                                                    $savesBalance[$receipt->receiptTypeFrom?->id]= $receipt->amount;
+                                                }else{
+                                                    $savesBalance[$receipt->receiptTypeFrom?->id]+=$receipt->amount;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if($receipt->type_of_amount == 'part')
+                                                {
+                                                    if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
+                                                        $savesBalance[$receipt->receiptTypeFrom?->id]= $receipt->paid;
+                                                    }
+                                                    else{
+                                                        $savesBalance[$receipt->receiptTypeFrom?->id]+=$receipt->paid;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
+                                                        $savesBalance[$receipt->receiptTypeFrom?->id]=$receipt->amount;
+                                                    }
+                                                    else{
+                                                        $savesBalance[$receipt->receiptTypeFrom?->id]+=$receipt->amount;
+                                                    }
+                                                }
+                                            }
+                                            @endphp
+                                            @if($receipt->receipt_type == 1)
+                                                صرف
+                                            @else
+                                                وارد
+                                            @endif
                                             <tr class="row1" data-id="{{ $receipt->id }}" >
                                                 <td>{{$receipt->id}}</td>
+                                                <td>
+                                                    @if($receipt->receipt_type == 1)
+                                                        صرف
+                                                    @else
+                                                        وارد
+                                                    @endif
+                                                </td>
                                                 <td>{{$receipt->user->name}}</td>
 
                                                 @php
                                                     $name ='';
-                                                    if($receipt->type_of=='players'){
-                                                       $name = is_null($receipt->player)?'--':$receipt->player->name;
+                                                    if($receipt->type_of=='players'&&$receipt->receipt_type != 1){
+                                                       $name = 'لاعبين';
+                                                       //$name = is_null($receipt->player)?'--':$receipt->player->name;
                                                     }
                                                     else{
                                                         $name = $receipt->receiptTypeFrom?->name;
                                                     }
-
-
                                                     $remain = 0;
                                                     if($receipt->type_of_amount == 'part'){
                                                       $remain =  $receipt->amount - $receipt->paid;
+                                                      $total+=$receipt->paid;
+                                                    }else{
+                                                         $total+=$receipt->amount;
                                                     }
                                                 @endphp
+
                                                 <td>{{$name ?? "---"}}</td>
 
-                                                <td>{{$receipt->receiptType->name ?? '---'}}</td>
+                                                <td>
+                                                    @if($receipt->type_of=='players'&&$receipt->receipt_type == 1)
+                                                        لاعبين
+                                                    @else
+                                                        {{$receipt->receiptType->name ?? '---'}}
+                                                    @endif
+
+                                                </td>
 
                                                 <td>
                                                     {{ $receipt->amount }}
+                                                </td>
+                                                <td>
+                                                    {{ $receipt->statement }}
+                                                </td>
+                                                <td>
+                                                    {{  $savesBalance[$receipt->receiptTypeFrom?->id] }}
                                                 </td>
                                                 <td>
                                                     {{ $receipt->date_receipt->format('Y-m-d') }}
@@ -183,23 +235,21 @@
                                                 </td>
 
                                             </tr>
-
                                         @empty
                                             <tr>
                                                 لايوجد ايصالات حاليا
                                             </tr>
                                         @endforelse
-
                                         </tbody>
                                     </table>
+                                    <center>
+                                        <b>اجمالي قيمة الخزن :{{$total}}</b>
+                                    </center>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                @if($receipts->hasPages())
-                    {{$receipts->appends(request()->input())->links('pagination::bootstrap-4')}}
-                @endif
                 <!--/ Recent Transactions -->
             </div>
         </div>

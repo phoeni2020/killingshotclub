@@ -189,7 +189,6 @@ use ZanySoft\LaravelPDF\PDF;
             $receipt->serial_number = $request->serial;
             $receipt->save();
             return redirect()->route('receipt.index')->with('message','تم تعديل الايصال بنجاح ');
-
         }
 
         /**
