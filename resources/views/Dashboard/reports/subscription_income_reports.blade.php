@@ -179,7 +179,6 @@
                                             <th class="border-top-0">ملاحظات</th>
                                             <th class="border-top-0">تاريخ الميلاد</th>
                                             <th class="border-top-0">تاريخ الالتحاق</th>
-
                                         </tr>
                                         </thead>
                                         <tbody>
