@@ -268,6 +268,7 @@
         </div>
     </div>
 @endsection
+
 @section('script')
 
     <script>
@@ -324,7 +325,7 @@
         $.ajax(route,   // request url
             {
                 type: 'GET',  // http method
-                data: { "sport_id": id ,'user_sport_id' : {{  $user->sport_and_level_trainer[0]->level_id }}},
+                data: { "sport_id": id ,'user_sport_id' : {{ !empty($user->sport_and_level_trainer[0]) ? $user->sport_and_level_trainer[0]->level_id :0 }}},
                 success: function (data, status, xhr) {// success callback function
                     $("#level_id").html(data.data);
                 }
