@@ -391,6 +391,21 @@
                                    تقارير الاشتراكات</a>
                             </li>
                         @endif
+                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                            <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
+                                     تقارير العهد</a>
+                            </li>
+                        @endif
+                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                            <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
+                                    تقارير المقارنه</a>
+                            </li>
+                        @endif
+                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                            <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
+                                    تقارير المسابقات</a>
+                            </li>
+                        @endif
                 </ul>
             </li>
             {{-- @endif--}}
