@@ -243,8 +243,8 @@
                                         </tbody>
                                     </table>
                                     <center>
-                                        <h3>اجمالي رصيدالمصروفات :<i>{{$totalPaid}}</i></h3>
-                                        <h3>اجمالي الرصيد الوارد : <i>{{$totalRecived}}</i></h3>
+                                        <h3>اجمالي رصيد الوارد :<i>{{$totalPaid}}</i></h3>
+                                        <h3>اجمالي الرصيد المصروفات : <i>{{$totalRecived}}</i></h3>
                                         <h3>اجمالي رصيد الخزن : <i>{{$total}}</i></h3>
                                     </center>
                                 </div>
