@@ -102,10 +102,15 @@ use ZanySoft\LaravelPDF\PDF;
             } else{
                 $packageId = $request->price_list;
             }
+            if(!is_null($request->from_others)){
+                $from = $request->from_others;
+            }else{
+                $from = $request->from;
+            }
             Receipts::create([
                 'user_id'=>auth()->user()->id,
                 'type_of'=>$request->from_type,
-                'from'=>$request->from,
+                'from'=>$from,
                 'to'=>$request->to,
                 'type_of_amount'=>$request->type_of_amount,
                 'amount'=>$request->amount,
@@ -168,7 +173,6 @@ use ZanySoft\LaravelPDF\PDF;
                 $priceListId = $request->price_list;
             } else{
                 $packageId = $request->price_list;
-
             }
             $receipt->user_id=auth()->user()->id;
             $receipt->from=$request->from;

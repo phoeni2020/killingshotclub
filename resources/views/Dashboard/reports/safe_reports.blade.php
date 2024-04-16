@@ -101,6 +101,16 @@
 
                                                     </div>
                                                 </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1"> انواع الايصالات </label>
+                                                        <select class=" form-control"  id="" name="type_income" >
+                                                            <option value=""> اختار </option>
+                                                            <option value="1"> صرف </option>
+                                                            <option value="2"> وارد </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                         </div>
@@ -121,20 +131,17 @@
                                         <tr>
                                             <th class="border-top-0">رقم</th>
                                             <th class="border-top-0">نوع</th>
-                                            <th class="border-top-0">  اسم المستلم</th>
+                                            <th class="border-top-0">  اسم المحرر</th>
                                             <th class="border-top-0"> من </th>
                                             <th class="border-top-0"> الي </th>
                                             <th class="border-top-0">   المبلغ</th>
-                                            <th class="border-top-0">   البيان</th>
                                             <th class="border-top-0">   رصيد الخزنه</th>
-
-                                            <th class="border-top-0">   تاريخ العملية</th>
+                                            <th class="border-top-0">   البيان</th>
                                             <th class="border-top-0">   تاريخ الانشاء</th>
-                                            <th class="border-top-0">   تاريخ التعديل</th>
                                         </tr>
                                         </thead>
                                         @php
-                                            $total = 0;
+                                            $total = $totalRecived = $totalPaid = 0;
                                             $savesBalance = [];
                                         @endphp
                                         <tbody>
@@ -142,6 +149,7 @@
                                             @php
                                             if($receipt->receipt_type == 1)
                                             {
+                                                $totalRecived -=  $receipt->amount;
                                                 if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
                                                     $savesBalance[$receipt->receiptTypeFrom?->id]= $receipt->amount;
                                                 }else{
@@ -150,6 +158,7 @@
                                             }
                                             else
                                             {
+                                                $totalPaid +=  $receipt->amount;
                                                 if($receipt->type_of_amount == 'part')
                                                 {
                                                     if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
@@ -170,11 +179,6 @@
                                                 }
                                             }
                                             @endphp
-                                            @if($receipt->receipt_type == 1)
-                                                صرف
-                                            @else
-                                                وارد
-                                            @endif
                                             <tr class="row1" data-id="{{ $receipt->id }}" >
                                                 <td>{{$receipt->id}}</td>
                                                 <td>
@@ -189,8 +193,7 @@
                                                 @php
                                                     $name ='';
                                                     if($receipt->type_of=='players'&&$receipt->receipt_type != 1){
-                                                       $name = 'لاعبين';
-                                                       //$name = is_null($receipt->player)?'--':$receipt->player->name;
+                                                       $name = is_null($receipt->player)?'لاعبين':$receipt->player->name;
                                                     }
                                                     else{
                                                         $name = $receipt->receiptTypeFrom?->name;
@@ -218,20 +221,17 @@
                                                 <td>
                                                     {{ $receipt->amount }}
                                                 </td>
-                                                <td>
-                                                    {{ $receipt->statement }}
-                                                </td>
+
                                                 <td>
                                                     {{  $savesBalance[$receipt->receiptTypeFrom?->id] }}
                                                 </td>
+
                                                 <td>
-                                                    {{ $receipt->date_receipt->format('Y-m-d') }}
+                                                    {{ $receipt->statement }}
                                                 </td>
+
                                                 <td>
                                                     {{ $receipt->created_at->format('Y-m-d') }}
-                                                </td>
-                                                <td>
-                                                    {{ $receipt->updated_at->format('Y-m-d') }}
                                                 </td>
 
                                             </tr>
@@ -243,7 +243,9 @@
                                         </tbody>
                                     </table>
                                     <center>
-                                        <b>اجمالي قيمة الخزن :{{$total}}</b>
+                                        <h3>اجمالي رصيدالمصروفات :<i>{{$totalPaid}}</i></h3>
+                                        <h3>اجمالي الرصيد الوارد : <i>{{$totalRecived}}</i></h3>
+                                        <h3>اجمالي رصيد الخزن : <i>{{$total}}</i></h3>
                                     </center>
                                 </div>
                             </div>

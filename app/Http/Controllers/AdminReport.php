@@ -229,6 +229,7 @@ class AdminReport extends Controller
         $player = $request->input('player');
         $trainer = $request->input('trainer');
         $type = $request->input('type');
+        $type_income = $request->input('type_income');
         // Add more filter parameters as needed
 
         $receipts = Receipts::query();//->sum('amount');
@@ -258,7 +259,11 @@ class AdminReport extends Controller
         if($type)
             $Receipts = $receipts->whereHas('receiptType' , function($query) use ($type){
                 $query->where('type',$type);
-            });
+        });
+
+        if($type_income){
+            $receipts->where('receipt_type', $type_income);
+        }
 
         // Add more filter conditions for other parameters
 
