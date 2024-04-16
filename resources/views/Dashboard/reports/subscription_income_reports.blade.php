@@ -165,24 +165,18 @@
                                         <tr>
                                             <th class="border-top-0 px-4">التاريخ</th>
                                             <th class="border-top-0 px-4">اليوم</th>
-                                            <th class="border-top-0 px-4">من</th>
-                                            <th class="border-top-0 px-4">الي</th>
-                                            <th class="border-top-0">الملعب</th>
+                                            <th class="border-top-0">الفرع</th>
+                                            <th class="border-top-0"> أسم المدرب</th>
                                             <th class="border-top-0"> أسم اللاعب</th>
                                             <th class="border-top-0"> المستوي</th>
                                             <th class="border-top-0"> الاشتراك المقرر</th>
                                             <th class="border-top-0"> حاله الاشتراك</th>
                                             <th class="border-top-0">الاشتراك المسدد</th>
                                             <th class="border-top-0">الاشتراك المتبقي</th>
-                                            <th class="border-top-0"> WE FIT</th>
-                                            <th class="border-top-0">جماعى</th>
                                             <th class="border-top-0">رقم التليفون</th>
-                                            <th class="border-top-0">عدد اللاعبين بالملعب</th>
                                             <th class="border-top-0">تاريخ السداد</th>
                                             <th class="border-top-0">رقم الايصال</th>
                                             <th class="border-top-0">ملاحظات</th>
-                                            <th class="border-top-0">عدد المرات الاسبوعية</th>
-                                            <th class="border-top-0">الساعات الاسبوعية</th>
                                             <th class="border-top-0">تاريخ الميلاد</th>
                                             <th class="border-top-0">تاريخ الالتحاق</th>
 
@@ -207,50 +201,21 @@
                                                     @endphp
                                                     <td>{{$reportData->date}}</td>
                                                     <td>@lang('validation.'.$reportData->day)</td>
-                                                    <td>{{\Carbon\Carbon::parse($reportData->time_from)->format('h:i A')}}</td>
-                                                    <td>{{\Carbon\Carbon::parse($reportData->time_to)->format('h:i A')}}</td>
                                                     <td>{{$reportData->stadiums->name}}</td>
                                                     <td>{{$reportData->traniers->name}}</td>
                                                     <td>{{$player->players?->name}}</td>
                                                     <td>{{$reportData->level->name}}</td>
+                                                    <td>{{$player_price_list?->price}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first() ? 'مشترك' : 'لم يسدد'}}</td>
                                                     <td>{{is_null($paid)? 0:$paid}}</td>
                                                     <td>{{$amount - $paid}}</td>
-                                                    <td>{{$reportData->players->count() > 1 ? 'نعم' : 'لا'}}</td>
                                                     <td>{{$player->players?->father_phone}}</td>
-                                                    <td>{{$reportData->players->count()}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first()?->created_at}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first()?->id}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first()?->statement}}</td>
-                                                    <td>@php
-
-                                                            echo \App\Models\TrainerAndPlayer::
-                                                            where('trainer_id', $reportData->trainer_id)
-                                                            ->where('level_id', $reportData->level_id)
-                                                            ->where('sport_id', $reportData->sport_id)
-                                                            ->where('branch_id', $reportData->branch_id)
-                                                            ->where('branch_id', $reportData->branch_id)
-                                                            ->distinct('day')
-                                                            ->count();
-                                                        @endphp</td>
-                                                    <td>
-                                                        @php
-                                                            $reportDate = \Carbon\Carbon::today(); // Change 'paid_date' to the appropriate date field
-                                                            $startOfWeek = $reportDate->startOfWeek();
-                                                            $endOfWeek = $reportDate->endOfWeek();
-                                                                echo \App\Models\TrainerAndPlayer::where('trainer_id', $reportData->trainer_id)
-                                                                ->where('level_id', $reportData->level_id)
-                                                                ->where('sport_id', $reportData->sport_id)
-                                                                ->where('time_from', $reportData->time_from)
-                                                                ->where('time_to', $reportData->time_to)
-                                                                ->where('stadium_id', $reportData->stadium_id)
-                                                                ->where('branch_id', $reportData->branch_id)
-                                                                ->whereBetween('date', [$startOfWeek, $endOfWeek])
-                                                                ->sum('time_from' );
-                                                        @endphp
-                                                    </td>
                                                     <td>{{\Carbon\Carbon::parse($player->players?->birth_day)->format('d/m/Y')}}</td>
                                                     <td>{{\Carbon\Carbon::parse($reportData->created_at)->format('d/m/Y')}}</td>
+
                                                 </tr>
                                             @endforeach
 
@@ -259,13 +224,9 @@
                                                 لايوجد ايصالات حاليا
                                             </tr>
                                         @endforelse
+
                                         </tbody>
                                     </table>
-                                    اجمالي الاشتركات : {{$totalSubs}}
-                                    <hr>
-                                    اجمالي الدفع : {{$totalPaid}}
-                                    <hr>
-                                    اجمالي المتبقي : {{$totalRemain}}
                                 </div>
                             </div>
                         </div>
