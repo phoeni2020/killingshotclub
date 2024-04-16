@@ -149,16 +149,17 @@
                                             @php
                                             if($receipt->receipt_type == 1)
                                             {
-                                                $totalRecived -=  $receipt->amount;
+                                               // dd($receipt);
+                                               $totalPaid -=  $receipt->amount;
                                                 if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
-                                                    $savesBalance[$receipt->receiptTypeFrom?->id]= $receipt->amount;
+                                                    $savesBalance[$receipt->receiptTypeFrom?->id] = $receipt->amount;
                                                 }else{
-                                                    $savesBalance[$receipt->receiptTypeFrom?->id]+=$receipt->amount;
+                                                    $savesBalance[$receipt->receiptTypeFrom?->id] =$savesBalance[$receipt->receiptTypeFrom?->id]+$receipt->amount;
                                                 }
                                             }
                                             else
                                             {
-                                                $totalPaid +=  $receipt->amount;
+                                                $totalRecived +=  $receipt->amount;
                                                 if($receipt->type_of_amount == 'part')
                                                 {
                                                     if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
@@ -170,11 +171,12 @@
                                                 }
                                                 else
                                                 {
-                                                    if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
-                                                        $savesBalance[$receipt->receiptTypeFrom?->id]=$receipt->amount;
+
+                                                    if(!array_key_exists($receipt->to,$savesBalance)){
+                                                        $savesBalance[$receipt->to]=$receipt->amount;
                                                     }
                                                     else{
-                                                        $savesBalance[$receipt->receiptTypeFrom?->id]+=$receipt->amount;
+                                                        $savesBalance[$receipt->to]+=$receipt->amount;
                                                     }
                                                 }
                                             }
@@ -223,7 +225,7 @@
                                                 </td>
 
                                                 <td>
-                                                    {{  $savesBalance[$receipt->receiptTypeFrom?->id] }}
+                                                    @if($receipt->receipt_type == 1) {{  $savesBalance[$receipt->receiptTypeFrom?->id] }} @else {{$savesBalance[$receipt->to]}} @endif
                                                 </td>
 
                                                 <td>
@@ -243,8 +245,8 @@
                                         </tbody>
                                     </table>
                                     <center>
-                                        <h3>اجمالي رصيد الوارد :<i>{{$totalPaid}}</i></h3>
-                                        <h3>اجمالي الرصيد المصروفات : <i>{{$totalRecived}}</i></h3>
+                                        <h3>اجمالي رصيد الوارد :<i>{{$totalRecived}}</i></h3>
+                                        <h3>اجمالي الرصيد المصروفات : <i>{{$totalPaid}}</i></h3>
                                         <h3>اجمالي رصيد الخزن : <i>{{$total}}</i></h3>
                                     </center>
                                 </div>
