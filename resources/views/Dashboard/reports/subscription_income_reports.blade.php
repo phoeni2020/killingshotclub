@@ -179,6 +179,7 @@
                                             <th class="border-top-0">ملاحظات</th>
                                             <th class="border-top-0">تاريخ الميلاد</th>
                                             <th class="border-top-0">تاريخ الالتحاق</th>
+
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -194,8 +195,8 @@
                                                     ->where('level_id',$reportData->level_id)->first();
                                                         $amount = $player_price_list?->price;
                                                         $paid = $player->players?->receipts->where('package_id',$player_price_list?->id)->first()?->paid;
-                                                        $totalPaid+=$paid;
-                                                        $totalSubs+=$amount;
+                                                        $totalPaid+= $paid;
+                                                        $totalSubs+= $amount;
                                                         $totalRemain+= $amount - $paid;
                                                     @endphp
                                                     <td>{{$reportData->date}}</td>

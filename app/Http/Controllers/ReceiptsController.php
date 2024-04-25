@@ -93,10 +93,8 @@ use ZanySoft\LaravelPDF\PDF;
          */
         public function store(Request $request)
         {
-            //dd($request->all());
             $priceListId=null;
             $packageId=null;
-
             if($request->typePrice == "price_list") {
                 $priceListId = $request->price_list;
             } else{

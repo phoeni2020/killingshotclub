@@ -73,10 +73,14 @@
 
                                                 <div class="col-md-3 mt-2" >
                                                     <div class="form-group">
-                                                    <label>الي الاعبين</label>
+                                                        <label>الي الاعبين</label>
                                                         <input class="from_type " type="radio" id="players" name="to_type" value="players">
                                                         <label> الي اخري </label>
                                                         <input class=" from_type" type="radio" id="others" checked name="to_type" value="others">
+                                                        <label> الي مرتبات </label>
+                                                        <input class=" from_type" type="radio" id="salary" checked name="to_type" value="salary">
+                                                        <label> الي مصاريف عموميه </label>
+                                                        <input class=" from_type" type="radio" id="salary" checked name="to_type" value="salary">
 
                                                     </div>
                                                 </div>
@@ -93,6 +97,30 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4" style="display: none" id="to_others">
+                                                    <div class="form-group">
+                                                        <label for="projectinput2">  الي  </label>
+                                                        <select class="form-control"  name="to"  id="others_to">
+                                                            @foreach($receiptTypes as $type)
+                                                                <option data-type="{{$type->type}}"  value="{{$type->id}}">{{$type->name}}</option>
+
+                                                            @endforeach
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4" style="display: none" id="to_salary">
+                                                    <div class="form-group">
+                                                        <label for="projectinput2">  الي  </label>
+                                                        <select class="form-control"  name="to"  id="others_to">
+                                                            @foreach($receiptTypes as $type)
+                                                                <option data-type="{{$type->type}}"  value="{{$type->id}}">{{$type->name}}</option>
+
+                                                            @endforeach
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4" style="display: none" id="to_public">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  الي  </label>
                                                         <select class="form-control"  name="to"  id="others_to">
@@ -207,12 +235,31 @@
         function checkfromType(){
             if($('input[name="to_type"]:checked').val() =='players'){
                 $('#to_players').show();
+
                 $('#to_others').hide();
+                $('#to_salary').hide();
+                $('#to_public').hide();
             }
             if($('input[name="to_type"]:checked').val() =='others'){
                 $('#to_others').show();
 
                 $('#to_players').hide();
+                $('#to_salary').hide();
+                $('#to_public').hide();
+            }
+            if($('input[name="to_type"]:checked').val() =='salary'){
+                $('#to_salary').show();
+
+                $('#to_players').hide();
+                $('#to_others').hide();
+                $('#to_public').hide();
+            }
+            if($('input[name="to_type"]:checked').val() =='public'){
+                $('#to_public').show();
+
+                $('#to_players').hide();
+                $('#to_others').hide();
+                $('#to_salary').hide();
             }
         }
         function resetForm() {
