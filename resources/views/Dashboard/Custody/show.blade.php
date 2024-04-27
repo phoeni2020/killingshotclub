@@ -60,7 +60,7 @@
 
                                     <div class="col-md-3 ml-5">
                                         <div class="form-group">
-                                            <h2 id="custody_price" style="color: #1EC481 ;">   <span style="color: #000 ;"> {{$custody->receipt_pay->receiptTypeTO->name}}</span>
+                                            <h2 id="custody_price" style="color: #1EC481 ;">   <span style="color: #000 ;"> {{$custody->receipt_pay->receiptType->name}}</span>
                                             </h2>
                                         </div>
                                     </div>     <div class="col-md-3">

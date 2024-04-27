@@ -22,7 +22,6 @@ class TournamentSubscriptionsController extends Controller
         $tournaments_subscriptions = TournamentSubscriptions::with('players')->get();
         $tournaments = Tournaments::with('tournament_branches.branches')->with('tournament_subscriptions.players')->get();
 
-//        dd($tournaments);
         return view('Dashboard.TournamentSubscription.index',compact('tournaments'));
 
     }

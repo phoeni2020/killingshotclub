@@ -119,6 +119,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
     });
     Route::prefix('lists')->as('lists.')->group(function () {
         Route::get('income_list_month', 'App\Http\Controllers\AdminReport@income_reports_month')->name('income_list_month');
+        Route::get('expanse_list', 'App\Http\Controllers\AdminReport@expenseAnalysis')->name('expenseAnalysis');
         Route::get('income_list', 'App\Http\Controllers\AdminReport@income_list')->name('income_list');
         Route::get('safe_report', 'App\Http\Controllers\AdminReport@recipt_report')->name('recipt_report');
         Route::get('subscription_income_reports', 'App\Http\Controllers\AdminReport@subscription_income_reports')->name('subscription_income_reports');

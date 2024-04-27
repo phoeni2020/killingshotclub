@@ -217,6 +217,14 @@
                                                     {{$otherExpense}}
                                                 </td>
                                             </tr>
+                                            <tr class="row6">
+                                                <td>
+                                                    <strong>المصروفات</strong>
+                                                </td>
+                                                <td>
+                                                    {{$otherExpense}}
+                                                </td>
+                                            </tr>
 
                                             <tr class="row7">
                                                 <td>

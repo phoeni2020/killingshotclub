@@ -72,7 +72,7 @@
 
 
                                                 <td>
-                                                    {{$settlement->custody->receipt_pay->receiptTypeTO->name }}
+                                                    {{$settlement->custody->receipt_pay->receiptType->name }}
                                                 </td>
 
                                                 <td>
