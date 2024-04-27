@@ -83,7 +83,6 @@ class AdminReport extends Controller
      */
     public function income_list(Request $request)
     {
-        DB::connection()->enableQueryLog();
         if (\Auth::user()->hasRole('administrator') || auth()->user()->hasPermission('income_list')) {
 
         }
@@ -103,13 +102,13 @@ class AdminReport extends Controller
         }
         // Retrieve and process filter parameters from the request
         $branch = $request->input('branch_id');
+        $safe = $request->input('safe_id');
         $sport_id = $request->input('sport_id');
         $startDate = $request->input('fromDate');
         $endDate = $request->input('toDate');
         $search_keyword = $request->input('search_keyword');
         $player = $request->input('player');
         $trainer = $request->input('trainer');
-        // Add more filter parameters as needed
 
         $subscriptions = Receipts::where('receipt_type',2)->where('type_of','players');//->sum('amount');
 
@@ -138,7 +137,6 @@ class AdminReport extends Controller
                 $q->where('player_id', $player);
             });
         }
-
         if ($trainer) {
             $subscriptions->where('trainer_id',$trainer);
             $otherIncome->where('trainer_id',$trainer);
@@ -152,6 +150,13 @@ class AdminReport extends Controller
             $rentAndMaintance->where('branch_id', $branch);
             $otherExpense->where('branch_id', $branch);
             $playerExpense->where('branch_id', $branch);
+        }
+        if ($safe) {
+            $subscriptions->where('from', $safe)->orWhere('to', $safe);
+            $otherIncome->where('from', $safe)->orWhere('to', $safe);
+            $rentAndMaintance->where('from', $safe)->orWhere('to', $safe);
+            $otherExpense->where('from', $safe)->orWhere('to', $safe);
+            $playerExpense->where('from', $safe)->orWhere('to', $safe);
         }
         if ($startDate && $endDate) {
             $subscriptions->whereBetween('date_receipt', [$startDate, $endDate]);
@@ -172,6 +177,7 @@ class AdminReport extends Controller
             ->get();
 
         $players = Players::whereIn('branch_id', $branchIds)->get();
+        $safes = ReceiptTypes::where('type', 'Save_money')->get();
 
         $sports = Sports::all();
         // Fetch the filtered report data
@@ -193,13 +199,12 @@ class AdminReport extends Controller
         // Return the report view with the filtered data
         return view('Dashboard.reports.income_reports',
             compact( 'branches',
-                'trainers','players','sports','total','otherIncome','subscriptionsSum','rentAndMaintance','otherExpense'));
+                'trainers','safes','players','sports','total','otherIncome','subscriptionsSum','rentAndMaintance','otherExpense'));
     }
 
 
     public function recipt_report(Request $request)
     {
-        DB::connection()->enableQueryLog();
         if (\Auth::user()->hasRole('administrator') || auth()->user()->hasPermission('income_list')) {
 
         }
@@ -224,6 +229,8 @@ class AdminReport extends Controller
         $sport_id = $request->input('sport_id');
         $startDate = $request->input('fromDate');
         $endDate = $request->input('toDate');
+        $safe = $request->input('safe_id');
+        $recipt_id = $request->input('recipt_id');
         $search_keyword = $request->input('search_keyword');
         $player = $request->input('player');
         $trainer = $request->input('trainer');
@@ -254,7 +261,12 @@ class AdminReport extends Controller
             $key = isset($price_lists[$request->sport_id]) ?$price_lists[$request->sport_id] : [];
             $receipts->whereIn('price_list_id', $key);
         }
-
+        if ($safe) {
+            $receipts->where('from', $safe)->orWhere('to', $safe);
+        }
+        if ($recipt_id) {
+            $receipts->where('id', $recipt_id);
+        }
         if($type)
             $Receipts = $receipts->whereHas('receiptType' , function($query) use ($type){
                 $query->where('type',$type);
@@ -285,10 +297,12 @@ class AdminReport extends Controller
         $receipts = $receipts->orderBy('id','desc')->get();
 //        dd($queries);
         $receiptTypes= ReceiptTypes::query()->get();
+
+        $safes = ReceiptTypes::where('type', 'Save_money')->get();
         // Return the report view with the filtered data
         return view('Dashboard.reports.safe_reports',
             compact( 'branches',
-                'trainers','players','receiptTypes','sports','receipts'));
+                'trainers','players','safes','receiptTypes','sports','receipts'));
     }
     /**
      * Show the form for creating a new resource.

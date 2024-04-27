@@ -72,6 +72,19 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">الخزن </label>
+                                                        <select class="form-control" name="safe_id">
+                                                            <option value="">اختر خزنة</option>
+                                                            @foreach($safes as $safe)
+                                                                <option value="{{$safe->id}}"
+                                                                    {{ $safe->id == request('safe_id') ? 'selected' : '' }}
+                                                                >{{$safe->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="" class="control-label mb-1">من التاريخ:</label>
@@ -109,6 +122,12 @@
                                                             <option value="1"> صرف </option>
                                                             <option value="2"> وارد </option>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1"> بحث برقم الايصال </label>
+                                                        <input type="number" name="recipt_id" class="form-control" >
                                                     </div>
                                                 </div>
                                             </div>
