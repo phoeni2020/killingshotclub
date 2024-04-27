@@ -52,6 +52,16 @@
                                                                    min="{{ Carbon\Carbon::today()->format('Y')}}-01-01" max="2030-12-31">
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="projectinput2">  تاريخ الاستحقاق</label>
+                                                            <input type="date" name="due_date"
+                                                                   class="form-control"
+                                                                   {{--                                                               @if(auth()->user()->hasPermission('date-receipts-create') || auth()->user()->hasRole(['administrator','superadministrator']))   @else disabled  @endif--}}
+                                                                   placeholder="dd-mm-yyyy" value = "{{ Carbon\Carbon::today()->format('Y-m-d') }}"
+                                                                   min="{{ Carbon\Carbon::today()->format('Y')}}-01-01" max="2030-12-31">
+                                                        </div>
+                                                    </div>
                                                     <div class="col-md-0">
                                                         <div class="form-group">
                                                             <label for="projectinput2">   جزئي </label>
@@ -71,20 +81,37 @@
                                             </div>
                                             <hr>
                                             <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="projectinput2">  الفرع</label>
+                                                        <select class="select2-placeholder-multiple form-control" id="branch_id"  name="branch_id" >
+                                                            <option value="" selected >اختر فرع </option>
+
+                                                            @foreach($branches as $branch)
+                                                                <option value="{{$branch->id}}">{{$branch->name}}</option>
+
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-4"  style="display: none" id="from_players">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  من  </label>
-                                                        <select class=" form-control"  name="from" id="player_id" >
+                                                        <br>
+                                                        <select class="select2-placeholder-multiple form-control"
+                                                                style="min-width: 150px"
+                                                                name="from" id="player_id"
+                                                        >
                                                             <option value="" selected>اختر لاعب
                                                             </option>
                                                             @foreach($players as $player)
                                                                 <option  data-price="{{ $player->PlayerSportPrice }}"  value="{{$player->id}}">{{$player->name}}</option>
-
                                                             @endforeach
                                                         </select>
-
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-4" style="display: none" id="from_others">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  من  </label>
@@ -97,26 +124,13 @@
 
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  الي   </label>
                                                         <select class="select2-placeholder-multiple form-control"  name="to" >
                                                             @foreach($receiptTypes as $type)
                                                                 <option value="{{$type->id}}">{{$type->name}}</option>
-                                                            @endforeach
-                                                        </select>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="projectinput2">  الفرع</label>
-                                                        <select class="select2-placeholder-multiple form-control" id="branch_id"  name="branch_id" >
-                                                            <option value="" selected >اختر فرع </option>
-
-                                                            @foreach($branches as $branch)
-                                                                <option value="{{$branch->id}}">{{$branch->name}}</option>
-
                                                             @endforeach
                                                         </select>
 
@@ -283,7 +297,18 @@
             });
 
         });
+        $('#branch_id').change(function () {
+            var branch_id =$(this).val();
 
+            var route = "{{route('get-player')}}";
+            $.ajax(route,{
+                type: 'GET',  // http method
+                data:{"branch_id":branch_id},
+                success: function(data){
+                    $('#player_id').html(data.playersDatalist)
+                }
+            });
+        })
         $('#player_id').change(function (){
 
             getPlayersData();
@@ -413,7 +438,6 @@
                 type: 'GET',  // http method
                 data:{"player_id":player_id},
                 success: function(data){
-                    console.log(data);
                     $('#price_list').html(data.optionPriceList)
                     $('#package_id').html(data.optionPackage)
                 }

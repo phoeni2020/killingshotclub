@@ -63,6 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
 
     route::get('get-players-sports-price', "\App\Http\Controllers\ReceiptsController@getPlayerSportPrice")->name('get-players-sports-price');
     route::get('get-players-data', "\App\Http\Controllers\PlayersController@getPlayerData")->name('get-players-data');
+    route::get('get-player', "\App\Http\Controllers\PlayersController@getPlayer")->name('get-player');
 
     #################################################.
     route::get('/file/delete/{id}',"\App\Http\Controllers\PlayersController@deleteFiles");

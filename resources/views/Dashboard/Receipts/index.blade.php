@@ -16,8 +16,6 @@
 
                     <div class="modal-body">
 
-
-
                         <div class="row">
                             <div class="col-md-12 mt-2" >
                                 <div class="form-group">
@@ -182,6 +180,47 @@
                                         <li>
                                             <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('receipt.create')}}"> <i class="ft-plus ft-md"></i> اضافة ايصال جديد</a>
                                         </li>
+                                </div>
+                                <h4 class="card-title">الفلتر </h4>
+                                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                <div>
+                                    <form action="{{route('lists.income_list')}}" method="GET">
+
+                                        <input type="hidden" name="filter" value="1">
+
+                                        <div class="modal-body">
+
+
+                                            <div class="row">
+                                                <div class="col-md-4 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">بحث باسم اللاعب</label>
+                                                       <input type="text" name="name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">بحث بايميل اللاعب</label>
+                                                       <input type="email" name="email">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">بحث برقم هاتف اللاعب</label>
+                                                       <input type="text" name="phone">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                            <input type="submit" value="Confirm" class="btn btn-primary">
+                                            {{-- <button type="button"  class="btn btn-primary">Confirm</button> --}}
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <div class="card-content">

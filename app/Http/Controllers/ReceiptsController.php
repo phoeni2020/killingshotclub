@@ -115,6 +115,7 @@ use ZanySoft\LaravelPDF\PDF;
                 'paid'=>$request->paid,
                 'statement'=>$request->statement,
                 'date_receipt'=>$request->date,
+                'due_date'=>$request->due_date,
                 'price_list_id'=>$priceListId,
                 'package_id'=>$packageId,
                 'discount_type'=>$request->discount,

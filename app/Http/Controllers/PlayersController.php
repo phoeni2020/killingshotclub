@@ -385,4 +385,21 @@ class PlayersController extends Controller
         }
     }
 
+    public function getPlayer(Request $request)
+    {
+        $branch_id = $request->branch_id;
+
+        $players = Players::where('branch_id',$branch_id)->get();
+        $selected = "";
+        $id=0;
+
+        $optionPlayer='  <option value="" selected>اختر لاعب   </option>  ';
+        foreach ($players as $pl){
+            $optionPlayer .=  "<option $selected data-typeprice='price_list'   value=$pl->id  > $pl->name </option> ";
+            $selected = ' ';
+        }
+        return     \Response::json(['playersDatalist'=>$optionPlayer])  ;
+
+    }
+
 }

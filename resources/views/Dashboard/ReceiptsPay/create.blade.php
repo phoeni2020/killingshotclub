@@ -77,10 +77,6 @@
                                                         <input class="from_type " type="radio" id="players" name="to_type" value="players">
                                                         <label> الي اخري </label>
                                                         <input class=" from_type" type="radio" id="others" checked name="to_type" value="others">
-                                                        <label> الي مرتبات </label>
-                                                        <input class=" from_type" type="radio" id="salary" checked name="to_type" value="salary">
-                                                        <label> الي مصاريف عموميه </label>
-                                                        <input class=" from_type" type="radio" id="salary" checked name="to_type" value="salary">
 
                                                     </div>
                                                 </div>
@@ -126,6 +122,7 @@
                                                         <select class="form-control"  name="to"  id="others_to">
                                                             @foreach($receiptTypes as $type)
                                                                 <option data-type="{{$type->type}}"  value="{{$type->id}}">{{$type->name}}</option>
+
 
                                                             @endforeach
                                                         </select>

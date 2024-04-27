@@ -153,7 +153,9 @@
                                             <th class="border-top-0">  اسم المحرر</th>
                                             <th class="border-top-0"> من </th>
                                             <th class="border-top-0"> الي </th>
+                                            <th class="border-top-0"> اسم اللاعب </th>
                                             <th class="border-top-0">   المبلغ</th>
+                                            <th class="border-top-0">   نوع الدفع</th>
                                             <th class="border-top-0">   رصيد الخزنه</th>
                                             <th class="border-top-0">   البيان</th>
                                             <th class="border-top-0">   تاريخ الانشاء</th>
@@ -214,7 +216,8 @@
                                                 @php
                                                     $name ='';
                                                     if($receipt->type_of=='players'&&$receipt->receipt_type != 1){
-                                                       $name = is_null($receipt->player)?'لاعبين':$receipt->player->name;
+                                                       $namePayer = $receipt->payer;
+                                                       $namePlayer = is_null($receipt->player)?'لاعبين':$receipt->player->name;
                                                     }
                                                     else{
                                                         $name = $receipt->receiptTypeFrom?->name;
@@ -228,7 +231,13 @@
                                                     }
                                                 @endphp
 
-                                                <td>{{$name ?? "---"}}</td>
+                                                <td>
+                                                    @if(isset($name))
+                                                        {{$name}}
+                                                    @else
+                                                        {{$namePayer}}
+                                                    @endif
+                                                </td>
 
                                                 <td>
                                                     @if($receipt->type_of=='players'&&$receipt->receipt_type == 1)
@@ -240,7 +249,21 @@
                                                 </td>
 
                                                 <td>
+                                                    {{isset($namePlayer) ? $namePlayer : '---'}}
+                                                </td>
+
+                                                <td>
                                                     {{ $receipt->amount }}
+                                                </td>
+
+                                                <td>
+                                                   @if($receipt->payment_type == 1)
+                                                       {{'دفع خزنة'}}
+                                                   @elseif($receipt->payment_type == 2)
+                                                        {{'بنك'}}
+                                                   @else
+                                                        {{'فيزا'}}
+                                                   @endif
                                                 </td>
 
                                                 <td>
