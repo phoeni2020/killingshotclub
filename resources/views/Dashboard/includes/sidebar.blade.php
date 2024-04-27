@@ -381,6 +381,11 @@
                                 قائمة الدخل عن شهر معين</a>
                         </li>
                     @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                            <li><a class="menu-item" href="{{route('lists.expenseAnalysis')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                                    تقارير التحليل المالي</a>
+                            </li>
+                        @endif
                     @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('income_list') )
                         <li><a class="menu-item" href="{{route('lists.income_list')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                 قائمة الدخل</a>
