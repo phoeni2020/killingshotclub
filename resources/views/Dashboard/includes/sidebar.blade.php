@@ -396,27 +396,37 @@
                             تقارير الخزن</a>
                         </li>
                     @endif
-                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
-                            <li><a class="menu-item" href="{{route('lists.subscription_income_reports')}}" data-i18n="nav.flot_charts.flot_line_charts">
-                                   تقارير الاشتراكات</a>
-                            </li>
-                        @endif
-                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
-                            <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
-                                     تقارير العهد</a>
-                            </li>
-                        @endif
-                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
-                            <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
-                                    تقارير المقارنه</a>
-                            </li>
-                        @endif
-                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
-                            <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
-                                    تقارير المسابقات</a>
-                            </li>
-                        @endif
-                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('rent_report') )
+                        <li><a class="menu-item" href="{{route('lists.rent_report')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                            تقارير ايرادات الملاعب</a>
+                        </li>
+                    @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('rent_detial_report') )
+                        <li><a class="menu-item" href="{{route('lists.rent_detial_report')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                                تقارير الايجار</a>
+                        </li>
+                    @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                        <li><a class="menu-item" href="{{route('lists.subscription_income_reports')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                               تقارير الاشتراكات</a>
+                        </li>
+                    @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                        <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
+                                 تقارير العهد</a>
+                        </li>
+                    @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                        <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
+                                تقارير المقارنه</a>
+                        </li>
+                    @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                        <li><a class="menu-item" href="#" data-i18n="nav.flot_charts.flot_line_charts">
+                                تقارير المسابقات</a>
+                        </li>
+                    @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
                             <li><a class="menu-item" href="{{route('lists.expenseAnalysis')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                     تقارير التحليل المالي</a>
                             </li>

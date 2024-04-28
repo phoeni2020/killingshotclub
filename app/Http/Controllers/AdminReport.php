@@ -10,6 +10,7 @@ use App\Models\ReceiptsPay;
 use App\Models\ReceiptTypes;
 use App\Models\Sports;
 use App\Models\Stadium;
+use App\Models\StadiumRentCancellations;
 use App\Models\StadiumsRentTable;
 use App\Models\TrainerAndPlayer;
 use App\Models\User;
@@ -769,5 +770,84 @@ class AdminReport extends Controller
         }
         return view('Dashboard.reports.expanse_analysis_reports',
             compact('branches', 'branchesSports','months'));
+    }
+
+    public function rent_report(Request $request)
+    {
+        if (\Auth::user()->hasRole('administrator') || auth()->user()->hasPermission('income_list_month')) {
+
+        }
+        $staduims = Stadium::all();
+        $staduimsInfo = [];
+        foreach ($staduims as $staduim){
+            $rentStadumInfoQuery = StadiumsRentTable::query()->where('stadium_id',$staduim->id);
+            $canceltionRentStadumInfoQuery = StadiumRentCancellations::query()->where('stadium_id',$staduim->id);
+            $info = $rentStadumInfoQuery->first();
+            if(is_null($info)){
+                $staduimsInfo[$staduim->id][] = $staduim;
+            }
+            else
+            {
+                $staduimsInfo[$staduim->id][] = $staduim;
+                $amount = $rentStadumInfoQuery->sum('price');
+                $rentTimes = $rentStadumInfoQuery->count('stadium_id');
+                $canceltionRentTimes = $canceltionRentStadumInfoQuery->count('stadium_id');
+                $staduimsInfo[$staduim->id]['total'] = $amount;
+                $staduimsInfo[$staduim->id]['rent_times'] = $rentTimes;
+                $staduimsInfo[$staduim->id]['canceltion_rent_times'] = $canceltionRentTimes;
+            }
+        }
+        return view('Dashboard.reports.rents_reports',
+            compact('staduimsInfo'));
+    }
+
+
+    public function stadiums_reports_detial(Request $request)
+    {
+        if (\Auth::user()->hasRole('administrator')) {
+            $branchIds = Branchs::get()->pluck('id')->toArray();
+        } else {
+            $branchIds = \Auth::user()->branches->pluck('id')->toArray();
+        }
+        $branch = $request->input('branch_id');
+        // Get all times for every stadium on every day
+        $stadiums = Stadium::whereIn('branch_id', $branchIds)->get();
+        $startDate = $request->input('fromDate');
+        $endDate = $request->input('toDate');
+        $new = collect([]);
+        $reports = StadiumsRentTable::orderBy('stadium_id')
+            ->whereHas('stadiums', function ($q) use ($branchIds) {
+                $q->whereIn('branch_id', $branchIds);
+            });
+        $reports2 = TrainerAndPlayer::orderBy('stadium_id')
+            ->whereHas('stadiums', function ($q) use ($branchIds) {
+                $q->whereIn('branch_id', $branchIds);
+            });
+        if ($request->stadium) {
+            $reports->where('stadium_id', $request->stadium);
+            $reports2->where('stadium_id', $request->stadium);
+        }
+        if ($branch) {
+            $reports->whereHas('stadiums', function ($q) use ($branch) {
+                $q->where('branch_id', $branch);
+            });
+            $reports2->whereHas('stadiums', function ($q) use ($branch) {
+                $q->where('branch_id', $branch);
+            });
+        }
+        if ($startDate) {
+            $reports->whereDate('time_from', $startDate);
+
+            $reports2->whereDate('time_from', $startDate);
+        }
+        $reports = $new->merge($reports->get())->merge($reports2->get());
+
+        $reports = $reports;
+        if (\Auth::user()->hasRole('administrator'))
+            $branches = Branchs::get();
+        else
+            $branches = \Auth::user()->branches;
+        return view('Dashboard.reports.rent_detial_reports',
+            compact('reports', 'branches', 'stadiums'));
     }
 }
