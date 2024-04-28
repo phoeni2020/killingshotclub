@@ -32,24 +32,36 @@ use ZanySoft\LaravelPDF\PDF;
             else{
                 $branchIds = \Auth::user()->branches->pluck('id')->toArray();
             }
-            if($request->filter){
-                $receipts = $this->filter($request);
-                if($request->pdf){
-                    $viewName = "Dashboard.Receipts.pdf";
-                    $fileName = "ايصالات التوريد";
-                   $FilePdf = new ConvertDataToPDF($viewName,$receipts,$viewName);
-                }
-                if($request->excel){
-                    $ExportToExcelSheet  = new ExportToExcelSheet($receipts ,'Dashboard.Receipts.pdf');
-                     return Excel::download($ExportToExcelSheet , 'ايصالات التوريد.xlsx');
-                }
-            }
-            else{
-                $receipts = Receipts::orderBy('id','desc')
-                    ->whereIn('branch_id', $branchIds)->where('receipt_type',2)
-                    ->paginate(10);
+            $filterMail = $request->mail;
+            $filterName = $request->name;
+            $filterPhone = $request->phone;
+                if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
 
-            }
+                    $player = Players::query();
+                    if(!empty($filterName))
+                        $player->orWhere('name', 'like', '%' .$filterName . '%');
+
+                    if(!empty($filterPhone))
+                        $player->orWhere('father_phone', 'like', '%' . $filterPhone . '%')
+                            ->orWhere('anther_phone', 'like', '%' . $filterPhone . '%');
+
+                    if(!empty($filterMail))
+                        $player->orWhere('father_email', 'like', '%' . $filterMail . '%');
+
+
+                    $ids = $player->pluck('id');
+                }
+
+
+            DB::connection()->enableQueryLog();
+
+                $receipts = Receipts::orderBy('id','desc')
+                    ->whereIn('branch_id', $branchIds)->where('receipt_type',2);
+                if(isset($ids)){
+                    $receipts->whereIn('from', $ids)->where('type_of','players')->get();
+                }
+                    $receipts = $receipts->paginate(10);
+
             $players =Players::with('PlayerSportPrice')
                 ->whereIn('branch_id', $branchIds)
                 ->get();
