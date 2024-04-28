@@ -192,19 +192,25 @@
 
 
                                             <div class="row">
-                                                <div class="col-md-4 mt-2">
+                                                <div class="col-md-3 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">بحث برقم الاذن</label>
+                                                       <input type="text" name="recipt_id">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mt-2">
                                                     <div class="form-group">
                                                         <label for="" class="control-label mb-1">بحث باسم اللاعب</label>
                                                        <input type="text" name="name">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4 mt-2">
+                                                <div class="col-md-3 mt-2">
                                                     <div class="form-group">
                                                         <label for="" class="control-label mb-1">بحث بايميل اللاعب</label>
                                                        <input type="email" name="email">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4 mt-2">
+                                                <div class="col-md-3 mt-2">
                                                     <div class="form-group">
                                                         <label for="" class="control-label mb-1">بحث برقم هاتف اللاعب</label>
                                                        <input type="text" name="phone">

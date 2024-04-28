@@ -111,14 +111,13 @@
                                                         </select>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-4" style="display: none" id="from_others">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  من  </label>
-                                                        <select class="form-control" name="from_others">
+                                                        <select class="form-control" id="others_recipt" name="from_others">
                                                             <option value="" selected>جهات اخري</option>
                                                             @foreach($receiptTypes as $type)
-                                                                <option value="{{$type->id}}">{{$type->name}}</option>
+                                                                <option value="{{$type->id}}" data-type="{{$type->type}}">{{$type->name}}</option>
                                                             @endforeach
                                                         </select>
 
@@ -137,6 +136,27 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row" id="rentList" style="display: none">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="projectinput2">  اختار الايجار </label>
+                                                        <select class=" form-control rentList"   name="rentList" >
+                                                            <option value="" selected>اختر  الايجار</option>
+                                                            @foreach($rents as $rent)
+                                                                <option value="{{$rent->id}}" >{{$rent->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="hidden" name="typePrice" id="type_price">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="payer">  اسم القائم بالدفع </label>
+                                                        <input type="text" name="payer" id="payer" value="{{old('payer')}}" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -480,6 +500,22 @@
                 $('#discount_amount_value').val(parseInt(amount))
                 $('#paid').val(paid)
             }
+        });
+        $('#others_recipt').change(function (e) {
+            var select_val = $(e.currentTarget).val();
+            var ids =  [36,41,42,45,48]
+            if(ids.includes(parseInt(select_val))){
+                console.log('sssssssssssssssss')
+                $('#rentList').css('display','block')
+            }else{
+                console.log('sssssssssssssssss')
+                console.log(ids.includes(parseInt(select_val)))
+                console.log(select_val)
+
+                $('#rentList').css('display','none')
+
+            }
+            //36,42,45,48,45
         });
     </script>
 @endsection

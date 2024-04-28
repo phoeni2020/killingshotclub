@@ -11,7 +11,8 @@ use App\Models\Branchs;
         use App\Http\Requests\UpdateReceiptsRequest;
         use App\Models\ReceiptsPay;
         use App\Models\ReceiptTypes;
-        use Facade\FlareClient\Http\Response;
+use App\Models\StadiumsRentTable;
+use Facade\FlareClient\Http\Response;
         use Illuminate\Http\Request;
         use App\Services\PDF\ConvertDataToPDF;
 use Illuminate\Support\Facades\DB;
@@ -35,32 +36,34 @@ use ZanySoft\LaravelPDF\PDF;
             $filterMail = $request->mail;
             $filterName = $request->name;
             $filterPhone = $request->phone;
-                if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
+            $recipt_id = $request->recipt_id;
 
-                    $player = Players::query();
-                    if(!empty($filterName))
-                        $player->orWhere('name', 'like', '%' .$filterName . '%');
+            if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
 
-                    if(!empty($filterPhone))
-                        $player->orWhere('father_phone', 'like', '%' . $filterPhone . '%')
-                            ->orWhere('anther_phone', 'like', '%' . $filterPhone . '%');
+                $player = Players::query();
+                if(!empty($filterName))
+                    $player->orWhere('name', 'like', '%' .$filterName . '%');
 
-                    if(!empty($filterMail))
-                        $player->orWhere('father_email', 'like', '%' . $filterMail . '%');
+                if(!empty($filterPhone))
+                    $player->orWhere('father_phone', 'like', '%' . $filterPhone . '%')
+                        ->orWhere('anther_phone', 'like', '%' . $filterPhone . '%');
 
-
-                    $ids = $player->pluck('id');
-                }
+                if(!empty($filterMail))
+                    $player->orWhere('father_email', 'like', '%' . $filterMail . '%');
 
 
-            DB::connection()->enableQueryLog();
+                $ids = $player->pluck('id');
+            }
+            $receipts = Receipts::orderBy('id','desc')
+                ->whereIn('branch_id', $branchIds)->where('receipt_type',2);
+            if(isset($recipt_id))
+                 $receipts->where('id',$recipt_id);
 
-                $receipts = Receipts::orderBy('id','desc')
-                    ->whereIn('branch_id', $branchIds)->where('receipt_type',2);
-                if(isset($ids)){
-                    $receipts->whereIn('from', $ids)->where('type_of','players')->get();
-                }
-                    $receipts = $receipts->paginate(10);
+            if(isset($ids)){
+                $receipts->whereIn('from', $ids)->where('type_of','players')->get();
+            }
+
+                $receipts = $receipts->paginate(10);
 
             $players =Players::with('PlayerSportPrice')
                 ->whereIn('branch_id', $branchIds)
@@ -92,9 +95,10 @@ use ZanySoft\LaravelPDF\PDF;
                 $branches =  \Auth::user()->branches;
 
     //        dd($players[0]->PlayerSportPrice->price);
-            $receiptTypes= ReceiptTypes::whereIn('branch_id',$branchIds)->where('is_pay',1)->get();
+            $receiptTypes= ReceiptTypes::whereIn('branch_id',$branchIds)->where('is_pay',0)->get();
+            $rents= StadiumsRentTable::all();
 
-            return view('Dashboard.Receipts.create',compact('players','receiptTypes' , 'branches'));
+            return view('Dashboard.Receipts.create',compact('players','rents','receiptTypes' , 'branches'));
         }
 
         /**
@@ -107,6 +111,7 @@ use ZanySoft\LaravelPDF\PDF;
         {
             $priceListId=null;
             $packageId=null;
+
             if($request->typePrice == "price_list") {
                 $priceListId = $request->price_list;
             } else{
@@ -117,7 +122,7 @@ use ZanySoft\LaravelPDF\PDF;
             }else{
                 $from = $request->from;
             }
-            Receipts::create([
+           $receipt =  Receipts::create([
                 'user_id'=>auth()->user()->id,
                 'type_of'=>$request->from_type,
                 'from'=>$from,
@@ -138,6 +143,11 @@ use ZanySoft\LaravelPDF\PDF;
                 'serial_number'=>$request->serial,
                 'receipt_type'=>2,
             ]);
+            if(!is_null($request->rentList)){
+               $rent = StadiumsRentTable::find($request->rentList);
+               $rent->recipt_id = $receipt->id;
+               $rent->update();
+            }
             return redirect()->route('receipt.index')->with('message','تم اضافه الايصال بنجاح ');
 
         }

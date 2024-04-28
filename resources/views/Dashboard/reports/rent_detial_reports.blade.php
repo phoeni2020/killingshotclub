@@ -184,6 +184,8 @@
                                             <th class="border-top-0"> الملعب</th>
                                             <th class="border-top-0"> أسم المدرب</th>
                                             <th class="border-top-0">الاسعار</th>
+                                            <th class="border-top-0">الحاله</th>
+                                            <th class="border-top-0">متكرر</th>
                                             <th class="border-top-0"> من</th>
                                             <th class="border-top-0">الي</th>
                                         </tr>
@@ -210,11 +212,14 @@
                                                         }
                                             @endphp
                                             <tr class="row1">
+
                                                 <td>{{\Carbon\Carbon::parse($currentRow?->time_from)->format('d/m/Y')}}</td>
                                                 <td>{{__('validation.'.$currentRow?->day) }}</td>
                                                 <td>{{ $currentRow?->stadiums->name }}</td>
                                                 <td>{{  $currentRow?->traniers?->name }}</td>
                                                 <td>{{  $currentRow->price }}</td>
+                                                <td>{{  is_null($currentRow->recipt_id) ? 'لم يتم الدفع': 'تم الدفع' }}</td>
+                                                <td>{{  is_null($currentRow->event_repeated) ? 'غير متكرر': 'متكرر' }}</td>
                                                 <td>{{ $currentTime->format('h:i A') }}</td>
                                                 @php
                                                     // Increment time by 30 minutes for the next iteration
