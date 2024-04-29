@@ -827,18 +827,15 @@ class AdminReport extends Controller
         //$search_keyword = $request->input('search_keyword');
         // Add more filter parameters as needed
 
-        $stadiums_tent_table = Receipts::query()
-            ->where('due_date','')
+        $recipt = Receipts::query()
+            ->whereDate('due_date','>',date('Y-m-d'))
             ->orderBy('id', 'DESC');
-
         if ($branch) {
-            $stadiums_tent_table->whereHas('stadiums', function ($q) use ($branch) {
-                $q->where('branch_id', $branch);
-            });
+            $recipt->where('branch_id', $branch);
         }
 
         if ($startDate && $endDate) {
-            $stadiums_tent_table->where('date','>=', $startDate)
+            $recipt->where('date','>=', $startDate)
                 ->where('date','<=', $endDate);
         }
         // Add more filter conditions for other parameters
