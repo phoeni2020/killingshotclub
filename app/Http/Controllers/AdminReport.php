@@ -781,6 +781,9 @@ class AdminReport extends Controller
         $staduimsInfo = [];
         foreach ($staduims as $staduim){
             $rentStadumInfoQuery = StadiumsRentTable::query()->where('stadium_id',$staduim->id);
+            if(!empty($request->name)){
+                $rentStadumInfoQuery->where('name', 'like', '%' .$request->name . '%');
+            }
             $canceltionRentStadumInfoQuery = StadiumRentCancellations::query()->where('stadium_id',$staduim->id);
             $info = $rentStadumInfoQuery->first();
             if(is_null($info)){
