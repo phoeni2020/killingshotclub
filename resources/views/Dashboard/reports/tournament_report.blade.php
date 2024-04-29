@@ -68,7 +68,7 @@
                                                 <td>{{$tournamentInfo->date}}</td>
                                                 <td>{{$tournamentInfo->subscribe_value}}</td>
                                                 <td>{{$tournamentInfo->cost}}</td>
-                                                <td>{{$player->name}}</td>
+                                                <td>{{$player?->name}}</td>
                                                 <td>{{!empty($tournamentInfoPlayer)? $tournamentInfoPlayer->place:'لا توجد معلومات' }}</td>
                                                 <td>{{$tournamentInfo->paid? 'تم الدفع':'لم يتم الدفع'}}</td>
                                             </tr>
