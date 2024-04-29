@@ -804,7 +804,6 @@ class AdminReport extends Controller
             compact('staduimsInfo'));
     }
 
-
     public function stadiums_reports_detial(Request $request)
     {
         if (\Auth::user()->hasRole('administrator')) {
@@ -812,8 +811,44 @@ class AdminReport extends Controller
         } else {
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
-    }
+        // Retrieve and process filter parameters from the request
+        $branch = $request->input('branch_id');
+        $startDate = $request->input('fromDate');
+        $endDate = $request->input('toDate');
+        //$search_keyword = $request->input('search_keyword');
+        // Add more filter parameters as needed
 
+        $stadiums_tent_table = StadiumsRentTable::query()
+            ->whereHas('stadiums',function ($q) use ($branchIds) {
+                $q->whereIn('branch_id',$branchIds);
+            })
+            ->orderBy('id', 'DESC');
+
+
+        if ($branch) {
+            $stadiums_tent_table->whereHas('stadiums', function ($q) use ($branch) {
+                $q->where('branch_id', $branch);
+            });
+        }
+
+        if ($startDate && $endDate) {
+            $stadiums_tent_table->where('date','>=', $startDate)
+                ->where('date','<=', $endDate);
+        }
+        // Add more filter conditions for other parameters
+        if (\Auth::user()->hasRole('administrator'))
+            $branches = Branchs::get();
+        else
+            $branches = \Auth::user()->branches;
+        // Fetch the filtered report data
+        if(!empty($request->name)){
+            $stadiums_tent_table->where('name', 'like', '%' .$request->name . '%');
+        }
+        $reportsData = $stadiums_tent_table->paginate(25)->groupBy('day');
+
+        return view('Dashboard.reports.rent_detial_reports', compact('reportsData','branches'));
+
+    }
 
     public function due_date_reports(Request $request)
     {
