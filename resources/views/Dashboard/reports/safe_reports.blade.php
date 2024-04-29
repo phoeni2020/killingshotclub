@@ -116,6 +116,20 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
+                                                        <label for="" class="control-label mb-1"> طريقة الدفع </label>
+
+                                                        <select class=" form-control"  id="" name="payment_type" >
+                                                            <option value=""> اختار </option>
+                                                            <option value="2"> خزنه </option>
+                                                            <option value="1"> بنك </option>
+                                                            <option value="0"> فيزا </option>
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
                                                         <label for="" class="control-label mb-1"> انواع الايصالات </label>
                                                         <select class=" form-control"  id="" name="type_income" >
                                                             <option value=""> اختار </option>
