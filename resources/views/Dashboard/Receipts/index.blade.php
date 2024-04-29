@@ -250,7 +250,6 @@
                                             <th class="border-top-0">   تاريخ الانشاء</th>
                                             <th class="border-top-0">   تاريخ التعديل</th>
 
-
                                             <th class="border-top-0">التحكم</th>
                                         </tr>
                                         </thead>

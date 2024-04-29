@@ -819,33 +819,54 @@ class AdminReport extends Controller
         } else {
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
-        // Retrieve and process filter parameters from the request
         $branch = $request->input('branch_id');
-        $startDate = $request->input('due_date');
+        $sport_id = $request->input('sport_id');
+        $startDate = $request->input('fromDate');
         $endDate = $request->input('toDate');
-        //$search_keyword = $request->input('search_keyword');
+        $safe = $request->input('safe_id');
+        $recipt_id = $request->input('recipt_id');
+
+        $type = $request->input('type');
+        $type_income = $request->input('type_income');
         // Add more filter parameters as needed
 
-        $recipt = Receipts::query()
-            ->whereDate('due_date','>',date('Y-m-d'))
-            ->orderBy('id', 'DESC');
+        $receipts = Receipts::query()->whereDate('due_date','>',date('Y-m-d'));//->sum('amount');
         if ($branch) {
-            $recipt->where('branch_id', $branch);
+            $receipts->where('branch_id', $branch);
         }
 
         if ($startDate && $endDate) {
-            $recipt->where('date','>=', $startDate)
-                ->where('date','<=', $endDate);
+            $receipts->whereBetween('date_receipt', [$startDate, $endDate]);
+        }
+
+        if ($safe) {
+            $receipts->where('from', $safe)->orWhere('to', $safe);
+        }
+
+        if ($recipt_id) {
+            $receipts->where('id', $recipt_id);
+        }
+
+        if($type)
+            $receipts->whereHas('receiptType' , function($query) use ($type){
+                $query->where('type',$type);
+            });
+
+        if($type_income){
+            $receipts->where('receipt_type', $type_income);
         }
         // Add more filter conditions for other parameters
         if (\Auth::user()->hasRole('administrator'))
             $branches = Branchs::get();
         else
             $branches = \Auth::user()->branches;
+
+        $receiptTypes= ReceiptTypes::query()->get();
+
+        $safes = ReceiptTypes::where('type', 'Save_money')->get();
+
+        $receipts = $receipts->get();
         // Fetch the filtered report data
-        $reportsData = $stadiums_tent_table->paginate(25)->groupBy('day');
-        return view('Dashboard.reports.rent_detial_reports', compact('reportsData','branches'));
-        return view('Dashboard.reports.rent_detial_reports',
-            compact());
+        return view('Dashboard.reports.due_date_reports', compact('receipts','safes','receiptTypes','branches'));
     }
 }
