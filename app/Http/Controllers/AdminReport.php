@@ -330,7 +330,9 @@ class AdminReport extends Controller
                 $q->whereIn('branch_id',$branchIds);
             })
             ->orderBy('id', 'DESC');
-
+        if(!empty($request->name)){
+            $stadiums_tent_table->where('name', 'like', '%' .$request->name . '%');
+        }
         if ($branch) {
             $stadiums_tent_table->whereHas('stadiums', function ($q) use ($branch) {
                 $q->where('branch_id', $branch);
