@@ -195,7 +195,7 @@
                                                     if($receipt->payment_type == 2){
                                                         $bankBalance += $receipt->amount;
                                                     }
-                                                    elseif ($receipt->payment_type == 3){
+                                                    elseif ($receipt->payment_type == 0){
                                                         $visaBalance += $receipt->amount;
                                                     }
                                                 }
@@ -212,7 +212,7 @@
                                                     if($receipt->payment_type == 2){
                                                         $bankBalance += $receipt->amount;
                                                     }
-                                                    elseif ($receipt->payment_type == 3){
+                                                    elseif ($receipt->payment_type == 0){
                                                         $visaBalance += $receipt->amount;
                                                     }
                                                 }
