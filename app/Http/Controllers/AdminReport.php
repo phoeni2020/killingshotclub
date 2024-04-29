@@ -280,7 +280,7 @@ class AdminReport extends Controller
         if($type_income){
             $receipts->where('receipt_type', $type_income);
         }
-        if($payment_type){
+        if(!empty($payment_type)){
             $receipts->where('payment_type', $payment_type);
         }
 
