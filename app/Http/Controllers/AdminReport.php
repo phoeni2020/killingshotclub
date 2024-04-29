@@ -809,7 +809,6 @@ class AdminReport extends Controller
         } else {
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
-        -
     }
 
 
