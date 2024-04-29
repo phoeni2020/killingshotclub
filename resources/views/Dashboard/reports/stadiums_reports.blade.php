@@ -26,6 +26,13 @@
                                            value="{{request('search_keyword')}}">
                                 </div>
                             </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="" class="control-label mb-1">اسم المستاجر</label>
+                                    <input class="form-control" type="text" name="name"
+                                           value="{{request('name')}}">
+                                </div>
+                            </div>
                             <div class="col-md-12 mt-2">
                                 <div class="form-group">
                                     <label for="" class="control-label mb-1">فرع:</label>

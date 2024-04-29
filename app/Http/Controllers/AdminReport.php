@@ -364,11 +364,15 @@ class AdminReport extends Controller
         $stadiums = Stadium::whereIn('branch_id', $branchIds)->get();
         $startDate = $request->input('fromDate');
         $endDate = $request->input('toDate');
+
         $new = collect([]);
         $reports = StadiumsRentTable::orderBy('stadium_id')
             ->whereHas('stadiums', function ($q) use ($branchIds) {
             $q->whereIn('branch_id', $branchIds);
         });
+        if(!empty($request->name)){
+            $reports->where('name', 'like', '%' .$request->name . '%');
+        }
         $reports2 = TrainerAndPlayer::orderBy('stadium_id')
             ->whereHas('stadiums', function ($q) use ($branchIds) {
                 $q->whereIn('branch_id', $branchIds);
