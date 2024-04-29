@@ -19,13 +19,7 @@
 
 
                         <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label mb-1"> البحث </label>
-                                    <input class="form-control" type="text" name="search_keyword"
-                                           value="{{request('search_keyword')}}">
-                                </div>
-                            </div>
+
                             <div class="col-md-12 mt-2">
                                 <div class="form-group">
                                     <label for="" class="control-label mb-1">فرع:</label>
@@ -33,21 +27,8 @@
                                         <option value="">اختر فرع</option>
                                         @foreach($branches as $branch)
                                             <option value="{{$branch->id}}"
-                                                    {{ $branch->id == request('branch_id') ? 'selected' : '' }}
+                                                {{ $branch->id == request('branch_id') ? 'selected' : '' }}
                                             >{{$branch->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mt-2">
-                                <div class="form-group">
-                                    <label for="" class="control-label mb-1">الملعب:</label>
-                                    <select class="form-control" name="stadium">
-                                        <option value="">اختر ملعب</option>
-                                        @foreach($stadiums as $stadium)
-                                            <option value="{{$stadium->id}}"
-                                                    {{ $stadium->id == request('stadium') ? 'selected' : '' }}
-                                            >{{$stadium->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -132,33 +113,32 @@
                                                             <option value="">اختر فرع</option>
                                                             @foreach($branches as $branch)
                                                                 <option value="{{$branch->id}}"
-                                                                        {{ $branch->id == request('branch_id') ? 'selected' : '' }}
+                                                                    {{ $branch->id == request('branch_id') ? 'selected' : '' }}
                                                                 >{{$branch->name}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 mt-2">
+                                                <div class="col-12">
                                                     <div class="form-group">
-                                                        <label for="" class="control-label mb-1">الملعب:</label>
-                                                        <select class="form-control" name="stadium">
-                                                            <option value="">اختر ملعب</option>
-                                                            @foreach($stadiums as $stadium)
-                                                                <option value="{{$stadium->id}}"
-                                                                        {{ $stadium->id == request('stadium') ? 'selected' : '' }}
-                                                                >{{$stadium->name}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        <label for="" class="control-label mb-1"> البحث </label>
+                                                        <input  class="form-control" type="text" name="search_keyword" value="{{request('search_keyword')}}" >
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label for="" class="control-label mb-1"> التاريخ:</label>
+                                                        <label for="" class="control-label mb-1">من التاريخ:</label>
                                                         <input class="form-control" type="date" name="fromDate"
                                                                value="{{request('fromDate')}}">
                                                     </div>
                                                 </div>
-
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1"> الي التاريخ </label>
+                                                        <input class="form-control" type="date" name="toDate"
+                                                               value="{{request('toDate')}}">
+                                                    </div>
+                                                </div>
                                             </div>
 
                                         </div>
@@ -173,70 +153,45 @@
                                 </div>
                             </div>
                             <div class="card-content">
-
-                                <div class="table-responsive">
-                                    {{--                                        <h6 class="text-center mt-5">@lang('validation.'.$key)</h6>--}}
-                                    <table id="tablecontents" class="table table-hover table-xl mb-0 sortable">
-                                        <thead>
-                                        <tr>
-                                            <th class="border-top-0"> التاريخ</th>
-                                            <th class="border-top-0"> اليوم</th>
-                                            <th class="border-top-0"> الملعب</th>
-                                            <th class="border-top-0"> أسم المدرب</th>
-                                            <th class="border-top-0">الاسعار</th>
-                                            <th class="border-top-0">الحاله</th>
-                                            <th class="border-top-0">متكرر</th>
-                                            <th class="border-top-0"> من</th>
-                                            <th class="border-top-0">الي</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @php
-                                            $currentTime = \Carbon\Carbon::parse(request('fromDate').' 00:00:00'); // Start from 12 AM
-                                            $endTime = \Carbon\Carbon::parse(request('fromDate').' 23:30:00');    // End at 11:30 PM
-                                        @endphp
-
-                                        @if(!empty($reports->toArray()))
-                                        @while($currentTime->lt($endTime))
-                                            @php
-                                                $reserved = false;
-                                                $currentRow = null;
-                                                $currently = $currentTime->copy();
-                                                $after30Minutes = $currently->addMinutes(30);
-                                                // Check if there is a row for the current time
-
-                                                    foreach($reports as $report) {
-
-                                                            $currentRow = $report;
-                                                            break;
-                                                        }
-                                            @endphp
-                                            <tr class="row1">
-
-                                                <td>{{\Carbon\Carbon::parse($currentRow?->time_from)->format('d/m/Y')}}</td>
-                                                <td>{{__('validation.'.$currentRow?->day) }}</td>
-                                                <td>{{ $currentRow?->stadiums->name }}</td>
-                                                <td>{{  $currentRow?->traniers?->name }}</td>
-                                                <td>{{  $currentRow->price }}</td>
-                                                <td>{{  is_null($currentRow->recipt_id) ? 'لم يتم الدفع': 'تم الدفع' }}</td>
-                                                <td>{{  is_null($currentRow->event_repeated) ? 'غير متكرر': 'متكرر' }}</td>
-                                                <td>{{ $currentTime->format('h:i A') }}</td>
-                                                @php
-                                                    // Increment time by 30 minutes for the next iteration
-                                                    $currentTime->addMinutes(30);
-                                                @endphp
-                                                <td>{{  $currentTime->format('h:i A') }}</td>
-                                            </tr>
-                                        @endwhile
-                                        @else
+                                @forelse($reportsData as $key=>$reportData)
+                                    <div class="table-responsive">
+                                        <h6 class="text-center mt-5">@lang('validation.'.$key)</h6>
+                                        <table id="tablecontents" class="table table-hover table-xl mb-0 sortable">
+                                            <thead>
                                             <tr>
-                                                {{'لا توجد حجوزات'}}
-                                            </tr>
-                                        @endif
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                <th class="border-top-0"> التاريخ</th>
+                                                <th class="border-top-0"> اليوم</th>
+                                                <th class="border-top-0"> الملعب</th>
+                                                <th class="border-top-0"> أسم المدرب</th>
+                                                <th class="border-top-0">السعر</th>
+                                                <th class="border-top-0">الحاله</th>
+                                                <th class="border-top-0">متكرر</th>
+                                                <th class="border-top-0"> من</th>
+                                                <th class="border-top-0">الي</th>
 
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            @foreach($reportData as $report)
+                                                <tr class="row1">
+                                                    <td>{{\Carbon\Carbon::parse($report->time_from)->format('d/m/Y')}}</td>
+                                                    <td>@lang('validation.'.$key)</td>
+                                                    <td>{{$report->stadiums->name}}</td>
+                                                    <td>{{$report->name}}</td>
+                                                    <td>{{  $report->price }}</td>
+                                                    <td>{{  is_null($report->recipt_id) ? 'لم يتم الدفع': 'تم الدفع' }}</td>
+                                                    <td>{{  is_null($report->event_repeated) ? 'غير متكرر': 'متكرر' }}</td>
+
+                                                    <td>{{\Carbon\Carbon::parse($report->time_from)->format('h:i A')}}</td>
+                                                    <td>{{\Carbon\Carbon::parse($report->time_to)->format('h:i A')}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    @endforeach
                             </div>
                         </div>
                     </div>

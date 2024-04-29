@@ -809,45 +809,52 @@ class AdminReport extends Controller
         } else {
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
+        // Retrieve and process filter parameters from the request
         $branch = $request->input('branch_id');
-        // Get all times for every stadium on every day
-        $stadiums = Stadium::whereIn('branch_id', $branchIds)->get();
         $startDate = $request->input('fromDate');
         $endDate = $request->input('toDate');
-        $new = collect([]);
-        $reports = StadiumsRentTable::orderBy('stadium_id')
-            ->whereHas('stadiums', function ($q) use ($branchIds) {
-                $q->whereIn('branch_id', $branchIds);
-            });
-        $reports2 = TrainerAndPlayer::orderBy('stadium_id')
-            ->whereHas('stadiums', function ($q) use ($branchIds) {
-                $q->whereIn('branch_id', $branchIds);
-            });
-        if ($request->stadium) {
-            $reports->where('stadium_id', $request->stadium);
-            $reports2->where('stadium_id', $request->stadium);
-        }
+        //$search_keyword = $request->input('search_keyword');
+        // Add more filter parameters as needed
+
+        $stadiums_tent_table = StadiumsRentTable::query()
+            ->whereHas('stadiums',function ($q) use ($branchIds) {
+                $q->whereIn('branch_id',$branchIds);
+            })
+            ->orderBy('id', 'DESC');
+
         if ($branch) {
-            $reports->whereHas('stadiums', function ($q) use ($branch) {
-                $q->where('branch_id', $branch);
-            });
-            $reports2->whereHas('stadiums', function ($q) use ($branch) {
+            $stadiums_tent_table->whereHas('stadiums', function ($q) use ($branch) {
                 $q->where('branch_id', $branch);
             });
         }
-        if ($startDate) {
-            $reports->whereDate('time_from', $startDate);
 
-            $reports2->whereDate('time_from', $startDate);
+        if ($startDate && $endDate) {
+            $stadiums_tent_table->where('date','>=', $startDate)
+                ->where('date','<=', $endDate);
         }
-        $reports = $new->merge($reports->get())->merge($reports2->get());
-
-        $reports = $reports;
+        // Add more filter conditions for other parameters
         if (\Auth::user()->hasRole('administrator'))
             $branches = Branchs::get();
         else
             $branches = \Auth::user()->branches;
+        // Fetch the filtered report data
+        $reportsData = $stadiums_tent_table->paginate(25)->groupBy('day');
+        return view('Dashboard.reports.rent_detial_reports', compact('reportsData','branches'));
+
         return view('Dashboard.reports.rent_detial_reports',
             compact('reports', 'branches', 'stadiums'));
+    }
+
+
+    public function due_date_reports(Request $request)
+    {
+        if (\Auth::user()->hasRole('administrator')) {
+            $branchIds = Branchs::get()->pluck('id')->toArray();
+        } else {
+            $branchIds = \Auth::user()->branches->pluck('id')->toArray();
+        }
+
+        return view('Dashboard.reports.rent_detial_reports',
+            compact());
     }
 }
