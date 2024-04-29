@@ -611,107 +611,45 @@ class AdminReport extends Controller
 
         $startDate = $request->fromDate;
         $endDate = $request->toDate;
+        $months = [];
         if(!empty($startDate)&&!empty($endDate)){
             $months = $this->getMonthListFromDate($startDate,$endDate);
         }
-        foreach ($price_list as $item) {
-            if ($sport_id != $item['sport_id'])
-                $sport_id = $item['sport_id'];
-            $price_lists[$item['sport_id']][] = $item['id'];
+        $monthsParse = [];
+        foreach ($months as $month){
+            $monthsParse[] =  date_parse($month);
         }
-        if(!empty($request->input('fromDate'))){
-            $startDate = $request->input('fromDate');
-
-            $month = explode('-',$startDate)[1];
-        }
-
         if (\Auth::user()->hasRole('administrator'))
             $branches = Branchs::get();
         else
             $branches = \Auth::user()->branches;
 
-        $branchs = [];
-        $barnchSport = [];
-        foreach ($branches as $branch) {
-            $sportsResulat = DB::select('SELECT `sport_id` FROM `branches_sports` WHERE `branch_id`=' . $branch->id);
-            foreach ($sportsResulat as $sport) {
-                $sport = Sports::query()->where('id', $sport->sport_id)->first();
-                $price_lists = PriceList::query()->select(['id'])->where('sport_id', $sport->id)->pluck('id')->toArray();
-                $barnchSport[$branch->id][$sport->id]['sport_name'] = $sport->name;
-                $barnchSport[$branch->id][$sport->id]['sport_id'] = $sport->id;
-                $barnchSport[$branch->id][$sport->id]['price_list'] = $price_lists;
-                $barnchSport[$branch->id][$sport->id]['branch_name'] = $branch->name;
+        $branchsRecive = [];
+            foreach ($branches as $branch) {
+
+                foreach ($monthsParse as $monthParse) {
+                    $recipts = Receipts::query()->where('branch_id', $branch->id)->whereMonth('due_date', $monthParse['month'])->where('receipt_type', 2)->sum('amount');
+                    $reciptsPay = Receipts::query()->where('branch_id', $branch->id)->whereMonth('due_date', $monthParse['month'])->where('receipt_type', 1)->sum('amount');
+                    $reciptsPublicPay = Receipts::query()->whereMonth('due_date', $monthParse['month'])->where('to', 55)->sum('amount');
+                    $reciptsPublicSalary = Receipts::query()->whereMonth('due_date', $monthParse['month'])->where('to', 56)->sum('amount');
+
+                    $branchsRecive[$branch->id][$monthParse['month']] = $recipts;
+                    $branchsPay[$branch->id][$monthParse['month']] = $reciptsPay;
+                    $branchsClear[$branch->id][$monthParse['month']] = $recipts + $reciptsPay;
+                    $branchsClear[$branch->id][$monthParse['month']] = $recipts + $reciptsPay;
+
+                    $branchsPublicPay[intval($monthParse['month'])] = $reciptsPublicPay;
+                    $branchsPublicSalary[intval($monthParse['month'])] = $reciptsPublicSalary;
+                }
+                $branchsRecive[$branch->id]['name'] = $branch->name;
+                $branchsPay[$branch->id]['name'] = $branch->name;
+                $branchsClear[$branch->id]['name'] = $branch->name;
+
+
             }
-        }
         $branchesSports = [];
-        foreach ($barnchSport as $id => $value) {
-            $sportArr = array_pop($value);
-
-            $subscriptions = Receipts::where('receipt_type', 2)
-                ->where('type_of', 'players')->where('branch_id', $id)
-                ->whereIn('price_list_id', $sportArr['price_list']);
-
-            $otherIncome = Receipts::where('receipt_type', 2)->whereNotIn('type_of', ['players']);
-
-            $rentAndMaintance = Receipts::where('receipt_type', 1)->whereNotIn('type_of', ['players'])
-                ->whereIn('to', [2, 3, 4])->where('branch_id', $id);
-
-            $playerExpense = Receipts::where('receipt_type', 1)->where('type_of', 'players')
-                ->whereIn('to', [2, 3, 4])->where('branch_id', $id);
-
-            $otherExpense = Receipts::where('receipt_type', 1)->whereNotIn('to', [2, 3, 4])->where('branch_id', $id);
-
-            $salary = Receipts::where('receipt_type', 1)->where('to', 54)->where('branch_id', $id);
-
-            $public_expnse = Receipts::where('receipt_type', 1)->where('to', 55)->where('branch_id', $id);
-
-            $public_salary = Receipts::where('receipt_type', 1)->where('to', 56)->where('branch_id', $id);
-
-            if(isset($startDate)){
-                $amount = $subscriptions->whereMonth('date_receipt', '=', $month)->sum('amount');
-                $otherIncome = $otherIncome->whereMonth('date_receipt', '=', $month)->sum('amount');
-                $rentAndMaintance = $rentAndMaintance->whereMonth('date_receipt', '=', $month)->sum('amount');
-                $playerExpense = $playerExpense->whereMonth('date_receipt', '=', $month)->sum('amount');
-                $otherExpense = $otherExpense->whereMonth('date_receipt', '=', $month)->sum('amount');
-                $salary = $salary->whereMonth('date_receipt', '=', $month)->sum('amount');
-                $public_expnse = $public_expnse->whereMonth('date_receipt', '=', $month)->sum('amount');
-                $public_salary = $public_salary->whereMonth('date_receipt', '=', $month)->sum('amount');
-            }else{
-                $amount = $subscriptions->sum('amount');
-
-                $otherIncome = Receipts::where('receipt_type', 2)->whereNotIn('type_of', ['players'])->sum('amount');
-
-                $rentAndMaintance = Receipts::where('receipt_type', 1)->whereNotIn('type_of', ['players'])
-                    ->whereIn('to', [2, 3, 4])->where('branch_id', $id)->sum('amount');
-
-                $playerExpense = Receipts::where('receipt_type', 1)->where('type_of', 'players')
-                    ->whereIn('to', [2, 3, 4])->where('branch_id', $id)->sum('amount');
-
-                $otherExpense = Receipts::where('receipt_type', 1)->whereNotIn('to', [2, 3, 4])->where('branch_id', $id)->sum('amount');
-
-                $salary = Receipts::where('receipt_type', 1)->where('to', 54)->where('branch_id', $id)->sum('amount');
-
-                $public_expnse = Receipts::where('receipt_type', 1)->where('to', 55)->where('branch_id', $id)->sum('amount');
-
-                $public_salary = Receipts::where('receipt_type', 1)->where('to', 56)->where('branch_id', $id)->sum('amount');
-            }
-            $branchesSports[$id][] = [
-                'subscription' => $amount,
-                'otherIncome' => $otherIncome,
-                'totalIncome' => $otherIncome + $amount,
-                'rentAndMaintance' => $rentAndMaintance,
-                'expense' => $playerExpense + $otherExpense,
-                'salary' => -$salary,
-                'totalExpense' => $rentAndMaintance + $playerExpense + $otherExpense - $salary,
-                'public' => $rentAndMaintance + $playerExpense + $otherExpense - $salary,
-                'public_expnse' =>$public_expnse,
-                'public_salary' =>$public_salary,
-                'branch' => $sportArr['branch_name'],
-                'sport_name' => $sportArr['sport_name']
-            ];
-        }
         return view('Dashboard.reports.comparison',
-            compact('branches', 'branchesSports',));
+            compact('branches','months','branchsRecive','branchsClear','branchsPublicPay','branchsPublicSalary','branchsPay','branchesSports',));
     }
 
     public function expenseAnalysis(Request $request)
