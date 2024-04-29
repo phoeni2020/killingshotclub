@@ -69,7 +69,7 @@ use ZanySoft\LaravelPDF\PDF;
                 ->whereIn('branch_id', $branchIds)
                 ->get();
     //        dd($players[0]->PlayerSportPrice->price);
-            $receiptTypes= ReceiptTypes::where('is_pay',1)->get();
+            $receiptTypes= ReceiptTypes::where('is_pay',0)->get();
             return view('Dashboard.Receipts.index',compact('receipts','players','receiptTypes'));
         }
 
