@@ -12,6 +12,7 @@ use App\Models\Branchs;
         use App\Models\ReceiptsPay;
         use App\Models\ReceiptTypes;
 use App\Models\StadiumsRentTable;
+use App\Models\User;
 use Facade\FlareClient\Http\Response;
         use Illuminate\Http\Request;
         use App\Services\PDF\ConvertDataToPDF;
@@ -97,8 +98,18 @@ use ZanySoft\LaravelPDF\PDF;
     //        dd($players[0]->PlayerSportPrice->price);
             $receiptTypes= ReceiptTypes::whereIn('branch_id',$branchIds)->where('is_pay',0)->get();
             $rents= StadiumsRentTable::all();
+           // $trinars = Trainer::all();
+            if(\Auth::user()->hasRole('administrator')){
+                $branchIds = Branchs::get()->pluck('id')->toArray();
+            }
+            else{
+                $branchIds = \Auth::user()->branches->pluck('id')->toArray();
+            }
+            $trainers = User::whereHas('branches',function($q) use ($branchIds){
+                $q->whereIn('branchs.id',$branchIds);
+            })->get();
 
-            return view('Dashboard.Receipts.create',compact('players','rents','receiptTypes' , 'branches'));
+            return view('Dashboard.Receipts.create',compact('players','rents','trainers','receiptTypes' , 'branches'));
         }
 
         /**
@@ -128,6 +139,7 @@ use ZanySoft\LaravelPDF\PDF;
                 'from'=>$from,
                 'to'=>$request->to,
                 'type_of_amount'=>$request->type_of_amount,
+                'trinar_id'=>$request->traina_id,
                 'amount'=>$request->amount,
                 'paid'=>$request->paid,
                 'statement'=>$request->statement,

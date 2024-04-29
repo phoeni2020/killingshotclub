@@ -154,8 +154,10 @@
                                             <th class="border-top-0"> من </th>
                                             <th class="border-top-0"> الي </th>
                                             <th class="border-top-0"> اسم اللاعب </th>
+                                            <th class="border-top-0"> اسم المدرب </th>
                                             <th class="border-top-0">   المبلغ</th>
-                                            <th class="border-top-0">   نوع الدفع</th>
+                                            <th class="border-top-0">   نوع الايصال</th>
+                                            <th class="border-top-0"> Visa Batch No</th>
                                             <th class="border-top-0">   رصيد الخزنه</th>
                                             <th class="border-top-0">   البيان</th>
                                             <th class="border-top-0">   تاريخ الانشاء</th>
@@ -164,6 +166,7 @@
                                         @php
                                             $total = $totalRecived = $totalPaid = 0;
                                             $savesBalance = [];
+                                            $bankBalance = $visaBalance =0;
                                         @endphp
                                         <tbody>
                                         @forelse($receipts as $receipt )
@@ -189,6 +192,12 @@
                                                     else{
                                                         $savesBalance[$receipt->receiptTypeFrom?->id]+=$receipt->paid;
                                                     }
+                                                    if($receipt->payment_type == 2){
+                                                        $bankBalance += $receipt->paid;
+                                                    }
+                                                    elseif ($receipt->payment_type == 3){
+                                                        $visaBalance += $receipt->paid;
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -199,11 +208,19 @@
                                                     else{
                                                         $savesBalance[$receipt->to]+=$receipt->amount;
                                                     }
+
+                                                    if($receipt->payment_type == 2){
+                                                        $bankBalance += $receipt->amount;
+                                                    }
+                                                    elseif ($receipt->payment_type == 3){
+                                                        $visaBalance += $receipt->amount;
+                                                    }
                                                 }
                                             }
                                             @endphp
                                             <tr class="row1" data-id="{{ $receipt->id }}" >
                                                 <td>{{$receipt->id}}</td>
+
                                                 <td>
                                                     @if($receipt->receipt_type == 1)
                                                         صرف
@@ -251,7 +268,9 @@
                                                 <td>
                                                     {{isset($namePlayer) ? $namePlayer : '---'}}
                                                 </td>
-
+                                                <td>
+                                                    {{!is_null($receipt->trinar_id) ? $receipt->trinar_id : '---'}}
+                                                </td>
                                                 <td>
                                                     {{ $receipt->amount }}
                                                 </td>
@@ -264,6 +283,10 @@
                                                    @else
                                                         {{'فيزا'}}
                                                    @endif
+                                                </td>
+
+                                                <td>
+                                                    {{is_null($receipt->serial_number) ?$receipt->serial_number :'--'}}
                                                 </td>
 
                                                 <td>
@@ -286,11 +309,17 @@
                                         @endforelse
                                         </tbody>
                                     </table>
-                                    <center>
-                                        <h3>اجمالي رصيد الوارد :<i>{{$totalRecived}}</i></h3>
-                                        <h3>اجمالي الرصيد المصروفات : <i>{{$totalPaid}}</i></h3>
-                                        <h3>اجمالي رصيد الخزن : <i>{{$total}}</i></h3>
-                                    </center>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h3>اجمالي رصيد الوارد :<i>{{$totalRecived}}</i></h3>
+                                            <h3>اجمالي الرصيد المصروفات : <i>{{$totalPaid}}</i></h3>
+                                            <h3>اجمالي رصيد الخزن : <i>{{$total}}</i></h3>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h3>اجمالي البنك :<i>{{$bankBalance}}</i></h3>
+                                            <h3>اجمالي الفيزا : <i>{{$visaBalance}}</i></h3>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -81,7 +81,7 @@
                                             </div>
                                             <hr>
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  الفرع</label>
                                                         <select class="select2-placeholder-multiple form-control" id="branch_id"  name="branch_id" >
@@ -96,20 +96,40 @@
                                                 </div>
 
                                                 <div class="col-md-4"  style="display: none" id="from_players">
-                                                    <div class="form-group">
-                                                        <label for="projectinput2">  من  </label>
-                                                        <br>
-                                                        <select class="select2-placeholder-multiple form-control"
-                                                                style="min-width: 150px"
-                                                                name="from" id="player_id"
-                                                        >
-                                                            <option value="" selected>اختر لاعب
-                                                            </option>
-                                                            @foreach($players as $player)
-                                                                <option  data-price="{{ $player->PlayerSportPrice }}"  value="{{$player->id}}">{{$player->name}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="">  من  </label>
+                                                                <br>
+                                                                <select class="select2 form-control"
+                                                                        name="from" id="player_id"
+                                                                        style="min-width: 200px"
+                                                                >
+                                                                    <option value="" selected>اختر لاعب
+                                                                    </option>
+                                                                    @foreach($players as $player)
+                                                                        <option  data-price="{{ $player->PlayerSportPrice }}"  value="{{$player->id}}">{{$player->name}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="">  المدرب  </label>
+                                                                <br>
+                                                                <select class="select2 form-control"
+                                                                        name="traina_id" id="traina_id"
+                                                                >
+                                                                    <option value="" selected>اختر مدرب
+                                                                    </option>
+                                                                    @foreach($trainers as $trainer)
+                                                                        <option value="{{$trainer->id}}">{{$trainer->name}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                                 <div class="col-md-4" style="display: none" id="from_others">
                                                     <div class="form-group">
