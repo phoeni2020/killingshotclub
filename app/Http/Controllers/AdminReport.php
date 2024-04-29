@@ -809,17 +809,26 @@ class AdminReport extends Controller
         } else {
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
+        -
+    }
+
+
+    public function due_date_reports(Request $request)
+    {
+        if (\Auth::user()->hasRole('administrator')) {
+            $branchIds = Branchs::get()->pluck('id')->toArray();
+        } else {
+            $branchIds = \Auth::user()->branches->pluck('id')->toArray();
+        }
         // Retrieve and process filter parameters from the request
         $branch = $request->input('branch_id');
-        $startDate = $request->input('fromDate');
+        $startDate = $request->input('due_date');
         $endDate = $request->input('toDate');
         //$search_keyword = $request->input('search_keyword');
         // Add more filter parameters as needed
 
-        $stadiums_tent_table = StadiumsRentTable::query()
-            ->whereHas('stadiums',function ($q) use ($branchIds) {
-                $q->whereIn('branch_id',$branchIds);
-            })
+        $stadiums_tent_table = Receipts::query()
+            ->where('due_date','')
             ->orderBy('id', 'DESC');
 
         if ($branch) {
@@ -840,20 +849,6 @@ class AdminReport extends Controller
         // Fetch the filtered report data
         $reportsData = $stadiums_tent_table->paginate(25)->groupBy('day');
         return view('Dashboard.reports.rent_detial_reports', compact('reportsData','branches'));
-
-        return view('Dashboard.reports.rent_detial_reports',
-            compact('reports', 'branches', 'stadiums'));
-    }
-
-
-    public function due_date_reports(Request $request)
-    {
-        if (\Auth::user()->hasRole('administrator')) {
-            $branchIds = Branchs::get()->pluck('id')->toArray();
-        } else {
-            $branchIds = \Auth::user()->branches->pluck('id')->toArray();
-        }
-
         return view('Dashboard.reports.rent_detial_reports',
             compact());
     }
