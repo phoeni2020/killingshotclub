@@ -120,8 +120,8 @@
 
                                                         <select class=" form-control"  id="" name="payment_type" >
                                                             <option value=""> اختار </option>
-                                                            <option value="2"> خزنه </option>
-                                                            <option value="1"> بنك </option>
+                                                            <option value="2"> بنك </option>
+                                                            <option value="1"> خزنة </option>
                                                             <option value="0"> فيزا </option>
                                                         </select>
 
