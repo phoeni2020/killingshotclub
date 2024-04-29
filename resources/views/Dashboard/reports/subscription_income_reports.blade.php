@@ -11,7 +11,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('reports.subscription_reports')}}" method="GET">
+                <form action="{{route('lists.subscription_income_reports')}}" method="GET">
                     @csrf
                     <input type="hidden" name="filter" value="1">
 
@@ -97,7 +97,7 @@
                                 <h4 class="card-title">التقارير</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div>
-                                    <form action="{{route('reports.subscription_reports')}}" method="GET">
+                                    <form action="{{route('lists.subscription_income_reports')}}" method="GET">
 
                                         <input type="hidden" name="filter" value="1">
 
