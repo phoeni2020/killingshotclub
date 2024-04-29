@@ -138,7 +138,7 @@ use ZanySoft\LaravelPDF\PDF;
             }elseif(is_null($request->serial)){
                 $payment_type = 1;
             }else{
-                $payment_type = 0;
+                $payment_type = 3;
             }
            $receipt =  Receipts::create([
                 'user_id'=>auth()->user()->id,

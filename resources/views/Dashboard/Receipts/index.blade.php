@@ -238,7 +238,6 @@
                                             <th class="border-top-0">  اسم المستلم</th>
                                             <th class="border-top-0"> من </th>
                                             <th class="border-top-0"> الي </th>
-
                                             <th class="border-top-0">   كلي\جزئي</th>
                                             <th class="border-top-0">    نوع الخصم</th>
                                             <th class="border-top-0">   نسبة الخصم</th>
