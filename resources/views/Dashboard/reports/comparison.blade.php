@@ -195,7 +195,7 @@
                                     <table id="tablecontents" class="table table-hover table-xl mb-0 sortable">
                                         <thead>
                                         <tr>
-                                            <th class="border-top-0">المصروفات</th>
+                                            <th class="border-top-0">الصافي</th>
                                             <th class="border-top-0">الفرع/الشهر</th>
                                             @foreach($months as $month)
                                                 <th class="border-top-0">{{$month}}</th>
