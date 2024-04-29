@@ -217,6 +217,9 @@
                                                     }
                                                 }
                                             }
+                                            if(!is_null($receipt->trinar_id)){
+                                                $trinaName = \App\Models\User::find($receipt->trinar_id)->name;
+                                            }
                                             @endphp
                                             <tr class="row1" data-id="{{ $receipt->id }}" >
                                                 <td>{{$receipt->id}}</td>
@@ -269,7 +272,7 @@
                                                     {{isset($namePlayer) ? $namePlayer : '---'}}
                                                 </td>
                                                 <td>
-                                                    {{!is_null($receipt->trinar_id) ? $receipt->trinar_id : '---'}}
+                                                    {{!is_null($receipt->trinar_id) ? $trinaName : '---'}}
                                                 </td>
                                                 <td>
                                                     {{ $receipt->amount }}
@@ -286,7 +289,7 @@
                                                 </td>
 
                                                 <td>
-                                                    {{is_null($receipt->serial_number) ?$receipt->serial_number :'--'}}
+                                                    {{!is_null($receipt->serial_number) ? $receipt->serial_number :'--'}}
                                                 </td>
 
                                                 <td>
