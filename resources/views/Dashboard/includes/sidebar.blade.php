@@ -396,6 +396,11 @@
                             تقارير الخزن</a>
                         </li>
                     @endif
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('due_date_reports') )
+                        <li><a class="menu-item" href="{{route('lists.due_date_reports')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                                كشف حساب المستحق</a>
+                        </li>
+                    @endif
                     @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('rent_report') )
                         <li><a class="menu-item" href="{{route('lists.rent_report')}}" data-i18n="nav.flot_charts.flot_line_charts">
                             تقارير ايرادات الملاعب</a>
