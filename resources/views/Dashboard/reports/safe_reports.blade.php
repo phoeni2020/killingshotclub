@@ -252,7 +252,7 @@
                                                     @if(isset($name))
                                                         {{$name}}
                                                     @else
-                                                        {{$namePayer}}
+                                                        {{$namePayer ??'--'}}
                                                     @endif
                                                 </td>
 
