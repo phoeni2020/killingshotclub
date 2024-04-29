@@ -122,7 +122,7 @@
                                                             <option value=""> اختار </option>
                                                             <option value="2"> بنك </option>
                                                             <option value="1"> خزنة </option>
-                                                            <option value="0"> فيزا </option>
+                                                            <option value="3"> فيزا </option>
                                                         </select>
 
 
@@ -209,7 +209,7 @@
                                                     if($receipt->payment_type == 2){
                                                         $bankBalance += $receipt->amount;
                                                     }
-                                                    elseif ($receipt->payment_type == 0){
+                                                    elseif ($receipt->payment_type == 3){
                                                         $visaBalance += $receipt->amount;
                                                     }
                                                 }
@@ -226,7 +226,7 @@
                                                     if($receipt->payment_type == 2){
                                                         $bankBalance += $receipt->amount;
                                                     }
-                                                    elseif ($receipt->payment_type == 0){
+                                                    elseif ($receipt->payment_type == 3){
                                                         $visaBalance += $receipt->amount;
                                                     }
                                                 }
