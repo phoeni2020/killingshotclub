@@ -16,6 +16,7 @@ use App\Models\Tournaments;
 use App\Models\TournamentSubscriptions;
 use App\Models\TrainerAndPlayer;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -599,9 +600,16 @@ class AdminReport extends Controller
         } else {
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
+
         $price_list = PriceList::select(['id', 'sport_id'])->get()->toArray();
         $price_lists = [];
         $sport_id = 0;
+
+        $startDate = $request->fromDate;
+        $endDate = $request->toDate;
+        if(!empty($startDate)&&!empty($endDate)){
+            $months = $this->getMonthListFromDate($startDate,$endDate);
+        }
         foreach ($price_list as $item) {
             if ($sport_id != $item['sport_id'])
                 $sport_id = $item['sport_id'];
@@ -698,7 +706,7 @@ class AdminReport extends Controller
                 'sport_name' => $sportArr['sport_name']
             ];
         }
-        return view('Dashboard.reports.income_month_reports',
+        return view('Dashboard.reports.comparison',
             compact('branches', 'branchesSports',));
     }
 
@@ -921,5 +929,24 @@ class AdminReport extends Controller
 //        dd($tournaments);
         return view('Dashboard.reports.tournament_report',compact('tournaments'));
 
+    }
+
+    public function getMonthListFromDate( $dateStart, $dateEnd)
+    {
+        $dateStart = Carbon::createFromFormat('Y-m-d',  $dateStart);
+        $dateEnd = Carbon::createFromFormat('Y-m-d',  $dateEnd);
+
+        $start    = new \DateTime($dateStart->toDateTimeString()); // Today date
+        $end      = new \DateTime($dateEnd->toDateTimeString()); // Create a datetime object from your Carbon object
+        $interval = \DateInterval::createFromDateString('1 month'); // 1 month interval
+        $period   = new \DatePeriod($start, $interval, $end); // Get a set of date beetween the 2 period
+
+        $months = array();
+
+        foreach ($period as $dt) {
+            $months[] = $dt->format("F Y");
+        }
+
+        return $months;
     }
 }

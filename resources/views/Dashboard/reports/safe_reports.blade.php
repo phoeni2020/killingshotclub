@@ -193,10 +193,10 @@
                                                         $savesBalance[$receipt->receiptTypeFrom?->id]+=$receipt->paid;
                                                     }
                                                     if($receipt->payment_type == 2){
-                                                        $bankBalance += $receipt->paid;
+                                                        $bankBalance += $receipt->amount;
                                                     }
                                                     elseif ($receipt->payment_type == 3){
-                                                        $visaBalance += $receipt->paid;
+                                                        $visaBalance += $receipt->amount;
                                                     }
                                                 }
                                                 else

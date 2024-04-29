@@ -133,9 +133,17 @@ use ZanySoft\LaravelPDF\PDF;
             }else{
                 $from = $request->from;
             }
+            if($request->to == 39){
+                $payment_type = 2;
+            }elseif(is_null($request->serial)){
+                $payment_type = 1;
+            }else{
+                $payment_type = 0;
+            }
            $receipt =  Receipts::create([
                 'user_id'=>auth()->user()->id,
                 'type_of'=>$request->from_type,
+                'payment_type'=>$payment_type,
                 'from'=>$from,
                 'to'=>$request->to,
                 'type_of_amount'=>$request->type_of_amount,
