@@ -12,6 +12,8 @@ use App\Models\Sports;
 use App\Models\Stadium;
 use App\Models\StadiumRentCancellations;
 use App\Models\StadiumsRentTable;
+use App\Models\Tournaments;
+use App\Models\TournamentSubscriptions;
 use App\Models\TrainerAndPlayer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -912,5 +914,12 @@ class AdminReport extends Controller
         $receipts = $receipts->get();
         // Fetch the filtered report data
         return view('Dashboard.reports.due_date_reports', compact('receipts','safes','receiptTypes','branches'));
+    }
+    public function tournament_reports()
+    {
+        $tournaments = TournamentSubscriptions::with('tournament')->with('players')->get();
+//        dd($tournaments);
+        return view('Dashboard.reports.tournament_report',compact('tournaments'));
+
     }
 }
