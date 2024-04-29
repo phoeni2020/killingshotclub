@@ -172,6 +172,7 @@
                                             <th class="border-top-0"> الاشتراك المقرر</th>
                                             <th class="border-top-0"> حاله الاشتراك</th>
                                             <th class="border-top-0">الاشتراك المسدد</th>
+                                            <th class="border-top-0">عدد مرات التسجيل</th>
                                             <th class="border-top-0">الاشتراك المتبقي</th>
                                             <th class="border-top-0">رقم التليفون</th>
                                             <th class="border-top-0">تاريخ السداد</th>
@@ -191,13 +192,27 @@
                                             @foreach($reportData->players as $player)
                                                 <tr class="row1">
                                                     @php
-                                                        $player_price_list = $player->players?->playerPriceLists?->where('sport_id',$reportData->sport_id)
-                                                    ->where('level_id',$reportData->level_id)->first();
-                                                        $amount = $player_price_list?->price;
-                                                        $paid = $player->players?->receipts->where('package_id',$player_price_list?->id)->first()?->paid;
-                                                        $totalPaid+= $paid;
-                                                        $totalSubs+= $amount;
-                                                        $totalRemain+= $amount - $paid;
+                                                        $countManyTimesForPLayer = \App\Models\EventTrainerPlayers::query()
+                                                        ->where('player_id',$player->player_id)->get()->toArray();
+
+                                                            $player_price_list = $player->players?->playerPriceLists?->where('sport_id',$reportData->sport_id)
+                                                        ->where('level_id',$reportData->level_id)->first();
+
+                                                            $amount = $player_price_list?->price;
+
+                                                            $paid = $player->players?->receipts
+                                                            ->where('package_id',$player_price_list?->id)
+                                                            ->whereNotNull('paid')
+                                                            ->sum('paid');
+
+                                                            $paidAmount = $player->players?->receipts
+                                                            ->where('package_id',$player_price_list?->id)
+                                                            ->whereNull('paid')
+                                                            ->sum('amount');
+                                                            $paid = $paidAmount + $paid;
+
+                                                            $totalNeeded = $player_price_list?->price*count($countManyTimesForPLayer);
+                                                            $totalRemain = $totalNeeded - $paid;
                                                     @endphp
                                                     <td>{{$reportData->date}}</td>
                                                     <td>@lang('validation.'.$reportData->day)</td>
@@ -208,7 +223,8 @@
                                                     <td>{{$player_price_list?->price}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first() ? 'مشترك' : 'لم يسدد'}}</td>
                                                     <td>{{is_null($paid)? 0:$paid}}</td>
-                                                    <td>{{$amount - $paid}}</td>
+                                                    <td>{{count($countManyTimesForPLayer)}}</td>
+                                                    <td>{{$totalRemain}}</td>
                                                     <td>{{$player->players?->father_phone}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first()?->created_at}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first()?->id}}</td>
