@@ -630,16 +630,12 @@ class AdminReport extends Controller
                 foreach ($monthsParse as $monthParse) {
                     $recipts = Receipts::query()->where('branch_id', $branch->id)->whereMonth('due_date', $monthParse['month'])->where('receipt_type', 2)->sum('amount');
                     $reciptsPay = Receipts::query()->where('branch_id', $branch->id)->whereMonth('due_date', $monthParse['month'])->where('receipt_type', 1)->sum('amount');
-                    $reciptsPublicPay = Receipts::query()->whereMonth('due_date', $monthParse['month'])->where('to', 55)->sum('amount');
-                    $reciptsPublicSalary = Receipts::query()->whereMonth('due_date', $monthParse['month'])->where('to', 56)->sum('amount');
 
                     $branchsRecive[$branch->id][$monthParse['month']] = $recipts;
                     $branchsPay[$branch->id][$monthParse['month']] = $reciptsPay;
                     $branchsClear[$branch->id][$monthParse['month']] = $recipts + $reciptsPay;
                     $branchsClear[$branch->id][$monthParse['month']] = $recipts + $reciptsPay;
 
-                    $branchsPublicPay[intval($monthParse['month'])] = $reciptsPublicPay;
-                    $branchsPublicSalary[intval($monthParse['month'])] = $reciptsPublicSalary;
                 }
                 $branchsRecive[$branch->id]['name'] = $branch->name;
                 $branchsPay[$branch->id]['name'] = $branch->name;
@@ -649,7 +645,7 @@ class AdminReport extends Controller
             }
         $branchesSports = [];
         return view('Dashboard.reports.comparison',
-            compact('branches','months','branchsRecive','branchsClear','branchsPublicPay','branchsPublicSalary','branchsPay','branchesSports',));
+            compact('branches','months','branchsRecive','branchsClear','branchsPay','branchesSports',));
     }
 
     public function expenseAnalysis(Request $request)

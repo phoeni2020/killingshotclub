@@ -245,6 +245,74 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <table id="tablecontents" class="table table-hover table-xl mb-0 sortable">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-top-0">الصافي</th>
+                                            <th class="border-top-0">الفرع/الشهر</th>
+                                            @foreach($months as $month)
+                                                <th class="border-top-0">{{$month}}</th>
+                                            @endforeach
+                                            <th>الاجمالي</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            @php
+                                                $total = 0;
+                                            @endphp
+
+                                                <td>مصاريف عموميه</td>
+                                                <td></td>
+                                                @foreach($months as $month)
+                                                    @php
+                                                        $branchsTotal = [];
+                                                        $monthsTotal = [0=>0];
+                                                        $reciptsPublicPay = \App\Models\Receipts::query()->whereMonth('due_date', date_parse($month)['month'])->where('to', 55)->sum('amount');
+
+                                                        $total += $reciptsPublicPay;
+                                                        if(!isset($monthsTotal))
+                                                        {
+                                                            array_push($monthsTotal,$reciptsPublicPay);
+                                                        }
+                                                    @endphp
+                                                    <td class="border-top-0">
+                                                        {{$reciptsPublicPay}}
+                                                    </td>
+                                                @endforeach
+                                                <td>
+                                                    {{$total}}
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                            @php
+                                                $total = 0;
+                                            @endphp
+
+                                                <td>رواتب عموميه</td>
+                                                <td></td>
+                                                @foreach($months as $month)
+                                                    @php
+                                                        $branchsTotal = [];
+                                                        $monthsTotal = [0=>0];
+                                                        $reciptsPublicSalary = \App\Models\Receipts::query()->whereMonth('due_date', date_parse($month)['month'])->where('to', 56)->sum('amount');
+
+                                                        $total += $reciptsPublicSalary;
+                                                        if(!isset($monthsTotal))
+                                                        {
+                                                            array_push($monthsTotal,$reciptsPublicSalary);
+                                                        }
+                                                    @endphp
+                                                    <td class="border-top-0">
+                                                        {{$reciptsPublicSalary}}
+                                                    </td>
+                                                @endforeach
+                                                <td>
+                                                    {{$total}}
+                                                </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
