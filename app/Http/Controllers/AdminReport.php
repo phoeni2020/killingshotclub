@@ -897,7 +897,7 @@ class AdminReport extends Controller
         $startDate = $request->input('fromDate');
         $endDate = $request->input('toDate');
 
-        $settlements = Custody::query()->with('receipt_pay');//
+        $settlements = Custody::query()->with('receipt_pay','receipt_pay.receiptType','receipt_pay.receiptType.branches');//
         if ($branch) {
             $settlements->where('receipt.branch_id', $branch);
         }
