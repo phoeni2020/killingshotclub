@@ -66,7 +66,7 @@
                                                 <td>{{$settlement->user->name }}</td>
 
                                                 <td>
-                                                    {{$settlement->receipt_pay->receiptType->name }}
+                                                    {{$settlement->receipt_pay->receiptType->branches->name }}
                                                 </td>
 
                                                 <td>
