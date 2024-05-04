@@ -66,6 +66,7 @@
                                                 <td>{{$settlement->user->name }}</td>
 
                                                 <td>
+                                                    @dd($settlement->receipt_pay->receiptType)
                                                     {{$settlement->receipt_pay->receiptType->branches->name }}
                                                 </td>
 
