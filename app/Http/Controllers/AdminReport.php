@@ -584,6 +584,7 @@ class AdminReport extends Controller
                 'expense' => $playerExpense + $otherExpense,
                 'salary' => -$salary,
                 'totalExpense' => $rentAndMaintance + $playerExpense + $otherExpense - $salary,
+                'clearIncome' => ($otherIncome + $amount)+($rentAndMaintance + $playerExpense + $otherExpense - $salary),
                 'public' => $rentAndMaintance + $playerExpense + $otherExpense - $salary,
                 'public_expnse' =>$public_expnse,
                 'public_salary' =>$public_salary,

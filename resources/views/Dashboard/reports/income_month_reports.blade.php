@@ -154,11 +154,11 @@
                                                 <td>{{$branch['salary']}}</td>
                                                 <td>{{$branch['totalExpense']}}</td>
                                                 <td></td>
-                                                <td>{{$branch['totalIncome']}}</td>
+                                                <td>{{$branch['clearIncome']}}</td>
                                                 <td>{{$branch['public_expnse']}}</td>
                                                 <td>{{$branch['public_salary']}}</td>
-                                                <td>{{$branch['public']}}</td>
-                                                <td>{{$branch['totalIncome']+$branch['totalExpense']}}</td>
+                                                <td>0</td>
+                                                <td>{{$branch['clearIncome']-($branch['public_salary']+$branch['public_expnse'])}}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
