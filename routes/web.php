@@ -129,6 +129,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
         Route::get('due_date_report', 'App\Http\Controllers\AdminReport@due_date_reports')->name('due_date_reports');
         Route::get('tournament_reports', 'App\Http\Controllers\AdminReport@tournament_reports')->name('tournament_reports');
         Route::get('income_reports_comparison', 'App\Http\Controllers\AdminReport@income_reports_comparison')->name('income_reports_comparison');
+        Route::get('custody_reports', 'App\Http\Controllers\AdminReport@custody_reports')->name('custody_reports');
     });
 
 Route::get('logout',"App\Http\Controllers\LoginController@logout")->name('logout');

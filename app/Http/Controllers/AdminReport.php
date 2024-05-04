@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branchs;
+use App\Models\Custody;
 use App\Models\Players;
 use App\Models\PriceList;
 use App\Models\Receipts;
 use App\Models\ReceiptsPay;
 use App\Models\ReceiptTypes;
+use App\Models\SettlementRequest;
 use App\Models\Sports;
 use App\Models\Stadium;
 use App\Models\StadiumRentCancellations;
@@ -886,5 +888,22 @@ class AdminReport extends Controller
         }
 
         return $months;
+    }
+
+    public function custody_reports(Request $request)
+    {
+        $branch = $request->input('branch_id');
+        $startDate = $request->input('fromDate');
+        $endDate = $request->input('toDate');
+
+        $settlements = Custody::query()->with('receipt_pay');//
+        if ($branch) {
+            $settlements->where('receipt.branch_id', $branch);
+        }
+        if ($startDate && $endDate) {
+            $settlements->whereBetween('created_at', [$startDate, $endDate]);
+        }
+        $settlements = $settlements->paginate(10);
+        return view('Dashboard.reports.custody_report',compact('settlements'));
     }
 }
