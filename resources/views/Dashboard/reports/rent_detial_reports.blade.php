@@ -169,7 +169,6 @@
                                                 <th class="border-top-0">متكرر</th>
                                                 <th class="border-top-0"> من</th>
                                                 <th class="border-top-0">الي</th>
-
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -183,7 +182,6 @@
                                                     <td>{{  $report->price }}</td>
                                                     <td>{{  is_null($report->recipt_id) ? 'لم يتم الدفع': 'تم الدفع' }}</td>
                                                     <td>{{  is_null($report->event_repeated) ? 'غير متكرر': 'متكرر' }}</td>
-
                                                     <td>{{\Carbon\Carbon::parse($report->time_from)->format('h:i A')}}</td>
                                                     <td>{{\Carbon\Carbon::parse($report->time_to)->format('h:i A')}}</td>
                                                 </tr>

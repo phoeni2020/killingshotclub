@@ -169,12 +169,6 @@
                                                         <input type="hidden" name="typePrice" id="type_price">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="payer">  اسم القائم بالدفع </label>
-                                                        <input type="text" name="payer" id="payer" value="{{old('payer')}}" class="form-control">
-                                                    </div>
-                                                </div>
                                             </div>
 
                                             <div class="row">

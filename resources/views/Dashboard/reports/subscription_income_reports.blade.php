@@ -201,18 +201,23 @@
                                                             $amount = $player_price_list?->price;
 
                                                             $paid = $player->players?->receipts
-                                                            ->where('package_id',$player_price_list?->id)
                                                             ->whereNotNull('paid')
                                                             ->sum('paid');
 
+                                                            $totalNeeded = $player->players?->receipts
+                                                            ->whereNotNull('paid')
+                                                            ->sum('amount');
+                                                            //dd($totalNeeded);
+
                                                             $paidAmount = $player->players?->receipts
-                                                            ->where('package_id',$player_price_list?->id)
                                                             ->whereNull('paid')
                                                             ->sum('amount');
                                                             $paid = $paidAmount + $paid;
-
-                                                            $totalNeeded = $player_price_list?->price*count($countManyTimesForPLayer);
-                                                            $totalRemain = $totalNeeded - $paid;
+                                                            if($totalNeeded == 0){
+                                                                $totalRemain = 0;
+                                                            }else{
+                                                                $totalRemain = $paid - $totalNeeded;
+                                                            }
                                                     @endphp
                                                     <td>{{$reportData->date}}</td>
                                                     <td>@lang('validation.'.$reportData->day)</td>

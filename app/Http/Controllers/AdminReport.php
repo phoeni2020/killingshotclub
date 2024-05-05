@@ -441,7 +441,7 @@ class AdminReport extends Controller
 
         $trainer_players = TrainerAndPlayer::query()
             ->whereIn('branch_id',$branchIds)
-            ->orderBy('id', 'DESC');
+            ->orderBy('id', 'DESC')->with('players');
         if ($player) {
             $trainer_players->whereHas('players', function ($q) use ($player) {
                 $q->where('player_id', $player);
@@ -872,6 +872,12 @@ class AdminReport extends Controller
 
     }
 
+    /**
+     * @param $dateStart
+     * @param $dateEnd
+     * @return array
+     * @throws \Exception
+     */
     public function getMonthListFromDate( $dateStart, $dateEnd)
     {
         $dateStart = Carbon::createFromFormat('Y-m-d',  $dateStart);
@@ -891,6 +897,10 @@ class AdminReport extends Controller
         return $months;
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function custody_reports(Request $request)
     {
         $branch = $request->input('branch_id');
