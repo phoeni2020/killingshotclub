@@ -525,13 +525,8 @@
             var select_val = $(e.currentTarget).val();
             var ids =  [36,41,42,45,48]
             if(ids.includes(parseInt(select_val))){
-                console.log('sssssssssssssssss')
                 $('#rentList').css('display','block')
             }else{
-                console.log('sssssssssssssssss')
-                console.log(ids.includes(parseInt(select_val)))
-                console.log(select_val)
-
                 $('#rentList').css('display','none')
 
             }

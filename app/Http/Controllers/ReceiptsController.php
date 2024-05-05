@@ -97,14 +97,7 @@ use ZanySoft\LaravelPDF\PDF;
 
     //        dd($players[0]->PlayerSportPrice->price);
             $receiptTypes= ReceiptTypes::whereIn('branch_id',$branchIds)->where('is_pay',0)->get();
-            $rents= StadiumsRentTable::all();
-           // $trinars = Trainer::all();
-            if(\Auth::user()->hasRole('administrator')){
-                $branchIds = Branchs::get()->pluck('id')->toArray();
-            }
-            else{
-                $branchIds = \Auth::user()->branches->pluck('id')->toArray();
-            }
+            $rents= StadiumsRentTable::whereIn('branch_id',$branchIds)->get();
             $trainers = User::whereHas('branches',function($q) use ($branchIds){
                 $q->whereIn('branchs.id',$branchIds);
             })->get();

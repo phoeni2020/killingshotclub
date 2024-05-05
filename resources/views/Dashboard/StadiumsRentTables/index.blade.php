@@ -456,6 +456,7 @@
                         var stadium_id = $('#stadium_id').val();
                         var hour_rate = $('#hour_rate').val();
                         var user_id = $('#user_id').val();
+                        var branch_id = $('#branch_id').val();
 
                         var name = $("#name").val();
 
@@ -488,6 +489,7 @@
                                 from: date_from,
                                 to: date_to,
                                 repeated: repeated,
+                                branch_id: branch_id,
                             },
                             success: function (data) {
                                 if (data.status == 400) {

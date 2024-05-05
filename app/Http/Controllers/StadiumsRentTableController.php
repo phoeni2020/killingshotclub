@@ -199,7 +199,8 @@ class StadiumsRentTableController extends Controller
                 'payer'=>   $type == 'trainer' ? $request->user_id : $name,
                 'branch_id'=>$stadium->branch_id,
             ]);
-        } else {
+        }
+        else {
 
             $conflictstp = TrainerAndPlayer::where('stadium_id', $request->stadium_id)
                 ->where(function ($query) use ($from,$to) {
@@ -239,6 +240,7 @@ class StadiumsRentTableController extends Controller
             $event = StadiumsRentTable::create([
                 'stadium_id'=>$request->stadium_id,
                 'user_id'=>$request->user_id,
+                'branch_id'=>$request->branch_id,
                 'name'=>$name,
                 'type'=>$type,
                 'day' => Carbon::parse($request->day)->format('l'),
@@ -249,7 +251,7 @@ class StadiumsRentTableController extends Controller
             ]);
             Receipts::create([
                 'user_id'=>auth()->user()->id,
-                'type_of_from'=>'others',
+                'type_of'=>'others',
                 'from'=>35,
                 'to'=>ReceiptTypes::where('type','Save_money')->where('branch_id',$stadium->branch_id)->first()->id,
                 'amount'=>$event->price,
