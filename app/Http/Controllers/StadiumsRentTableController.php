@@ -237,11 +237,12 @@ class StadiumsRentTableController extends Controller
                 ]);
 
             }
+            Carbon::parse($request->day)->format('Y-m-d');
             $event = StadiumsRentTable::create([
                 'stadium_id'=>$request->stadium_id,
                 'user_id'=>$request->user_id,
                 'branch_id'=>$request->branch_id,
-                'name'=>$name,
+                'name'=>$name.'-'.Carbon::parse($request->day)->format('Y-m-d'),
                 'type'=>$type,
                 'day' => Carbon::parse($request->day)->format('l'),
                 'date'=>$request->day,
