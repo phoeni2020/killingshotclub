@@ -153,7 +153,7 @@
                                         <tbody>
                                         @php
                                             $branchsTotal = [];
-                                            $monthsTotal = [];
+                                            $monthsPayTotal = [];
                                         @endphp
                                         @foreach($branchsPay as $branchPay)
                                             @php
@@ -166,10 +166,10 @@
                                                     @php
                                                         $total +=$branchPay[date_parse($month)['month']];
                                                         $amount = $branchPay[date_parse($month)['month']];
-                                                        if(!isset($monthsTotal[date_parse($month)['month']])){
-                                                           $monthsTotal[date_parse($month)['month']] = $amount;
+                                                        if(!isset($monthsPayTotal[date_parse($month)['month']])){
+                                                           $monthsPayTotal[date_parse($month)['month']] = $amount;
                                                         }else{
-                                                           $monthsTotal[date_parse($month)['month']] += $amount;
+                                                           $monthsPayTotal[date_parse($month)['month']] += $amount;
                                                         }
 
                                                     @endphp
@@ -186,7 +186,7 @@
                                         <tr>
                                             <td></td>
                                             <td>الاجمالي</td>
-                                            @foreach($monthsTotal as $monthTotal)
+                                            @foreach($monthsPayTotal as $monthTotal)
                                                 <td>{{$monthTotal}}</td>
                                             @endforeach
                                         </tr>
@@ -206,7 +206,7 @@
                                         <tbody>
                                         @php
                                             $branchsTotal = [];
-                                            $monthsTotal = [];
+                                            $monthsClearTotal = [];
                                         @endphp
                                         @foreach($branchsClear as $branchClear)
                                             @php
@@ -219,10 +219,10 @@
                                                     @php
                                                         $total +=$branchClear[date_parse($month)['month']];
                                                         $amount = $branchClear[date_parse($month)['month']];
-                                                        if(!isset($monthsTotal[date_parse($month)['month']])){
-                                                           $monthsTotal[date_parse($month)['month']] = $amount;
+                                                        if(!isset($monthsClearTotal[date_parse($month)['month']])){
+                                                           $monthsClearTotal[date_parse($month)['month']] = $amount;
                                                         }else{
-                                                           $monthsTotal[date_parse($month)['month']] += $amount;
+                                                           $monthsClearTotal[date_parse($month)['month']] += $amount;
                                                         }
 
                                                     @endphp
@@ -239,7 +239,7 @@
                                         <tr>
                                             <td></td>
                                             <td>الاجمالي</td>
-                                            @foreach($monthsTotal as $monthTotal)
+                                            @foreach($monthsClearTotal as $monthTotal)
                                                 <td>{{$monthTotal}}</td>
                                             @endforeach
                                         </tr>
@@ -260,33 +260,7 @@
                                         <tr>
                                             @php
                                                 $total = 0;
-                                            @endphp
-
-                                                <td>مصاريف عموميه</td>
-                                                <td></td>
-                                                @foreach($months as $month)
-                                                    @php
-                                                        $branchsTotal = [];
-                                                        $monthsTotal = [0=>0];
-                                                        $reciptsPublicPay = \App\Models\Receipts::query()->whereMonth('due_date', date_parse($month)['month'])->where('to', 55)->sum('amount');
-
-                                                        $total += $reciptsPublicPay;
-                                                        if(!isset($monthsTotal))
-                                                        {
-                                                            array_push($monthsTotal,$reciptsPublicPay);
-                                                        }
-                                                    @endphp
-                                                    <td class="border-top-0">
-                                                        {{$reciptsPublicPay}}
-                                                    </td>
-                                                @endforeach
-                                                <td>
-                                                    {{$total}}
-                                                </td>
-                                        </tr>
-                                        <tr>
-                                            @php
-                                                $total = 0;
+                                                $totalPublicSalary = [];
                                             @endphp
 
                                                 <td>رواتب عموميه</td>
@@ -298,10 +272,10 @@
                                                         $reciptsPublicSalary = \App\Models\Receipts::query()->whereMonth('due_date', date_parse($month)['month'])->where('to', 56)->sum('amount');
 
                                                         $total += $reciptsPublicSalary;
-                                                        if(!isset($monthsTotal))
-                                                        {
-                                                            array_push($monthsTotal,$reciptsPublicSalary);
-                                                        }
+
+                                                        array_push($monthsTotal,$reciptsPublicSalary);
+                                                        $totalPublicSalary[ date_parse($month)['month']] = $reciptsPublicSalary;
+
                                                     @endphp
                                                     <td class="border-top-0">
                                                         {{$reciptsPublicSalary}}
@@ -310,6 +284,42 @@
                                                 <td>
                                                     {{$total}}
                                                 </td>
+                                        </tr>
+                                        <tr>
+                                            @php
+                                                $total = 0;
+                                                $totalPublic = [];
+                                            @endphp
+
+                                            <td>مصاريف عموميه</td>
+                                            <td></td>
+                                            @foreach($months as $month)
+                                                @php
+                                                    $branchsTotal = [];
+                                                    $reciptsPublicPay = \App\Models\Receipts::query()->whereMonth('due_date', date_parse($month)['month'])->where('to', 55)->sum('amount');
+
+                                                    $total += $reciptsPublicPay;
+                                                    $totalPublic[ date_parse($month)['month']] = $reciptsPublicPay;
+                                                @endphp
+                                                <td class="border-top-0">
+                                                    {{$reciptsPublicPay}}
+                                                </td>
+                                            @endforeach
+                                            <td>
+                                                {{$total}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>صافي الربح</td>
+                                            <td></td>
+                                            @foreach($monthsClearTotal as $month => $monthClearTotal)
+                                                <td class="border-top-0">
+                                                    {{$monthClearTotal - ($totalPublic[$month]+$totalPublicSalary[$month])}}
+                                                </td>
+                                            @endforeach
+                                            <td>
+                                                {{$total}}
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>

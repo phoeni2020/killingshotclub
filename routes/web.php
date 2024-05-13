@@ -112,6 +112,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
     Route::resource('contract-partner',"\App\Http\Controllers\ContractPartnersController");
     Route::resource('partner',"\App\Http\Controllers\PartnersController");
     Route::resource('report',"\App\Http\Controllers\ReportController");
+    Route::get('attendance/employee', "\App\Http\Controllers\TrainerAttendanceController@workerAttendece")->name('attendance-employee.index');
+    Route::get('attendance/employee/store', "\App\Http\Controllers\TrainerAttendanceController@workerAttendeceStore")->name('attendance-employee.store');
 
     Route::prefix('reports')->as('reports.')->group(function (){
         Route::get('subscription_reports','App\Http\Controllers\AdminReport@subscription_reports')->name('subscription_reports');

@@ -335,6 +335,9 @@
                     <li><a class="menu-item" href="{{route('attendance-trainer.index')}}" data-i18n="nav.flot_charts.flot_line_charts">
                             حضور و غياب المدربين </a>
                     </li>
+                    <li><a class="menu-item" href="{{route('attendance-employee.index')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                            حضور و غياب الموظفين </a>
+                    </li>
 
                 </ul>
             </li>

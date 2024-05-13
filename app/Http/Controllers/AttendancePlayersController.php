@@ -21,7 +21,9 @@ class AttendancePlayersController extends Controller
     public function index()
     {
         $this->CanDoAction(['administrator','administrator'],'Attendance-players-read');
-        $now = Carbon::now()->timezone('Africa/Cairo')->toDateTimeString();
+        $now = Carbon::now();
+        $now->hour +=3;
+        $now = $now->timezone('Africa/Cairo')->toDateTimeString();
         if(\Auth::user()->hasRole('administrator')){
             $branchIds = Branchs::get()->pluck('id')->toArray();
         }
@@ -32,8 +34,7 @@ class AttendancePlayersController extends Controller
             ->whereIn('branch_id',$branchIds)
         ->with(['EventTrainer.players'])
             ->where(function ($query) use ($now) {
-                $query->where('time_from', '<=', $now)
-                    ->where('time_to', '>=', $now);
+                $query->where('time_from', '<=', $now);
             })
 
             ->paginate(10);
