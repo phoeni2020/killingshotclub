@@ -133,6 +133,11 @@ use ZanySoft\LaravelPDF\PDF;
             }else{
                 $payment_type = 3;
             }
+            if($request->discount != 'none'){
+                $discount_approved = 3;
+            }else{
+                $discount_approved = 1;
+            }
            $receipt =  Receipts::create([
                 'user_id'=>auth()->user()->id,
                 'type_of'=>$request->from_type,
@@ -141,7 +146,9 @@ use ZanySoft\LaravelPDF\PDF;
                 'to'=>$request->to,
                 'type_of_amount'=>$request->type_of_amount,
                 'trinar_id'=>$request->traina_id,
+                'discount_approved'=>$discount_approved,
                 'amount'=>$request->amount,
+                'recipt_no'=>$request->recipt_no,
                 'paid'=>$request->paid,
                 'statement'=>$request->statement,
                 'date_receipt'=>$request->date,
@@ -298,6 +305,24 @@ use ZanySoft\LaravelPDF\PDF;
             return $Receipts;
 
         }
+      public function discount_waiting_approve(){
+          $receipts = Receipts::query()->where('discount_approved',1)->get();
+          return view('Dashboard.Receipts.discount',compact('receipts'));
+      }
+       public function discount_approve(Request $request){
+          $receipt =  Receipts::query()->find($request->id);
+          $receipt->discount_approved = 2;
+          $receipt->update();
+          $receipts = Receipts::query()->where('discount_approved',1)->get();
+           return view('Dashboard.Receipts.discount',compact('receipts','receipt'));
+       }
+      public function discount_disapprove(Request $request){
+          $receipt =  Receipts::query()->find($request->id);
+          $receipt->discount_approved = 0;
+          $receipt->update();
+          $receipts = Receipts::query()->where('discount_approved',1)->get();
+          return view('Dashboard.Receipts.discount',compact('receipts','receipt'));
+      }
 
         /*
          *  pdf file

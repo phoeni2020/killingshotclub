@@ -41,7 +41,12 @@
 
                                                     </div>
                                                 </div>
-
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="projectinput2">  رقم الايصال الدفتري </label>
+                                                        <input type="text" class="form-control"  name="recipt_no" value="" required>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="projectinput2">  تاريخ الايصال</label>

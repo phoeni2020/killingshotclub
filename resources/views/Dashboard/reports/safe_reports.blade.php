@@ -167,8 +167,11 @@
                                             <th class="border-top-0">  اسم المحرر</th>
                                             <th class="border-top-0"> من </th>
                                             <th class="border-top-0"> الي </th>
+                                            <th class="border-top-0"> الفرع </th>
                                             <th class="border-top-0"> اسم اللاعب </th>
                                             <th class="border-top-0"> اسم المدرب </th>
+                                            <th class="border-top-0"> نوع النشاط </th>
+                                            <th class="border-top-0"> المستوي \ مده الايجار </th>
                                             <th class="border-top-0">   المبلغ</th>
                                             <th class="border-top-0">   نوع الايصال</th>
                                             <th class="border-top-0"> Visa Batch No</th>
@@ -246,7 +249,6 @@
                                                     @endif
                                                 </td>
                                                 <td>{{$receipt->user->name}}</td>
-
                                                 @php
                                                     $name ='';
                                                     if($receipt->type_of=='players'&&$receipt->receipt_type != 1){
@@ -264,7 +266,6 @@
                                                          $total+=$receipt->amount;
                                                     }
                                                 @endphp
-
                                                 <td>
                                                     @if(isset($name))
                                                         {{$name}}
@@ -281,12 +282,35 @@
                                                     @endif
 
                                                 </td>
+                                                <td>
+                                                    {{\App\Models\Branchs::query()->find($receipt->branch_id)->name}}
+                                                </td>
 
                                                 <td>
                                                     {{isset($namePlayer) ? $namePlayer : '---'}}
                                                 </td>
                                                 <td>
                                                     {{!is_null($receipt->trinar_id) ? $trinaName : '---'}}
+                                                </td>
+                                                <td>
+                                                   @php
+                                                   $name = null;
+                                                     if(!is_null($receipt->package_id)&&!empty($receipt->package_id)){
+                                                          $pack = \App\Models\Packages::query()->find($receipt->package_id);
+                                                            if(is_null($pack))
+                                                            {
+                                                                echo 'الباكدج غير موجوده';
+                                                            }else{
+                                                                $name = $pack->name;
+                                                                echo \App\Models\Sports::query()->find($pack->sport_id)->name;
+                                                            }
+                                                     }
+                                                   @endphp
+                                                </td>
+                                                <td>
+                                                    @if(!is_null($name))
+                                                        {{$name}}
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     {{ $receipt->amount }}

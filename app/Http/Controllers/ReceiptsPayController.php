@@ -93,6 +93,7 @@ class ReceiptsPayController extends Controller
             'user_id'=>auth()->user()->id,
             'type_of'=>$request->to_type,
             'branch_id'=>$request->branch_id,
+            'recipt_no'=>$request->recipt_no,
             'from'=>$request->from,
             'to'=>$request->to,
             'amount'=> -$request->amount,

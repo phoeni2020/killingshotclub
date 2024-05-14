@@ -1,6 +1,5 @@
 @extends('Dashboard.includes.admin')
 @section('content')
-
     <!-- modal medium -->
     <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -14,11 +13,7 @@
                 <form action="{{route('receipt-pay.index')}}" method="GET">
                     @csrf
                     <input type="hidden" name="filter" value="1">
-
                     <div class="modal-body">
-
-
-
                         <div class="row">
                             <div class="col-md-12 mt-2" >
                                 <div class="form-group">

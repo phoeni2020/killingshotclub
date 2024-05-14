@@ -467,6 +467,12 @@
                                 تقارير الملاعب</a>
                         </li>
                     @endif
+                    @if( auth()->user()->hasRole(['administrator']) || auth()->user()->hasPermission('stadiums_reports') )
+
+                        <li><a class="menu-item" href="{{route('reports.deleted_recipt')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                                تقارير الفواتير الملغيه</a>
+                        </li>
+                    @endif
                 </ul>
             </li>
             @if( auth()->user()->hasRole(['administrator','superadministrator']) || auth()->user()->hasPermission('tournament-read') )

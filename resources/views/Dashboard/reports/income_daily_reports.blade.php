@@ -33,7 +33,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="" class="control-label mb-1">من التاريخ:</label>
-                                    <input class="form-control" type="month" name="fromDate"
+                                    <input class="form-control" type="date" name="fromDate"
                                            value="{{request('fromDate')}}">
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                 <h4 class="card-title">الفلتر </h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div>
-                                    <form action="{{route('lists.income_list_month')}}" method="GET">
+                                    <form action="{{route('lists.income_list_daily')}}" method="GET">
 
                                         <input type="hidden" name="filter" value="1">
 
@@ -99,7 +99,7 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="" class="control-label mb-1">من التاريخ:</label>
-                                                        <input class="form-control" type="month" name="fromDate"
+                                                        <input class="form-control" type="date" name="fromDate"
                                                                value="{{request('fromDate')}}">
                                                     </div>
                                                 </div>

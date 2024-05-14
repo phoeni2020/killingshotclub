@@ -52,6 +52,13 @@
                                                                    min="{{ Carbon\Carbon::today()->format('Y')}}-01-01" max="2030-12-31">
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <label for="projectinput2">  رقم الايصال الدفتري </label>
+                                                            <input type="text" class="form-control"  name="recipt_no" value="" required>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="projectinput2">  تاريخ الاستحقاق</label>

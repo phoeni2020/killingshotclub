@@ -101,6 +101,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
     Route::resource('attendance-trainer', "\App\Http\Controllers\TrainerAttendanceController");
     Route::resource('stadium', "\App\Http\Controllers\StadiumController");
     Route::resource('role', "\App\Http\Controllers\RoleController");
+    Route::resource('role', "\App\Http\Controllers\RoleController");
 
     Route::resource('custody', "\App\Http\Controllers\CustodyController");
     Route::resource('settlement-request', "\App\Http\Controllers\SettlementRequestController");
@@ -119,9 +120,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
         Route::get('subscription_reports','App\Http\Controllers\AdminReport@subscription_reports')->name('subscription_reports');
         Route::get('schedules_reports','App\Http\Controllers\AdminReport@schedules_reports')->name('schedules_reports');
         Route::get('stadiums_reports','App\Http\Controllers\AdminReport@stadiums_reports')->name('stadiums_reports');
+        Route::get('deleted_recipt','App\Http\Controllers\AdminReport@deleted_recipt')->name('deleted_recipt');
     });
     Route::prefix('lists')->as('lists.')->group(function () {
         Route::get('income_list_month', 'App\Http\Controllers\AdminReport@income_reports_month')->name('income_list_month');
+        Route::get('income_list_daily', 'App\Http\Controllers\AdminReport@income_reports_daily')->name('income_list_daily');
         Route::get('expanse_list', 'App\Http\Controllers\AdminReport@expenseAnalysis')->name('expenseAnalysis');
         Route::get('income_list', 'App\Http\Controllers\AdminReport@income_list')->name('income_list');
         Route::get('safe_report', 'App\Http\Controllers\AdminReport@recipt_report')->name('recipt_report');
@@ -135,8 +138,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
     });
 
 Route::get('logout',"App\Http\Controllers\LoginController@logout")->name('logout');
+
+    Route::get('receipt/discount/wait', "\App\Http\Controllers\ReceiptsController@discount_waiting_approve")->name('receipt.discount_waiting_approve');
+
+    Route::get('receipt/discount_disapproved/{id}', "\App\Http\Controllers\ReceiptsController@discount_disapproved")->name('receipt.discount_approved');
+
+    Route::get('receipt/discount_approved/{id}', "\App\Http\Controllers\ReceiptsController@discount_approved")->name('receipt.discount_disapproved');
+
 });
 
-//Auth::routes();
+//http://127.0.0.1:8000/admin/lists/income_list_month?filter=1&fromDate=2024-03
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
