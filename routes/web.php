@@ -141,9 +141,9 @@ Route::get('logout',"App\Http\Controllers\LoginController@logout")->name('logout
 
     Route::get('receipt/discount/wait', "\App\Http\Controllers\ReceiptsController@discount_waiting_approve")->name('receipt.discount_waiting_approve');
 
-    Route::get('receipt/discount_disapproved/{id}', "\App\Http\Controllers\ReceiptsController@discount_disapproved")->name('receipt.discount_approved');
+    Route::get('receipt/discount_disapproved/{id}', "\App\Http\Controllers\ReceiptsController@discount_disapproved")->name('receipt.discount_disapproved');
 
-    Route::get('receipt/discount_approved/{id}', "\App\Http\Controllers\ReceiptsController@discount_approved")->name('receipt.discount_disapproved');
+    Route::get('receipt/discount_approved/{id}', "\App\Http\Controllers\ReceiptsController@discount_approved")->name('receipt.discount_approved');
 
 });
 

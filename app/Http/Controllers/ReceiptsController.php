@@ -133,7 +133,7 @@ use ZanySoft\LaravelPDF\PDF;
             }else{
                 $payment_type = 3;
             }
-            if($request->discount != 'none'){
+            if($request->discount == 'none'){
                 $discount_approved = 3;
             }else{
                 $discount_approved = 1;
@@ -309,19 +309,17 @@ use ZanySoft\LaravelPDF\PDF;
           $receipts = Receipts::query()->where('discount_approved',1)->get();
           return view('Dashboard.Receipts.discount',compact('receipts'));
       }
-       public function discount_approve(Request $request){
+       public function discount_approved(Request $request){
           $receipt =  Receipts::query()->find($request->id);
           $receipt->discount_approved = 2;
           $receipt->update();
-          $receipts = Receipts::query()->where('discount_approved',1)->get();
-           return view('Dashboard.Receipts.discount',compact('receipts','receipt'));
+          return redirect()->route('receipt.discount_waiting_approve');
        }
-      public function discount_disapprove(Request $request){
+      public function discount_disapproved(Request $request){
           $receipt =  Receipts::query()->find($request->id);
           $receipt->discount_approved = 0;
           $receipt->update();
-          $receipts = Receipts::query()->where('discount_approved',1)->get();
-          return view('Dashboard.Receipts.discount',compact('receipts','receipt'));
+          return redirect()->route('receipt.discount_waiting_approve');
       }
 
         /*
