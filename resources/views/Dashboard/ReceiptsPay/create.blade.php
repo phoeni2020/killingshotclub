@@ -58,6 +58,16 @@
                                                                min="1997-01-01" max="2030-12-31">
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="projectinput2">  تاريخ الاستحقاق</label>
+                                                        <input type="date" name="date_due" class="form-control"
+
+                                                               {{--                                                               @if(auth()->user()->hasPermission('date-receipts-create') || auth()->user()->hasRole(['administrator','superadministrator']))   @else disabled  @endif--}}
+                                                               placeholder="dd-mm-yyyy" value = "{{ Carbon\Carbon::today()->format('Y-m-d') }}"
+                                                               min="1997-01-01" max="2030-12-31">
+                                                    </div>
+                                                </div>
 
                                             </div>
                                             <div class="row">

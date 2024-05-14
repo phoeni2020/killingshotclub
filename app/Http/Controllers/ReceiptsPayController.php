@@ -99,6 +99,7 @@ class ReceiptsPayController extends Controller
             'amount'=> -$request->amount,
             'statement'=>$request->statement,
             'date_receipt'=>$request->date,
+            'date_due'=>$request->date_due,
             'buyer'=>$request->buyer,
             'receipt_type'=>1,
         ]);
