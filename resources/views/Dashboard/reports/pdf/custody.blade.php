@@ -40,7 +40,7 @@
     </tr>
     </thead>
     <tbody>
-    @forelse($settlements as $settlement )
+    @forelse($allData as $settlement )
 
         <tr class="row1" data-id="{{ $settlement->id }}" >
             <td>{{$settlement->user->name }}</td>

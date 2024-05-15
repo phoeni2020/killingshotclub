@@ -1,6 +1,30 @@
 @extends('Dashboard.includes.admin')
 @section('content')
 
+    <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mediumModalLabel">Filter </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{route('lists.custody_reports')}}" method="GET">
+                    @csrf
+                    <input type="hidden" name="filter" value="1">
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <input type="submit" value="Confirm" class="btn btn-primary">
+                        {{-- <button type="button"  class="btn btn-primary">Confirm</button> --}}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-header row">
@@ -36,12 +60,29 @@
                     <div id="recent-transactions" class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                <h4 class="card-title">تقرير الاشتراكات</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
+                                        @if(request('filter'))
+                                            <li>
+                                                <a class="btn btn-sm btn-primary   pull-right" href="{{route('lists.custody_reports')}}"> <i class="ft-rotate-cw ft-md"></i> </a>
+                                            </li>
+                                            <li>
+                                                <a class="btn btn-sm btn-danger box-shadow-2 round btn-min-width pull-right" href="{{route('lists.custody_reports',['pdf'=>1, request()->fullUrl()])}}" target="_blank"> <i class="ft-pepper ft-md"></i> تحميل  ملف PDF</a>
+                                            </li>
+                                            <li>
+                                                <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('lists.custody_reports',['excel'=>1, request()->fullUrl()])}}"> <i class="ft-pepper ft-md"></i> تحميل  ملف Excel</a>
+                                            </li>
+
+                                        @endif
 
                                         <li>
-                                            {{--                                                <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('receipt-type.create')}}"> <i class="ft-plus ft-md"></i> اضافة نوع ايصال</a>--}}
+
+                                            <button type="button" class="btn btn-sm btn-warning  box-shadow-2 round btn-min-width pull-right" data-toggle="modal" data-target="#mediumModal">
+                                                <i class="ft-report ft-md"></i>
+                                                تقرير
+                                            </button>
                                         </li>
                                 </div>
                             </div>
