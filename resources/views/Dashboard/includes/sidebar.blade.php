@@ -185,6 +185,14 @@
                             انشاء  نوع ايصال توريد جديد</a>
                     </li>
                     @endif
+                    @if( auth()->user()->hasRole(['administrator','superadministrator']) || auth()->user()->hasPermission('type-receipts-create')  )
+
+                        <li>
+                            <a class="menu-item" href="{{route('receipt.discount_waiting_approve')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                                الخصومات المعتمده
+                            </a>
+                        </li>
+                    @endif
 
 
                 </ul>

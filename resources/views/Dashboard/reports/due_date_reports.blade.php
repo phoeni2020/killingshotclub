@@ -230,7 +230,7 @@
                                                 <td>
                                                     @php
                                                         $totalAmount += $receipt->paid ?? $receipt->amount;
-                                                        $totalDiscount += $discountAmount;
+                                                        $totalDiscount += !is_null($discountAmount) ?$discountAmount :0;
                                                         $totalRemain += $remain;
                                                         $totalAmount2 += $receipt->amount;
                                                     @endphp
