@@ -229,9 +229,8 @@
 
                                                 <td>
                                                     @php
-                                                    dd($discountAmount);
                                                         $totalAmount += $receipt->paid ?? $receipt->amount;
-                                                        $totalDiscount += !is_null($discountAmount) ?$discountAmount :0;
+                                                        $totalDiscount += !is_null($receipt->discount_amount_value) ?$receipt->discount_amount_value :0;
                                                         $totalRemain += $remain;
                                                         $totalAmount2 += $receipt->amount;
                                                     @endphp
