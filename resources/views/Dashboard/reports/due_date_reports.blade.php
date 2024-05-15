@@ -169,6 +169,11 @@
                                         @php
                                             $total = $totalRecived = $totalPaid = 0;
                                             $savesBalance = [];
+                                            $totalBalance = 0;
+                                            $totalRemain = 0;
+                                            $totalAmount = 0;
+                                            $totalAmount2 = 0;
+                                            $totalDiscount = 0;
                                         @endphp
                                         <tbody>
                                         @forelse($receipts as $receipt )
@@ -222,10 +227,19 @@
 
                                                 <td>{{ $discountAmount }}</td>
 
-                                                <td>{{ $receipt->paid ?? $receipt->amount }}</td>
+                                                <td>
+                                                    @php
+                                                        $totalAmount += $receipt->paid ?? $receipt->amount;
+                                                        $totalDiscount += $discountAmount;
+                                                        $totalRemain += $remain;
+                                                        $totalAmount2 += $receipt->amount;
+                                                    @endphp
+                                                    {{ $receipt->paid ?? $receipt->amount }}
+                                                </td>
 
 
                                                 <td>
+
                                                     {{ $remain }}
                                                 </td>
                                                 <td>
@@ -251,7 +265,17 @@
                                             </tr>
                                         @endforelse
                                             <tr>
-                                                لايوجد ايصالات حاليا
+                                                <td colspan="8">الاجمالي</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{$totalDiscount}}</td>
+                                                <td>{{$totalRemain}}</td>
+                                                <td>{{$totalAmount}}</td>
+                                                <td>{{$totalAmount2}}</td>
                                             </tr>
                                         </tbody>
                                     </table>

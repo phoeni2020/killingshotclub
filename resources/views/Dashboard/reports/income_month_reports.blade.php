@@ -139,10 +139,25 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        @php
+                                            $subscription = $otherIncome = $totalIncome = $rentAndMaintance =
+                                            $expense = $salary = $totalExpense = $clearIncome = $public_expnse = $public_salary = $allClear =  0;
+                                        @endphp
                                             @foreach($branchesSports as $branch)
                                                 <tr>
                                                 @php
-                                                $branch = array_pop($branch);
+                                                    $branch = array_pop($branch);
+                                                    $subscription+=$branch['subscription'];
+                                                    $otherIncome+=$branch['otherIncome'];
+                                                    $totalIncome+=$branch['totalIncome'];
+                                                    $rentAndMaintance+=$branch['rentAndMaintance'];
+                                                    $expense+=$branch['expense'];
+                                                    $salary+=$branch['salary'];
+                                                    $totalExpense+=$branch['totalExpense'];
+                                                    $clearIncome+=$branch['clearIncome'];
+                                                    $public_expnse+=$branch['public_expnse'];
+                                                    $public_salary+=$branch['public_salary'];
+                                                    $allClear+=$branch['clearIncome']-($branch['public_salary']+$branch['public_expnse']);
                                                 @endphp
                                                 <td>{{$branch['subscription'] > 0 ?$branch['branch'].'-'.$branch['sport_name']:$branch['branch']}}</td>
                                                 <td>{{$branch['subscription']}}</td>
@@ -162,6 +177,23 @@
                                                 <td>{{$branch['clearIncome']-($branch['public_salary']+$branch['public_expnse'])}}</td>
                                                 </tr>
                                             @endforeach
+                                            <tr>
+                                                <td>المجموع</td>
+                                                <td>{{$subscription}} $subscription</td>
+                                                <td>{{$otherIncome}}$otherIncome</td>
+                                                <td>{{$totalIncome}}$totalIncome</td>
+                                                <td></td>
+                                                <td>{{$rentAndMaintance}}$rentAndMaintance</td>
+                                                <td>{{$expense}}$expense</td>
+                                                <td>{{$salary}}$salary</td>
+                                                <td>{{$totalExpense}}$totalExpense</td>
+                                                <td></td>
+                                                <td>{{$clearIncome}}$clearIncome</td>
+                                                <td>{{$public_expnse}}$public_expnse</td>
+                                                <td>{{$public_salary}}$public_salary</td>
+                                                <td>0</td>
+                                                <td>{{$allClear}}$allClear</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

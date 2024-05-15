@@ -434,6 +434,11 @@
                                 تقارير المسابقات</a>
                         </li>
                     @endif
+                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                            <li><a class="menu-item" href="{{route('lists.income_list_daily')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                                    تقرير يومي</a>
+                            </li>
+                        @endif
                 </ul>
             </li>
             {{-- @endif--}}

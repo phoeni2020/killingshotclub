@@ -60,6 +60,11 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        @php
+                                            $expensesTotal = 0;
+                                            $priceTotal = 0;
+                                            $clearTotal = 0;
+                                        @endphp
                                         @forelse($settlements as $settlement )
 
                                             <tr class="row1" data-id="{{ $settlement->id }}" >
@@ -70,6 +75,9 @@
                                                 </td>
 
                                                 <td>
+                                                    @php
+                                                        $priceTotal+=$settlement->price;
+                                                    @endphp
                                                     {{$settlement->price }}
                                                 </td>
 
@@ -77,13 +85,16 @@
                                                     @php
                                                        $expenses = \App\Models\CustodyExpense::where('custody_id',$settlement->id)->sum('price');
                                                        $branch = \App\Models\Branchs::find($settlement->receipt_pay->branch_id );
+                                                       $expensesTotal+=$expenses;
                                                     @endphp
                                                     {{$expenses}}
                                                 </td>
                                                 <td>
+                                                    @php
+                                                        $clearTotal+= $settlement->price -  $expenses;
+                                                    @endphp
                                                     {{$settlement->price -  $expenses }}
                                                 </td>
-
                                                 <td>
 
                                                     {{$branch->name}}
@@ -97,6 +108,12 @@
                                                 لايوجد اي عهد
                                             </tr>
                                         @endforelse
+                                        <tr>
+                                            <td colspan="2" >مجموع</td>
+                                            <td colspan="1">{{$priceTotal}}</td>
+                                            <td colspan="1">{{$expensesTotal}}</td>
+                                            <td colspan="1">{{$clearTotal}}</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

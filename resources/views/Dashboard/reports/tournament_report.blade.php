@@ -54,6 +54,9 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        @php
+                                            $totalSubscribeValue = $cost = 0;
+                                        @endphp
                                         @forelse($tournaments as $tournament )
                                             @php
                                                 $tournamentInfo = \App\Models\Tournaments::find($tournament->tournament_id);
@@ -61,7 +64,8 @@
                                                 where('tournament_id',$tournament->tournament_id)
                                                 ->where('player_id',$tournament->player_id)->get()->toArray();
                                                 $player = \App\Models\Players::find($tournament->player_id);
-
+                                                $totalSubscribeValue += $tournamentInfo->subscribe_value;
+                                                $cost += $tournamentInfo->cost;
                                             @endphp
                                             <tr class="row1" data-id="{{ $tournament->id }}" >
                                                 <td>{{$tournamentInfo->name}}</td>
@@ -81,7 +85,11 @@
                                             </td>
                                         </tr>
                                         @endforelse
-
+                                        <tr>
+                                            <td colspan="2">المجموع</td>
+                                            <td>{{$totalSubscribeValue}}</td>
+                                            <td>{{$cost}}</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

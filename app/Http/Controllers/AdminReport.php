@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportToExcelSheet;
 use App\Models\Branchs;
 use App\Models\Custody;
 use App\Models\Players;
@@ -18,9 +19,11 @@ use App\Models\Tournaments;
 use App\Models\TournamentSubscriptions;
 use App\Models\TrainerAndPlayer;
 use App\Models\User;
+use App\Services\PDF\ConvertDataToPDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminReport extends Controller
 {
@@ -77,6 +80,16 @@ class AdminReport extends Controller
         else
             $branches = \Auth::user()->branches;
         // Return the report view with the filtered data
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.subcription",$reportsData," تقرير الاشتراكات");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($reportsData ,'Dashboard.reports.pdf.subcription');
+                return Excel::download($ExportToExcelSheet , ' تقرير الاشتراكات.xlsx');
+            }
+        }
+
         return view('Dashboard.reports.subscription_reports',
             compact('reportsData', 'branches',
             'trainers','players'));
@@ -757,6 +770,15 @@ class AdminReport extends Controller
                 $staduimsInfo[$staduim->id]['canceltion_rent_times'] = $canceltionRentTimes;
             }
         }
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",$staduimsInfo," تقرير الايجار.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($staduimsInfo ,'Dashboard.reports.pdf.rents_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير الايجار.xlsx');
+            }
+        }
         return view('Dashboard.reports.rents_reports',
             compact('staduimsInfo'));
     }
@@ -800,6 +822,15 @@ class AdminReport extends Controller
         // Fetch the filtered report data
         if(!empty($request->name)){
             $stadiums_tent_table->where('name', 'like', '%' .$request->name . '%');
+        }
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rent_detial_reports",$stadiums_tent_table->get()," تقرير الايجار.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($stadiums_tent_table->get() ,'Dashboard.reports.pdf.rent_detial_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير الايجار.xlsx');
+            }
         }
         $reportsData = $stadiums_tent_table->paginate(25)->groupBy('day');
 
@@ -864,10 +895,19 @@ class AdminReport extends Controller
         // Fetch the filtered report data
         return view('Dashboard.reports.due_date_reports', compact('receipts','safes','receiptTypes','branches'));
     }
-    public function tournament_reports()
+    public function tournament_reports(Request $request)
     {
         $tournaments = TournamentSubscriptions::with('tournament')->with('players')->get();
-//        dd($tournaments);
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.subcription",$tournaments," تقرير المسابقات.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($tournaments ,'Dashboard.reports.pdf.subcription');
+                return Excel::download($ExportToExcelSheet , ' تقرير المسابقات.xlsx');
+            }
+        }
+        //        dd($tournaments);
         return view('Dashboard.reports.tournament_report',compact('tournaments'));
 
     }
@@ -913,6 +953,15 @@ class AdminReport extends Controller
         }
         if ($startDate && $endDate) {
             $settlements->whereBetween('created_at', [$startDate, $endDate]);
+        }
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.custody",$settlements->get()," تقرير العهد.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($settlements->get() ,'Dashboard.reports.pdf.custody');
+                return Excel::download($ExportToExcelSheet , ' تقرير العهد.xlsx');
+            }
         }
         $settlements = $settlements->paginate(10);
         return view('Dashboard.reports.custody_report',compact('settlements'));

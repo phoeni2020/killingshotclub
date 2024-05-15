@@ -283,7 +283,15 @@
 
                                                 </td>
                                                 <td>
-                                                    {{\App\Models\Branchs::query()->find($receipt->branch_id)->name}}
+                                                    @php
+                                                        $branch = \App\Models\Branchs::query()->find($receipt->branch_id);
+
+                                                            if(is_null($branch)){
+                                                                echo 'فرع محذوف';
+                                                            }else{
+                                                                echo $branch->name;
+                                                            }
+                                                    @endphp
                                                 </td>
 
                                                 <td>
