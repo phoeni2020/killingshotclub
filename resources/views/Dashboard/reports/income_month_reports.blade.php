@@ -179,20 +179,20 @@
                                             @endforeach
                                             <tr>
                                                 <td>المجموع</td>
-                                                <td>{{$subscription}} $subscription</td>
-                                                <td>{{$otherIncome}}$otherIncome</td>
-                                                <td>{{$totalIncome}}$totalIncome</td>
+                                                <td>{{$subscription}}</td>
+                                                <td>{{$otherIncome}}</td>
+                                                <td>{{$totalIncome}}</td>
                                                 <td></td>
-                                                <td>{{$rentAndMaintance}}$rentAndMaintance</td>
-                                                <td>{{$expense}}$expense</td>
-                                                <td>{{$salary}}$salary</td>
-                                                <td>{{$totalExpense}}$totalExpense</td>
+                                                <td>{{$rentAndMaintance}}</td>
+                                                <td>{{$expense}}</td>
+                                                <td>{{$salary}}</td>
+                                                <td>{{$totalExpense}}</td>
                                                 <td></td>
-                                                <td>{{$clearIncome}}$clearIncome</td>
-                                                <td>{{$public_expnse}}$public_expnse</td>
-                                                <td>{{$public_salary}}$public_salary</td>
+                                                <td>{{$clearIncome}}</td>
+                                                <td>{{$public_expnse}}</td>
+                                                <td>{{$public_salary}}</td>
                                                 <td>0</td>
-                                                <td>{{$allClear}}$allClear</td>
+                                                <td>{{$allClear}}</td>
                                             </tr>
                                         </tbody>
                                     </table>

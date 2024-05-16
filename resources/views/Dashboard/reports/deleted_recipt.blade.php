@@ -158,28 +158,16 @@
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
-                                        @if(request('filter') && !$receipts->isEmpty())
                                             <li>
-                                                <a class="btn btn-sm btn-primary   pull-right" href="{{route('receipt.index')}}"> <i class="ft-rotate-cw ft-md"></i> </a>
+                                                <a class="btn btn-sm btn-primary   pull-right" href="{{route('reports.deleted_recipt')}}"> <i class="ft-rotate-cw ft-md"></i> </a>
                                             </li>
                                             <li>
-                                                <a class="btn btn-sm btn-danger box-shadow-2 round btn-min-width pull-right" href="{{route('receipt.index',['pdf'=>1, request()->fullUrl()])}}" target="_blank"> <i class="ft-pepper ft-md"></i> تحميل  ملف PDF</a>
+                                                <a class="btn btn-sm btn-danger box-shadow-2 round btn-min-width pull-right" href="{{route('reports.deleted_recipt',['pdf'=>1,'filter'=>1, request()->fullUrl()])}}" target="_blank"> <i class="ft-pepper ft-md"></i> تحميل  ملف PDF</a>
                                             </li>
                                             <li>
-                                                <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('receipt.index',['excel'=>1, request()->fullUrl()])}}"> <i class="ft-pepper ft-md"></i> تحميل  ملف Excel</a>
+                                                <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('reports.deleted_recipt',['excel'=>1,'filter'=>1, request()->fullUrl()])}}"> <i class="ft-pepper ft-md"></i> تحميل  ملف Excel</a>
                                             </li>
-
-                                        @endif
-                                        <li>
-
-                                            <button type="button" class="btn btn-sm btn-warning  box-shadow-2 round btn-min-width pull-right" data-toggle="modal" data-target="#mediumModal">
-                                                <i class="ft-report ft-md"></i>
-                                                تقرير
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('receipt.create')}}"> <i class="ft-plus ft-md"></i> اضافة ايصال جديد</a>
-                                        </li>
+                                    </ul>
                                 </div>
                                 <h4 class="card-title">الفلتر </h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>

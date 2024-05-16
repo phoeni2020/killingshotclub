@@ -48,7 +48,7 @@
     </tr>
     </thead>
     <tbody>
-    @forelse($receipts as $receipt )
+    @forelse($allData as $receipt )
 
         <tr class="row1" data-id="{{ $receipt->id }}" >
             <td>{{$receipt->id}}</td>

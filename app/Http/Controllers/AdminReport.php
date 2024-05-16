@@ -422,10 +422,21 @@ class AdminReport extends Controller
         $reports = $new->merge($reports->get())->merge($reports2->get());
 
         $reports = $reports;
+
         if (\Auth::user()->hasRole('administrator'))
             $branches = Branchs::get();
         else
             $branches = \Auth::user()->branches;
+
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",['reports'=>$reports]," تقرير التحليل المالي.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet(['reports'=>$reports] ,'Dashboard.reports.pdf.rents_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
+            }
+        }
         return view('Dashboard.reports.stadiums_reports',
             compact('reports', 'branches', 'stadiums'));
     }
@@ -482,6 +493,17 @@ class AdminReport extends Controller
             $branches = Branchs::get();
         else
             $branches = \Auth::user()->branches;
+
+
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",['reportsData'=>$reportsData]," تقرير التحليل المالي.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet(['reportsData'=>$reportsData] ,'Dashboard.reports.pdf.rents_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
+            }
+        }
         // Return the report view with the filtered data
         return view('Dashboard.reports.subscription_income_reports',
             compact('reportsData', 'branches',
@@ -605,6 +627,15 @@ class AdminReport extends Controller
                 'sport_name' => $sportArr['sport_name']
             ];
         }
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",['branchesSports'=>$branchesSports]," تقرير التحليل المالي.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet(['branchesSports'=>$branchesSports] ,'Dashboard.reports.pdf.rents_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
+            }
+        }
         return view('Dashboard.reports.income_month_reports',
             compact('branches', 'branchesSports',));
     }
@@ -660,6 +691,17 @@ class AdminReport extends Controller
 
             }
         $branchesSports = [];
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",['months'=>$months,'branchsRecive'=>$branchsRecive,
+                    'branchsClear'=>$branchsClear,'branchsPay'=>$branchsPay,'branchesSports'=>$branchesSports]," تقرير التحليل المالي.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet(['months'=>$months,'branchsRecive'=>$branchsRecive,
+                    'branchsClear'=>$branchsClear,'branchsPay'=>$branchsPay,'branchesSports'=>$branchesSports] ,'Dashboard.reports.pdf.rents_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
+            }
+        }
         return view('Dashboard.reports.comparison',
             compact('branches','months','branchsRecive','branchsClear','branchsPay','branchesSports',));
     }
@@ -736,6 +778,15 @@ class AdminReport extends Controller
                     'public_salary' =>$public_salary,
                     'branch' => $sportArr['branch_name'],
                 ];
+            }
+        }
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",['months'=>$months,'branchesSports'=>$branchesSports]," تقرير التحليل المالي.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet(['months'=>$months,'branchesSports'=>$branchesSports] ,'Dashboard.reports.pdf.rents_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
             }
         }
         return view('Dashboard.reports.expanse_analysis_reports',
@@ -890,7 +941,16 @@ class AdminReport extends Controller
         $receiptTypes= ReceiptTypes::query()->get();
 
         $safes = ReceiptTypes::where('type', 'Save_money')->get();
-
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.due_date_reports",$receipts->get()," تقرير الحساب المستحق.pdf");
+            }
+            if($request->excel){
+                //due_date_reports.blade.php
+                $ExportToExcelSheet  = new ExportToExcelSheet($receipts->get() ,'Dashboard.reports.pdf.due_date_reports');
+                return Excel::download($ExportToExcelSheet , 'تقرير الحساب المستحق.xlsx');
+            }
+        }
         $receipts = $receipts->get();
         // Fetch the filtered report data
         return view('Dashboard.reports.due_date_reports', compact('receipts','safes','receiptTypes','branches'));
@@ -900,10 +960,10 @@ class AdminReport extends Controller
         $tournaments = TournamentSubscriptions::with('tournament')->with('players')->get();
         if ($request->filter){
             if($request->pdf){
-                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.subcription",$tournaments," تقرير المسابقات.pdf");
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.tournment",$tournaments," تقرير المسابقات.pdf");
             }
             if($request->excel){
-                $ExportToExcelSheet  = new ExportToExcelSheet($tournaments ,'Dashboard.reports.pdf.subcription');
+                $ExportToExcelSheet  = new ExportToExcelSheet($tournaments ,'Dashboard.reports.pdf.tournment');
                 return Excel::download($ExportToExcelSheet , ' تقرير المسابقات.xlsx');
             }
         }
@@ -1141,6 +1201,15 @@ class AdminReport extends Controller
             ->get();
         //        dd($players[0]->PlayerSportPrice->price);
         $receiptTypes= ReceiptTypes::where('is_pay',0)->get();
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.deleted_recipt",$receipts," تقرير الفواتير الملغيه.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($receipts,'Dashboard.reports.pdf.deleted_recipt');
+                return Excel::download($ExportToExcelSheet , ' تقرير الفواتير الملغيه.xlsx');
+            }
+        }
         return view('Dashboard.reports.deleted_recipt',compact('receipts','players','receiptTypes'));
     }
 }

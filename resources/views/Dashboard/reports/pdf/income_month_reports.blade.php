@@ -19,7 +19,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($branchesSports as $branch)
+                                            @foreach($allData as $branch)
                                                 <tr>
                                                 @php
                                                 $branch = array_pop($branch);

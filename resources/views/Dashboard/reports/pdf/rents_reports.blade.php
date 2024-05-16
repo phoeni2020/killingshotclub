@@ -40,7 +40,7 @@
     @php
         $totalAmount = 0;
     @endphp
-    @foreach($staduimsInfo as $staduimInfo)
+    @foreach($allData as $staduimInfo)
         <tr>
             <td>{{$staduimInfo[0]->name}}</td>
             <td>

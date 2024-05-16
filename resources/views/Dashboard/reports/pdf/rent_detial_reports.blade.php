@@ -47,7 +47,7 @@
             </thead>
             <tbody>
 
-            @foreach($reportData as $report)
+            @foreach($allData as $report)
                 <tr class="row1">
                     <td>{{\Carbon\Carbon::parse($report->time_from)->format('d/m/Y')}}</td>
                     <td>@lang('validation.'.$key)</td>
