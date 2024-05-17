@@ -141,7 +141,9 @@
                                         </thead>
                                         <tbody>
                                         @php
-                                        $totalPaid = $totalSubs = $totalRemain = 0;
+                                        $totalPaid = $totalSubs = $totalRemain =  0;
+                                        $totalAllPaid = $totalAllSubs = $totalAllRemain = 0;
+
                                         @endphp
                                         @forelse($reportsData as $reportData)
 
@@ -161,18 +163,23 @@
                                                             ->sum('paid');
 
                                                             $totalNeeded = $player->players?->receipts
+
                                                             ->whereNotNull('paid')
                                                             ->sum('amount');
                                                             //dd($totalNeeded);
+                                                            $totalAllSubs+=$totalNeeded;
 
                                                             $paidAmount = $player->players?->receipts
                                                             ->whereNull('paid')
                                                             ->sum('amount');
                                                             $paid = $paidAmount + $paid;
+                                                            $totalAllPaid+=is_null($paid)? 0 : $paid;
                                                             if($totalNeeded == 0){
                                                                 $totalRemain = 0;
+                                                                $totalAllRemain += 0;
                                                             }else{
                                                                 $totalRemain = $paid - $totalNeeded;
+                                                                $totalAllRemain+= $paid - $totalNeeded;
                                                             }
                                                     @endphp
                                                     <td>{{$reportData->date}}</td>
@@ -201,7 +208,12 @@
                                                 لايوجد ايصالات حاليا
                                             </tr>
                                         @endforelse
-
+                                            <tr>
+                                                <td colspan="6">المجموع</td>
+                                                <td colspan="2">{{$totalAllSubs}}</td>
+                                                <td colspan="2">{{$totalAllPaid}}</td>
+                                                <td colspan="2">{{$totalAllRemain}}</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

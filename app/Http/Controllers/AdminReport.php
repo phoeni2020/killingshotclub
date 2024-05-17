@@ -205,6 +205,7 @@ class AdminReport extends Controller
             $branches = Branchs::get();
         else
             $branches = \Auth::user()->branches;
+
         $subscriptionsSum = $subscriptions->sum('amount');
         $otherIncome = $otherIncome->sum('amount');
         $rentAndMaintance = $rentAndMaintance->sum('amount');
@@ -214,7 +215,17 @@ class AdminReport extends Controller
 
 //        dd($queries);
         $total = $subscriptionsSum + $otherIncome + $rentAndMaintance + $otherExpense;
-
+        if ($request->filter){
+            $data = ['subscriptionsSum'=>$subscriptionsSum,'otherIncome'=>$otherIncome,
+                'rentAndMaintance'=>$rentAndMaintance,'otherExpense'=>$otherExpense,'playerExpense'=>$playerExpense,'total'=>$total];
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.income_reports",$data," تقرير الاشتراكات");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($data ,'Dashboard.reports.pdf.income_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير الاشتراكات.xlsx');
+            }
+        }
         // Return the report view with the filtered data
         return view('Dashboard.reports.income_reports',
             compact( 'branches',
@@ -629,11 +640,11 @@ class AdminReport extends Controller
         }
         if ($request->filter){
             if($request->pdf){
-                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",['branchesSports'=>$branchesSports]," تقرير التحليل المالي.pdf");
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.income_month_reports",$branchesSports,"قائمة الدخل عن شهر معين.pdf");
             }
             if($request->excel){
-                $ExportToExcelSheet  = new ExportToExcelSheet(['branchesSports'=>$branchesSports] ,'Dashboard.reports.pdf.rents_reports');
-                return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
+                $ExportToExcelSheet  = new ExportToExcelSheet($branchesSports ,'Dashboard.reports.pdf.income_month_reports');
+                return Excel::download($ExportToExcelSheet , ' قائمة الدخل عن شهر معين.xlsx');
             }
         }
         return view('Dashboard.reports.income_month_reports',
@@ -693,13 +704,14 @@ class AdminReport extends Controller
         $branchesSports = [];
         if ($request->filter){
             if($request->pdf){
-                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",['months'=>$months,'branchsRecive'=>$branchsRecive,
-                    'branchsClear'=>$branchsClear,'branchsPay'=>$branchsPay,'branchesSports'=>$branchesSports]," تقرير التحليل المالي.pdf");
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.comparison",['months'=>$months,'branchsRecive'=>$branchsRecive,
+                    'branchsClear'=>$branchsClear,'branchsPay'=>$branchsPay,'branchesSports'=>$branchesSports]," تقرير المقارنه.pdf");
             }
             if($request->excel){
                 $ExportToExcelSheet  = new ExportToExcelSheet(['months'=>$months,'branchsRecive'=>$branchsRecive,
-                    'branchsClear'=>$branchsClear,'branchsPay'=>$branchsPay,'branchesSports'=>$branchesSports] ,'Dashboard.reports.pdf.rents_reports');
-                return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
+                    'branchsClear'=>$branchsClear,'branchsPay'=>$branchsPay,'branchesSports'=>$branchesSports] ,
+                    'Dashboard.reports.pdf.comparison');
+                return Excel::download($ExportToExcelSheet , ' تقريرالمقارنه.xlsx');
             }
         }
         return view('Dashboard.reports.comparison',
@@ -782,10 +794,12 @@ class AdminReport extends Controller
         }
         if ($request->filter){
             if($request->pdf){
-                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rents_reports",['months'=>$months,'branchesSports'=>$branchesSports]," تقرير التحليل المالي.pdf");
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.expanse_analysis_reports",
+                    ['months'=>$months,'branchesSports'=>$branchesSports]," تقرير التحليل المالي.pdf");
             }
             if($request->excel){
-                $ExportToExcelSheet  = new ExportToExcelSheet(['months'=>$months,'branchesSports'=>$branchesSports] ,'Dashboard.reports.pdf.rents_reports');
+                $ExportToExcelSheet  = new ExportToExcelSheet(['months'=>$months,'branchesSports'=>$branchesSports] ,
+                    'Dashboard.reports.pdf.expanse_analysis_reports');
                 return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
             }
         }
@@ -1066,11 +1080,14 @@ class AdminReport extends Controller
 
         $branchs = [];
         $barnchSport = [];
-        foreach ($branches as $branch) {
+        $safes = ReceiptTypes::query()->where('type','Save_money')->where('is_rent','0')->get();
+        foreach ($safes as $safe) {
+            $branch = Branchs::query()->find($safe->branch_id);
             $sportsResulat = DB::select('SELECT `sport_id` FROM `branches_sports` WHERE `branch_id`=' . $branch->id);
             foreach ($sportsResulat as $sport) {
                 $sport = Sports::query()->where('id', $sport->sport_id)->first();
                 $price_lists = PriceList::query()->select(['id'])->where('sport_id', $sport->id)->pluck('id')->toArray();
+                $barnchSport[$branch->id][$sport->id]['safe_name'] = $safe->name;
                 $barnchSport[$branch->id][$sport->id]['sport_name'] = $sport->name;
                 $barnchSport[$branch->id][$sport->id]['sport_id'] = $sport->id;
                 $barnchSport[$branch->id][$sport->id]['price_list'] = $price_lists;
@@ -1142,10 +1159,19 @@ class AdminReport extends Controller
                 'public_expnse' =>$public_expnse,
                 'public_salary' =>$public_salary,
                 'branch' => $sportArr['branch_name'],
+                'safe_name' => $sportArr['safe_name'],
                 'sport_name' => $sportArr['sport_name']
             ];
         }
-
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.income_daily_reports",$branchesSports," تقرير يومي.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($branchesSports,'Dashboard.reports.pdf.income_daily_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير يومي.xlsx');
+            }
+        }
         return view('Dashboard.reports.income_daily_reports',
             compact('branches', 'branchesSports',));
     }

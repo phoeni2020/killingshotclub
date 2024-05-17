@@ -87,6 +87,19 @@
                             <div class="card-header">
                                 <h4 class="card-title">الفلتر </h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                <div class="heading-elements">
+                                    <ul class="list-inline mb-0">
+                                        <li>
+                                            <a class="btn btn-sm btn-primary   pull-right" href="{{route('lists.income_list_daily')}}"> <i class="ft-rotate-cw ft-md"></i> </a>
+                                        </li>
+                                        <li>
+                                            <a class="btn btn-sm btn-danger box-shadow-2 round btn-min-width pull-right" href="{{route('lists.income_list_daily',['pdf'=>1,'filter'=>1, request()->fullUrl()])}}" target="_blank"> <i class="ft-pepper ft-md"></i> تحميل  ملف PDF</a>
+                                        </li>
+                                        <li>
+                                            <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('lists.income_list_daily',['excel'=>1,'filter'=>1, request()->fullUrl()])}}"> <i class="ft-pepper ft-md"></i> تحميل  ملف Excel</a>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div>
                                     <form action="{{route('lists.income_list_daily')}}" method="GET">
 
@@ -122,6 +135,7 @@
                                         <thead>
                                         <tr>
                                             <th class="border-top-0">اسم الفرع</th>
+                                            <th class="border-top-0">اسم الخزنه</th>
                                             <th class="border-top-0">الاشتراكات</th>
                                             <th class="border-top-0">الايرادات الاخري</th>
                                             <th class="border-top-0">اجمالي الايرادات</th>
@@ -160,6 +174,7 @@
                                                 $allClear+=$branch['clearIncome']-($branch['public_salary']+$branch['public_expnse']);
                                                 @endphp
                                                 <td>{{$branch['subscription'] > 0 ?$branch['branch'].'-'.$branch['sport_name']:$branch['branch']}}</td>
+                                                <td>{{$branch['safe_name']}}</td>
                                                 <td>{{$branch['subscription']}}</td>
                                                 <td>{{$branch['otherIncome']}}</td>
                                                 <td>{{$branch['totalIncome']}}</td>
@@ -180,20 +195,21 @@
                                             @endforeach
                                                 <tr>
                                                     <td>المجموع</td>
-                                                    <td>{{$subscription}} $subscription</td>
-                                                    <td>{{$otherIncome}}$otherIncome</td>
-                                                    <td>{{$totalIncome}}$totalIncome</td>
                                                     <td></td>
-                                                    <td>{{$rentAndMaintance}}$rentAndMaintance</td>
-                                                    <td>{{$expense}}$expense</td>
-                                                    <td>{{$salary}}$salary</td>
-                                                    <td>{{$totalExpense}}$totalExpense</td>
+                                                    <td>{{$subscription}} </td>
+                                                    <td>{{$otherIncome}}</td>
+                                                    <td>{{$totalIncome}}</td>
                                                     <td></td>
-                                                    <td>{{$clearIncome}}$clearIncome</td>
-                                                    <td>{{$public_expnse}}$public_expnse</td>
-                                                    <td>{{$public_salary}}$public_salary</td>
+                                                    <td>{{$rentAndMaintance}}</td>
+                                                    <td>{{$expense}}</td>
+                                                    <td>{{$salary}}</td>
+                                                    <td>{{$totalExpense}}</td>
+                                                    <td></td>
+                                                    <td>{{$clearIncome}}</td>
+                                                    <td>{{$public_expnse}}</td>
+                                                    <td>{{$public_salary}}</td>
                                                     <td>0</td>
-                                                    <td>{{$allClear}}$allClear</td>
+                                                    <td>{{$allClear}}</td>
                                                 </tr>
                                         </tbody>
                                     </table>

@@ -307,7 +307,7 @@
                                                           $pack = \App\Models\Packages::query()->find($receipt->package_id);
                                                             if(is_null($pack))
                                                             {
-                                                                echo 'الباكدج غير موجوده';
+                                                                $name = 'الباكدج غير موجوده';
                                                             }else{
                                                                 $name = $pack->name;
                                                                 echo \App\Models\Sports::query()->find($pack->sport_id)->name;

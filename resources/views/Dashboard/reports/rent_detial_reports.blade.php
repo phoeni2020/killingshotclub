@@ -155,6 +155,9 @@
                             </div>
                             <div class="card-content">
                                 @forelse($reportsData as $key=>$reportData)
+                                    @php
+                                        $totalPrice = 0;
+                                    @endphp
                                     <div class="table-responsive">
                                         <h6 class="text-center mt-5">@lang('validation.'.$key)</h6>
                                         <table id="tablecontents" class="table table-hover table-xl mb-0 sortable">
@@ -174,6 +177,9 @@
                                             <tbody>
 
                                             @foreach($reportData as $report)
+                                                @php
+                                                    $totalPrice+=$report->price;
+                                                @endphp
                                                 <tr class="row1">
                                                     <td>{{\Carbon\Carbon::parse($report->time_from)->format('d/m/Y')}}</td>
                                                     <td>@lang('validation.'.$key)</td>
@@ -186,6 +192,10 @@
                                                     <td>{{\Carbon\Carbon::parse($report->time_to)->format('h:i A')}}</td>
                                                 </tr>
                                             @endforeach
+                                            <tr>
+                                                <td colspan="4">المجموع</td>
+                                                <td>{{$totalPrice}}</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>

@@ -94,6 +94,17 @@
                             </ol>
                         </div>
                     </div>
+                    <ul class="list-inline mb-0">
+                        <li>
+                            <a class="btn btn-sm btn-primary   pull-right" href="{{route('lists.income_list')}}"> <i class="ft-rotate-cw ft-md"></i> </a>
+                        </li>
+                        <li>
+                            <a class="btn btn-sm btn-danger box-shadow-2 round btn-min-width pull-right" href="{{route('lists.income_list',['pdf'=>1,'filter'=>1, request()->fullUrl()])}}" target="_blank"> <i class="ft-pepper ft-md"></i> تحميل  ملف PDF</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('lists.income_list',['excel'=>1,'filter'=>1, request()->fullUrl()])}}"> <i class="ft-pepper ft-md"></i> تحميل  ملف Excel</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
