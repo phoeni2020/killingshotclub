@@ -304,7 +304,7 @@
                                                    @php
                                                    $name = null;
                                                      if(!is_null($receipt->package_id)&&!empty($receipt->package_id)){
-                                                          $pack = \App\Models\Packages::query()->find($receipt->package_id);
+                                                          $pack = \App\Models\PriceList::query()->find($receipt->package_id);
                                                             if(is_null($pack))
                                                             {
                                                                 $name = 'الباكدج غير موجوده';
