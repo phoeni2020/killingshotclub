@@ -890,10 +890,10 @@ class AdminReport extends Controller
         }
         if ($request->filter){
             if($request->pdf){
-                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rent_detial_reports",$stadiums_tent_table->get()," تقرير الايجار.pdf");
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.rent_detial_reports",$stadiums_tent_table->get()->groupBy('day') ," تقرير الايجار.pdf");
             }
             if($request->excel){
-                $ExportToExcelSheet  = new ExportToExcelSheet($stadiums_tent_table->get() ,'Dashboard.reports.pdf.rent_detial_reports');
+                $ExportToExcelSheet  = new ExportToExcelSheet($stadiums_tent_table->get()->groupBy('day') ,'Dashboard.reports.pdf.rent_detial_reports');
                 return Excel::download($ExportToExcelSheet , ' تقرير الايجار.xlsx');
             }
         }

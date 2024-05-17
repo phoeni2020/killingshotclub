@@ -27,8 +27,7 @@
 @if(request('pdf'))
     <h2> تقرير الايجار</h2>
 @endif
-
-@forelse($reportsData as $key=>$reportData)
+@forelse($allData as $key=>$reportData)
     <div class="table-responsive">
         <h6 class="text-center mt-5">@lang('validation.'.$key)</h6>
         <table class="table  table-bordered">
@@ -46,8 +45,7 @@
             </tr>
             </thead>
             <tbody>
-
-            @foreach($allData as $report)
+            @foreach($reportData as $report)
                 <tr class="row1">
                     <td>{{\Carbon\Carbon::parse($report->time_from)->format('d/m/Y')}}</td>
                     <td>@lang('validation.'.$key)</td>
