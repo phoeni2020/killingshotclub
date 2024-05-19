@@ -192,7 +192,7 @@
                                             {
                                                // dd($receipt);
                                                $totalPaid -=  $receipt->amount;
-                                                if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
+                                                if(!array_key_exists(1,$savesBalance)){
                                                     $savesBalance[$receipt->receiptTypeFrom?->id] = $receipt->amount;
                                                 }else{
                                                     $savesBalance[$receipt->receiptTypeFrom?->id] =$savesBalance[$receipt->receiptTypeFrom?->id]+$receipt->amount;
@@ -204,6 +204,7 @@
                                                 if($receipt->type_of_amount == 'part')
                                                 {
                                                     if(!array_key_exists($receipt->receiptTypeFrom?->id,$savesBalance)){
+
                                                         $savesBalance[$receipt->receiptTypeFrom?->id]= $receipt->paid;
                                                     }
                                                     else{
@@ -218,12 +219,19 @@
                                                 }
                                                 else
                                                 {
-
                                                     if(!array_key_exists($receipt->to,$savesBalance)){
+                                                        if($receipt->discount){
+                                                        $savesBalance[$receipt->to]=$receipt->paid;
+                                                        }else{
                                                         $savesBalance[$receipt->to]=$receipt->amount;
+                                                        }
                                                     }
                                                     else{
+                                                        if($receipt->discount){
+                                                        $savesBalance[$receipt->to]+=$receipt->paid;
+                                                        }else{
                                                         $savesBalance[$receipt->to]+=$receipt->amount;
+                                                        }
                                                     }
 
                                                     if($receipt->payment_type == 2){
@@ -240,7 +248,6 @@
                                             @endphp
                                             <tr class="row1" data-id="{{ $receipt->id }}" >
                                                 <td>{{$receipt->id}}</td>
-
                                                 <td>
                                                     @if($receipt->receipt_type == 1)
                                                         صرف
@@ -273,7 +280,6 @@
                                                         {{$namePayer ??'--'}}
                                                     @endif
                                                 </td>
-
                                                 <td>
                                                     @if($receipt->type_of=='players'&&$receipt->receipt_type == 1)
                                                         لاعبين
@@ -321,7 +327,11 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{ $receipt->amount }}
+                                                    @if($receipt->discount)
+                                                        {{ $receipt->paid ?? $receipt->amount }}
+                                                    @else
+                                                        {{ $receipt->paid ?? $receipt->amount }}
+                                                    @endif
                                                 </td>
 
                                                 <td>
@@ -339,7 +349,11 @@
                                                 </td>
 
                                                 <td>
-                                                    @if($receipt->receipt_type == 1) {{  $savesBalance[$receipt->receiptTypeFrom?->id] }} @else {{$savesBalance[$receipt->to]}} @endif
+                                                    @if($receipt->receipt_type == 1)
+                                                        {{  $savesBalance[$receipt->receiptTypeFrom?->id] }}
+                                                    @else
+                                                        {{$savesBalance[$receipt->to]}}
+                                                    @endif
                                                 </td>
 
                                                 <td>

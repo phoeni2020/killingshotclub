@@ -311,7 +311,11 @@
                                                      {{ $remain }}
                                                     </td>
                                                     <td>
-                                                     {{ $receipt->amount }}
+                                                        @if($receipt->discount)
+                                                            {{ $receipt->paid ?? $receipt->amount }}
+                                                        @else
+                                                            {{ $receipt->paid ?? $receipt->amount }}
+                                                        @endif
                                                     </td>
                                                     <td>
                                                      {{ $receipt->date_receipt->format('Y-m-d') }}
