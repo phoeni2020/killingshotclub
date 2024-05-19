@@ -760,7 +760,7 @@ class AdminReport extends Controller
         foreach ($months as $month => $value) {
             foreach ($barnchSport as $id => $sportArr) {
                 $rentAndMaintance = Receipts::where('receipt_type', 1)->whereNotIn('type_of', ['players'])
-                    ->whereIn('to', [2, 3, 4])->where('branch_id', $id);
+                    ->whereIn('to', [2, 3, 4]);
 
                 $playerExpense = Receipts::where('receipt_type', 1)->where('type_of', 'players')
                     ->whereIn('to', [2, 3, 4]);
@@ -788,7 +788,6 @@ class AdminReport extends Controller
                     'public' => $rentAndMaintance + $playerExpense + $otherExpense - $salary,
                     'public_expnse' =>$public_expnse,
                     'public_salary' =>$public_salary,
-                    'branch' => $sportArr['branch_name'],
                 ];
             }
         }
