@@ -160,18 +160,18 @@
                                             @foreach($branchesSports as $branch)
                                                 <tr>
                                                 @php
-                                                $branch = array_pop($branch);
-                                                $subscription+=$branch['subscription'];
-                                                $otherIncome+=$branch['otherIncome'];
-                                                $totalIncome+=$branch['totalIncome'];
-                                                $rentAndMaintance+=$branch['rentAndMaintance'];
-                                                $expense+=$branch['expense'];
-                                                $salary+=$branch['salary'];
-                                                $totalExpense+=$branch['totalExpense'];
-                                                $clearIncome+=$branch['clearIncome'];
-                                                $public_expnse+=$branch['public_expnse'];
-                                                $public_salary+=$branch['public_salary'];
-                                                $allClear+=$branch['clearIncome']-($branch['public_salary']+$branch['public_expnse']);
+                                                    $branch = array_pop($branch);
+                                                    $subscription+=$branch['subscription'];
+                                                    $otherIncome+=$branch['otherIncome'];
+                                                    $totalIncome+=$branch['totalIncome'];
+                                                    $rentAndMaintance+=$branch['rentAndMaintance'];
+                                                    $expense+=$branch['expense'];
+                                                    $salary+=$branch['salary'];
+                                                    $totalExpense+=$branch['totalExpense'];
+                                                    $clearIncome+=$branch['clearIncome'];
+                                                    $public_expnse+=$branch['public_expnse'];
+                                                    $public_salary+=$branch['public_salary'];
+                                                    $allClear+=$branch['clearIncome']-($branch['public_salary']+$branch['public_expnse']);
                                                 @endphp
                                                 <td>{{$branch['subscription'] > 0 ?$branch['branch'].'-'.$branch['sport_name']:$branch['branch']}}</td>
                                                 <td>{{$branch['safe_name']}}</td>

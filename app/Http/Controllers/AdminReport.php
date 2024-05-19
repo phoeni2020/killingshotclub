@@ -1086,17 +1086,17 @@ class AdminReport extends Controller
             foreach ($sportsResulat as $sport) {
                 $sport = Sports::query()->where('id', $sport->sport_id)->first();
                 $price_lists = PriceList::query()->select(['id'])->where('sport_id', $sport->id)->pluck('id')->toArray();
-                $barnchSport[$branch->id][$sport->id]['safe_name'] = $safe->name;
-                $barnchSport[$branch->id][$sport->id]['sport_name'] = $sport->name;
-                $barnchSport[$branch->id][$sport->id]['sport_id'] = $sport->id;
-                $barnchSport[$branch->id][$sport->id]['price_list'] = $price_lists;
-                $barnchSport[$branch->id][$sport->id]['branch_name'] = $branch->name;
+                $barnchSport[$safe->id][$sport->id]['safe_name'] = $safe->name;
+                $barnchSport[$safe->id][$sport->id]['sport_name'] = $sport->name;
+                $barnchSport[$safe->id][$sport->id]['sport_id'] = $sport->id;
+                $barnchSport[$safe->id][$sport->id]['price_list'] = $price_lists;
+                $barnchSport[$safe->id][$sport->id]['branch_name'] = $branch->name;
             }
         }
         $branchesSports = [];
+
         foreach ($barnchSport as $id => $value) {
             $sportArr = array_pop($value);
-
             $subscriptions = Receipts::where('receipt_type', 2)
                 ->where('type_of', 'players')->where('branch_id', $id)
                 ->whereIn('price_list_id', $sportArr['price_list']);
