@@ -803,7 +803,6 @@ class AdminReport extends Controller
                 return Excel::download($ExportToExcelSheet , ' تقرير التحليل المالي.xlsx');
             }
         }
-        dd($branchesSports);
         return view('Dashboard.reports.expanse_analysis_reports',
             compact('branches', 'branchesSports','months'));
     }
