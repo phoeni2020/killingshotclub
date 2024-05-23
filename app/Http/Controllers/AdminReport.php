@@ -1047,11 +1047,13 @@ class AdminReport extends Controller
      */
     public function income_reports_daily(Request $request)
     {
+
         if (\Auth::user()->hasRole('administrator'))
             $branches = Branchs::get();
         else
             $branches = \Auth::user()->branches;
 
+        $startDate  =$request->input('fromDate');
         $barnchSport = [];
         $safes = ReceiptTypes::query()->where('type','Save_money')->where('is_rent','0')->get();
         foreach ($safes as $safe) {
