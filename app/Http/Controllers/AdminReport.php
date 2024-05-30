@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ExportToExcelSheet;
 use App\Models\Branchs;
 use App\Models\Custody;
+use App\Models\EmployeeBranch;
 use App\Models\Players;
 use App\Models\PriceList;
 use App\Models\Receipts;
@@ -1163,5 +1164,42 @@ class AdminReport extends Controller
             }
         }
         return view('Dashboard.reports.deleted_recipt',compact('receipts','players','receiptTypes'));
+    }
+    public function attendance_recipt(Request $request)
+    {
+        if(\Auth::user()->hasRole('administrator')){
+            $branchIds = Branchs::get()->pluck('id')->toArray();
+        }
+        else{
+            $branchIds = \Auth::user()->branches->pluck('id')->toArray();
+        }
+        $filterMail = $request->mail;
+        $filterName = $request->name;
+        $filterPhone = $request->phone;
+        $user = User::query();
+
+        if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
+
+            if(!empty($filterName))
+                $user->orWhere('name', 'like', '%' .$filterName . '%');
+
+            if(!empty($filterMail))
+                $user->orWhere('email', 'like', '%' . $filterMail . '%');
+
+            $ids = $user->pluck('id');
+        }
+        $employees = EmployeeBranch::query()->whereIn('branch_id',$branchIds)->pluck('employee_id')->unique()->toArray();
+        $employees = $user->whereIn('id',$employees);
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.attendance",$employees->get()->toArray()," تقرير الفواتير الملغيه.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($employees->get()->toArray(),'Dashboard.reports.pdf.deleted_recipt');
+                return Excel::download($ExportToExcelSheet , ' تقرير الحضور.xlsx');
+            }
+        }
+        $employees = $employees->paginate(10);
+        return view('Dashboard.reports.attendance',compact('employees','employees','employees'));
     }
 }

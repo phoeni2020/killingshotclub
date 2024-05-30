@@ -144,7 +144,7 @@ class   TrainerAttendanceController extends Controller
         else{
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
-        $employees = EmployeeBranch::query()->whereIn('branch_id',$branchIds)->pluck('employee_id')->toArray();
+        $employees = EmployeeBranch::query()->whereIn('branch_id',$branchIds)->pluck('employee_id')->unique()->toArray();
         $employees = User::query()->whereIn('id',$employees)->paginate(10);
         return view('Dashboard.Attendance.workerAttdendance',compact('employees'));
 
@@ -153,25 +153,19 @@ class   TrainerAttendanceController extends Controller
     {
         $log_time = Carbon::now()->timezone('Africa/Cairo')->format('Y-m-d H:i:s');
         $today = Carbon::today();
-        $checkAttend =   EmpolyeeAttendance::where('user_id',$request->user_id)->whereDate('created_at',$today)->get();
-
-        if($checkAttend->isEmpty()){
-            if($request->check == 'in'){
-                $attendance =  new EmpolyeeAttendance();
-                $attendance->user_id=$request->user_id;
-                $attendance->check_in = $log_time;
-                $attendance->save();
-                return redirect()->back()->with('message','تم تسجيل حضور الموظف');
-            }
-
+        $checkAttend =   EmpolyeeAttendance::where('user_id',$request->user_id)->whereDate('created_at',$today)->first();
+        if($request->check == 'in'){
+            $attendance =  new EmpolyeeAttendance();
+            $attendance->user_id=$request->user_id;
+            $attendance->check_in = $log_time;
+            $attendance->save();
+            return redirect()->back()->with('message','تم تسجيل حضور الموظف');
         }
         if($request->check=='out'){
-            $attendance_id =   $checkAttend[0]->id;
-
+            $attendance_id =   $checkAttend->id;
             $attendance =   EmpolyeeAttendance::find($attendance_id);
-            $attendance->trainer_id=$request->user_id;
+            $attendance->user_id=$request->user_id;
             $attendance->check_out = $log_time;
-
             $attendance->save();
             return redirect()->back()->with('message','تم تسجيل انصراف الموظف');
 

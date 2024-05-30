@@ -196,8 +196,6 @@
                                         <li>
                                             <a class="btn btn-sm btn-success box-shadow-2 round btn-min-width pull-right" href="{{route('receipt-pay.create')}}"> <i class="ft-plus ft-md"></i> اضافة ايصال جديد</a>
                                         </li>
-
-
                                 </div>
                             </div>
                             <div class="card-content">
@@ -208,7 +206,7 @@
                                             <th class="border-top-0">السيريال</th>
                                             <th class="border-top-0">   القائم  بالصرف</th>
                                             <th class="border-top-0"> من </th>
-                                            <th class="border-top-0"> الي </th>
+                                            <th class="border-top-0"> الي </th>1
 
                                             <th class="border-top-0">   المبلغ</th>
                                             <th class="border-top-0">   تاريخ الايصال</th>

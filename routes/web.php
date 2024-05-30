@@ -114,13 +114,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
     Route::resource('partner',"\App\Http\Controllers\PartnersController");
     Route::resource('report',"\App\Http\Controllers\ReportController");
     Route::get('attendance/employee', "\App\Http\Controllers\TrainerAttendanceController@workerAttendece")->name('attendance-employee.index');
-    Route::get('attendance/employee/store', "\App\Http\Controllers\TrainerAttendanceController@workerAttendeceStore")->name('attendance-employee.store');
+    Route::post('attendance/employee/store', "\App\Http\Controllers\TrainerAttendanceController@workerAttendeceStore")->name('attendance-employee.store');
 
     Route::prefix('reports')->as('reports.')->group(function (){
         Route::get('subscription_reports','App\Http\Controllers\AdminReport@subscription_reports')->name('subscription_reports');
         Route::get('schedules_reports','App\Http\Controllers\AdminReport@schedules_reports')->name('schedules_reports');
         Route::get('stadiums_reports','App\Http\Controllers\AdminReport@stadiums_reports')->name('stadiums_reports');
         Route::get('deleted_recipt','App\Http\Controllers\AdminReport@deleted_recipt')->name('deleted_recipt');
+        Route::get('attendance_report','App\Http\Controllers\AdminReport@attendance_recipt')->name('attendance_report');
     });
     Route::prefix('lists')->as('lists.')->group(function () {
         Route::get('income_list_month', 'App\Http\Controllers\AdminReport@income_reports_month')->name('income_list_month');

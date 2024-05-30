@@ -52,8 +52,6 @@
                                                         <label for="projectinput2">  تاريخ الايصال</label>
                                                         <input type="date" name="date" class="form-control"
 
-{{--                                                               @if(auth()->user()->hasPermission('date-receipts-create') || auth()->user()->hasRole(['administrator','superadministrator']))   @else disabled  @endif--}}
-
                                                                placeholder="dd-mm-yyyy" value = "{{ Carbon\Carbon::today()->format('Y-m-d') }}"
                                                                min="1997-01-01" max="2030-12-31">
                                                     </div>

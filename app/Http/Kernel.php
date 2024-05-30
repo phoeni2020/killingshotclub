@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,4 +69,9 @@ class Kernel extends HttpKernel
         'ability' => \Laratrust\Middleware\LaratrustAbility::class,
         'adminMiddleware' => \App\Http\Middleware\adminMiddleware::class,
     ];
+
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('attendance')->dailyAt('00:00');
+    }
 }

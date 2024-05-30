@@ -486,6 +486,12 @@
                                 تقارير الفواتير الملغيه</a>
                         </li>
                     @endif
+                    @if( auth()->user()->hasRole(['administrator']) || auth()->user()->hasPermission('attendance_reports') )
+
+                        <li><a class="menu-item" href="{{route('reports.attendance_report')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                                تقارير حضور الموظفين</a>
+                        </li>
+                    @endif
                 </ul>
             </li>
             @if( auth()->user()->hasRole(['administrator','superadministrator']) || auth()->user()->hasPermission('tournament-read') )

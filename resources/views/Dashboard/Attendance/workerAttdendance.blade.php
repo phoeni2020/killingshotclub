@@ -52,8 +52,6 @@
 
                                             <th class="border-top-0">حضر من</th>
                                             <th class="border-top-0">انصرف في</th>
-
-
                                             {{--                                            <th class="border-top-0">مشاهده التفاصيل </th>--}}
                                         </tr>
                                         </thead>
@@ -78,8 +76,9 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if(\App\Models\EmpolyeeAttendance::where('user_id',$employee->id)->whereDate('check_out',\Carbon\Carbon::today())->count() == 0)
-                                                        <form action="{{route('attendance-trainer.store')}}" method="post">
+                                                    @if(\App\Models\EmpolyeeAttendance::where('user_id',$employee->id)->whereDate('check_in',\Carbon\Carbon::today())->count() == 1
+                                                        &&\App\Models\EmpolyeeAttendance::where('user_id',$employee->id)->whereDate('check_out',\Carbon\Carbon::today())->count() == 0)
+                                                        <form action="{{route('attendance-employee.store')}}" method="post">
                                                             @csrf
                                                             <input type="hidden" name="user_id" value="{{$employee->id}}">
 
@@ -87,6 +86,8 @@
                                                                 انصراف
                                                             </button>
                                                         </form>
+                                                    @else
+
                                                     @endif
                                                 </td>
                                                 @php
