@@ -492,13 +492,13 @@
                                 تقارير حضور الموظفين</a>
                         </li>
                     @endif
-                    @if( auth()->user()->hasRole(['administrator']) || auth()->user()->hasPermission('player_attendance_report') )
+                    @if( auth()->user()->hasRole(['administrator']) || auth()->user()->hasPermission('trinar_attendance_report') )
 
                         <li><a class="menu-item" href="{{route('reports.trinar_attendance_report')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                 تقارير حضور المدربين</a>
                         </li>
                     @endif
-                    @if( auth()->user()->hasRole(['administrator']) || auth()->user()->hasPermission('trinar_attendance_report') )
+                    @if( auth()->user()->hasRole(['administrator']) || auth()->user()->hasPermission('player_attendance_report') )
 
                         <li><a class="menu-item" href="{{route('reports.player_attendance_report')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                 تقارير حضور اللاعبين</a>
