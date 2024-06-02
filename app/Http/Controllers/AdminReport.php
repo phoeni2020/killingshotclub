@@ -1245,7 +1245,7 @@ class AdminReport extends Controller
                 $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.attendance_trinars",$players->get()->toArray()," تقرير حضور و انصراف المدربين.pdf");
             }
             if($request->excel){
-                $ExportToExcelSheet  = new ExportToExcelSheet($players->get()->toArray(),'Dashboard.reports.pdf.attendance_trinars.');
+                $ExportToExcelSheet  = new ExportToExcelSheet($players->get()->toArray(),'Dashboard.reports.pdf.attendance_trinars');
                 return Excel::download($ExportToExcelSheet , ' تقرير الحضور.xlsx');
             }
         }
