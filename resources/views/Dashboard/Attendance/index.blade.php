@@ -78,7 +78,7 @@
                                                 <td>{{$player->players->name}}</td>
 
                                                 <td>
-                                                    @if(\App\Models\AttendancePlayers::where('player_id',$player->id)->whereDate('check_in',\Carbon\Carbon::today())->count() == 0)
+                                                    @if(\App\Models\AttendancePlayers::where('player_id',$player->players->id)->whereDate('check_in',\Carbon\Carbon::today())->count() == 0)
 
                                                     <form action="{{route('attendance-player.store')}}" method="post">
                                                         @csrf
@@ -89,11 +89,11 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if(\App\Models\AttendancePlayers::where('player_id',$player->id)->whereDate('check_out',\Carbon\Carbon::today())->count() == 0)
+                                                    @if(\App\Models\AttendancePlayers::where('player_id',$player->players->id)->whereDate('check_out',\Carbon\Carbon::today())->count() == 0)
 
                                                     <form action="{{route('attendance-player.store')}}" method="post">
                                                         @csrf
-                                                        <input type="hidden" name="player_id" value="{{$player->id}}">
+                                                        <input type="hidden" name="player_id" value="{{$player->players->id}}">
 
                                                         <button class="btn btn-danger" name="check" value="out"> انصراف </button>
                                                     </form>
@@ -101,7 +101,7 @@
                                                 </td>
                                                 @php
                                                     $check_in =
-                                                    \App\Models\AttendancePlayers::where('player_id',$player->id)
+                                                    \App\Models\AttendancePlayers::where('player_id',$player->players->id)
                                                     ->whereDate('check_in',\Carbon\Carbon::today())->first()?->check_in;
 
                                                     $checkout =
