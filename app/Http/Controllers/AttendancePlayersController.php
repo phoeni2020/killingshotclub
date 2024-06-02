@@ -22,7 +22,7 @@ class AttendancePlayersController extends Controller
     {
         $this->CanDoAction(['administrator','administrator'],'Attendance-players-read');
         $now = Carbon::now();
-        $now->hour +=3;
+        $now->hour +=1;
         $now = $now->timezone('Africa/Cairo')->toDateTimeString();
         if(\Auth::user()->hasRole('administrator')){
             $branchIds = Branchs::get()->pluck('id')->toArray();
@@ -32,14 +32,12 @@ class AttendancePlayersController extends Controller
         }
         $players =  TrainerAndPlayer::orderBy('created_at','DESC')
             ->whereIn('branch_id',$branchIds)
-        ->with(['EventTrainer.players'])
+            ->with(['EventTrainer.players'])
             ->where(function ($query) use ($now) {
-                $query->where('time_from', '<=', $now);
+                //dd($now);
+                $query->where('time_from', '<', $now)->where('time_to', '>', $now);
             })
-
             ->paginate(10);
-//            dd($players);
-//        $players = Players::paginate(10);
     return view('Dashboard.Attendance.index',compact('players'));
     }
 
