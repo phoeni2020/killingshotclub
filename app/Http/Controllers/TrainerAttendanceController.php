@@ -37,7 +37,6 @@ class   TrainerAttendanceController extends Controller
                 $query->where('time_from', '<=', $now);
             })
             ->paginate(10);
-        dd($trainers);
 //        dd($trainers);
 //        $players = Players::paginate(10);
         return view('Dashboard.Attendance.tranierAttendance',compact('trainers'));

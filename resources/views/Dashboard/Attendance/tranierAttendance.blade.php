@@ -63,7 +63,7 @@
                                         @forelse($trainers as $trainer )
 
                                             <tr class="row1" data-id="{{ $trainer->id }}">
-                                                <td>{{$trainer->traniers->name}}</td>
+                                                <td>{{$trainer->traniers?->name}}</td>
 
                                                 <td>
                                                     @if(\App\Models\TrainerAttendance::where('trainer_id',$trainer->id)->whereDate('check_in',\Carbon\Carbon::today())->count() == 0)
