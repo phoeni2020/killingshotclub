@@ -563,6 +563,15 @@
                                                     <div class="checkbox">
                                                         <label><input name="permession[]" type="checkbox" value="stadiums_reports" />تقارير الملاعب</label>
                                                     </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="attendance_reports" />تقارير حضور الموظفين</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="trinar_attendance_report" />تقارير حضور المدربين</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="player_attendance_report" />تقارير حضور اللاعبين</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
