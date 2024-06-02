@@ -330,13 +330,22 @@ class AdminReport extends Controller
             $branches = Branchs::get();
         else
             $branches = \Auth::user()->branches;
-
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.safe_reports", $receipts->orderBy('id','desc')->get(),"تقرير الخزنه.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet( $receipts->orderBy('id','desc')->get(),'Dashboard.reports.pdf.safe_reports');
+                return Excel::download($ExportToExcelSheet , ' تقرير الخزنه.xlsx');
+            }
+        }
         $receipts = $receipts->orderBy('id','desc')->get();
 //        dd($queries);
         $receiptTypes= ReceiptTypes::query()->get();
 
         $safes = ReceiptTypes::where('type', 'Save_money')->get();
         // Return the report view with the filtered data
+
         return view('Dashboard.reports.safe_reports',
             compact( 'branches',
                 'trainers','players','safes','receiptTypes','sports','receipts'));
@@ -1024,7 +1033,7 @@ class AdminReport extends Controller
         $endDate = $request->input('toDate');
 
         $settlements = Custody::query()->with('receipt_pay','receipt_pay.receiptType','receipt_pay.receiptType.branches');//
-        if ($branch) {-
+        if ($branch) {
             $settlements->where('receipt.branch_id', $branch);
         }
         if ($startDate && $endDate) {
@@ -1213,6 +1222,7 @@ class AdminReport extends Controller
         else{
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
+
         $player = Players::query();
 
         $player = $player->pluck('id')->toArray();
@@ -1238,7 +1248,25 @@ class AdminReport extends Controller
         else{
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
-        $players = TrainerAttendance::query();
+        $user = User::query();
+        $filterName = $request->name;
+        $filterMail = $request->email;
+        $filterPhone = $request->phone;
+
+        if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
+            if(!empty($filterName))
+                $user->orWhere('name', 'like', '%' .$filterName . '%');
+
+            if(!empty($filterMail))
+                $user->orWhere('email', 'like', '%' . $filterMail . '%');
+
+            $ids = $user->pluck('id')->toArray();
+
+            $players = TrainerAttendance::query()->whereIn('trainer_id',$ids);
+        }else{
+            $players = TrainerAttendance::query();
+        }
+
 
         if ($request->filter){
             if($request->pdf){
