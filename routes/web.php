@@ -122,6 +122,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminMiddleware', 'auth' =>
         Route::get('stadiums_reports','App\Http\Controllers\AdminReport@stadiums_reports')->name('stadiums_reports');
         Route::get('deleted_recipt','App\Http\Controllers\AdminReport@deleted_recipt')->name('deleted_recipt');
         Route::get('attendance_report','App\Http\Controllers\AdminReport@attendance_recipt')->name('attendance_report');
+        Route::get('attendance_player','App\Http\Controllers\AdminReport@attendance_player')->name('player_attendance_report');
+        Route::get('attendance_trinar','App\Http\Controllers\AdminReport@attendance_trinar')->name('trinar_attendance_report');
     });
     Route::prefix('lists')->as('lists.')->group(function () {
         Route::get('income_list_month', 'App\Http\Controllers\AdminReport@income_reports_month')->name('income_list_month');

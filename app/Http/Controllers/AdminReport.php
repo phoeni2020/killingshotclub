@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExportToExcelSheet;
+use App\Models\AttendancePlayers;
 use App\Models\Branchs;
 use App\Models\Custody;
 use App\Models\EmployeeBranch;
@@ -19,6 +20,7 @@ use App\Models\StadiumsRentTable;
 use App\Models\Tournaments;
 use App\Models\TournamentSubscriptions;
 use App\Models\TrainerAndPlayer;
+use App\Models\TrainerAttendance;
 use App\Models\User;
 use App\Services\PDF\ConvertDataToPDF;
 use Carbon\Carbon;
@@ -1195,11 +1197,60 @@ class AdminReport extends Controller
                 $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.attendance",$employees->get()->toArray()," تقرير الفواتير الملغيه.pdf");
             }
             if($request->excel){
-                $ExportToExcelSheet  = new ExportToExcelSheet($employees->get()->toArray(),'Dashboard.reports.pdf.deleted_recipt');
+                $ExportToExcelSheet  = new ExportToExcelSheet($employees->get()->toArray(),'Dashboard.reports.pdf.attendance');
                 return Excel::download($ExportToExcelSheet , ' تقرير الحضور.xlsx');
             }
         }
         $employees = $employees->paginate(10);
         return view('Dashboard.reports.attendance',compact('employees','employees','employees'));
+    }
+
+    public function attendance_player(Request $request)
+    {
+        if(\Auth::user()->hasRole('administrator')){
+            $branchIds = Branchs::get()->pluck('id')->toArray();
+        }
+        else{
+            $branchIds = \Auth::user()->branches->pluck('id')->toArray();
+        }
+        $player = Players::query();
+
+        $player = $player->pluck('id')->toArray();
+        $players = AttendancePlayers::query()->whereIn('player_id',$player);
+
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.attendance_players",$players->get()->toArray()," تقرير حضور و انصراف اللاعبين.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($players->get()->toArray(),'Dashboard.reports.pdf.attendance_players');
+                return Excel::download($ExportToExcelSheet , ' تقرير الحضور.xlsx');
+            }
+        }
+        $players = $players->paginate(10);
+        return view('Dashboard.reports.player_attendance',compact('players','players','players'));
+    }
+    public function attendance_trinar(Request $request)
+    {
+        if(\Auth::user()->hasRole('administrator')){
+            $branchIds = Branchs::get()->pluck('id')->toArray();
+        }
+        else{
+            $branchIds = \Auth::user()->branches->pluck('id')->toArray();
+        }
+        $players = TrainerAttendance::query();
+
+        if ($request->filter){
+            if($request->pdf){
+                $FilePdf = new ConvertDataToPDF("Dashboard.reports.pdf.attendance_trinars",$players->get()->toArray()," تقرير حضور و انصراف المدربين.pdf");
+            }
+            if($request->excel){
+                $ExportToExcelSheet  = new ExportToExcelSheet($players->get()->toArray(),'Dashboard.reports.pdf.attendance_trinars.');
+                return Excel::download($ExportToExcelSheet , ' تقرير الحضور.xlsx');
+            }
+        }
+
+        $players = $players->paginate(10);
+        return view('Dashboard.reports.trinar_attendance',compact('players','players','players'));
     }
 }
