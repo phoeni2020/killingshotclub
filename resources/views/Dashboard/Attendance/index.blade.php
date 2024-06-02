@@ -82,7 +82,7 @@
 
                                                     <form action="{{route('attendance-player.store')}}" method="post">
                                                         @csrf
-                                                        <input type="hidden" name="player_id" value="{{$player->id}}">
+                                                        <input type="hidden" name="player_id" value="{{$player->players->id}}">
 
                                                         <button class="btn btn-success"  name="check" value="in"> حضور </button>
                                                     </form>
