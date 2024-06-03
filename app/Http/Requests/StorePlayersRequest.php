@@ -35,6 +35,7 @@ class StorePlayersRequest extends FormRequest
             "father_email"=>"required",
             "address"=>"required",
             "study"=>"required",
+            "package_id"=>"int",
 
         ];
     }
