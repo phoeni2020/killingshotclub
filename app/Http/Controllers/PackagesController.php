@@ -68,6 +68,7 @@ class PackagesController extends Controller
             ]);
             if($collective){
                 $package->collective = 1;
+                $package->update();
             }
         }
 

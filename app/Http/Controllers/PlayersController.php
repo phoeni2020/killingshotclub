@@ -103,7 +103,7 @@ class PlayersController extends Controller
 //            'sport_id'=>$request->sport_id,
 //            'level_id'=>$request->level_id,
             'package_id'=>$request->package_id,
-            'collective'=>$request->collective,
+            'collective'=>$collective,
             'anther_sport'=>$request->anther_sports,
             'join_by'=>$request->join_by,
             'goal_of_sport'=>$request->goal_of_sport,
