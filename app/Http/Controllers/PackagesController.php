@@ -54,18 +54,21 @@ class PackagesController extends Controller
             'manuel_price'=>$request->manuel_price??$request->total_price,
             'desc'=>$request->desc,
             'sport_id'=>$request->sport_id,
-
         ]);
 
         for($x=0; $x < count($request->price_list_id); $x++)
         {
+            $collective = PriceList::query()->find($request->price_list_id[$x])->collective;
             PackagesDetails::create([
                 'package_id'=>$package->id,
                 'price_list_id'=>$request->price_list_id[$x],
                 'price'=>$request->price[$x],
                 'number_of_training'=>$request->number_of_training[$x],
-                'total_price_of_training'=>$request->total_of_training[$x]
+                'total_price_of_training'=>$request->total_of_training[$x],
             ]);
+            if($collective){
+                $package->collective = 1;
+            }
         }
 
         return redirect()->route('package.index')->with('message','تم اضافه الباكدج  بنجاح ');

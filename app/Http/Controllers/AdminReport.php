@@ -1061,13 +1061,14 @@ class AdminReport extends Controller
     {
 
         if (\Auth::user()->hasRole('administrator'))
-            $branches = Branchs::get();
+            $branches = Branchs::query()->pluck('id')->toArray();
         else
             $branches = \Auth::user()->branches;
 
+
         $startDate  =$request->input('fromDate');
         $barnchSport = [];
-        $safes = ReceiptTypes::query()->where('type','Save_money')->where('is_rent','0')->get();
+        $safes = ReceiptTypes::query()->where('type','Save_money')->where('is_rent','0')->whereIn('branch_id',$branches)->get();
         foreach ($safes as $safe) {
             $branch = Branchs::query()->find($safe->branch_id);
             $sportsResulat = DB::select('SELECT `sport_id` FROM `branches_sports` WHERE `branch_id`=' . $branch->id);
@@ -1110,6 +1111,7 @@ class AdminReport extends Controller
                 return Excel::download($ExportToExcelSheet , ' تقرير يومي.xlsx');
             }
         }
+        $branches = Branchs::query()->whereIn('id',$branches);
         return view('Dashboard.reports.income_daily_reports',
             compact('branches', 'branchesSports',));
     }

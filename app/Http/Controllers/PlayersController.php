@@ -86,6 +86,7 @@ class PlayersController extends Controller
      */
     public function store(StorePlayersRequest $request)
     {
+        $collective = Packages::query()->find($request->package_id)->collective;
         //dd($request->dd());
       $player =  Players::create([
             'name'=>$request->name,
@@ -102,6 +103,7 @@ class PlayersController extends Controller
 //            'sport_id'=>$request->sport_id,
 //            'level_id'=>$request->level_id,
             'package_id'=>$request->package_id,
+            'collective'=>$request->collective,
             'anther_sport'=>$request->anther_sports,
             'join_by'=>$request->join_by,
             'goal_of_sport'=>$request->goal_of_sport,
@@ -110,6 +112,7 @@ class PlayersController extends Controller
             "father_national_image" => $request->father_national_image,
             "birth_certificate" => $request->birth_certificate,
             "medical" => $request->medical,
+//        تقرير الخزينه اليومي جعل كل فرع يشوف خزنته فقط والادمن يشوف كل الخزن
         ]);
 
         if (count($request->sport_id) > 0){

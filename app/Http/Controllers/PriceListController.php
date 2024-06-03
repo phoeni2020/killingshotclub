@@ -61,6 +61,7 @@ class PriceListController extends Controller
             'price'=>$request->price,
             'branch_id'=>$request->branch_id,
             'sport_id'=>$request->sport_id,
+            'collective'=>$request->collective,
             'level_id'=>$request->level_id,
             'desc'=>$request->desc,
         ]);

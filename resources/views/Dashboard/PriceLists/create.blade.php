@@ -67,13 +67,12 @@
                                                                 <option value="{{$sport->id}}" >{{$sport->name}} </option>
                                                             @endforeach
                                                         </select>
-
-
-
                                                     </div>
                                                 </div>
-
-
+                                                <div class="col-md-1 mt-2">
+                                                    <label>جماعي</label>
+                                                    <input class="form-control form-control-sm " name="collective" type="checkbox" value="1">
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
