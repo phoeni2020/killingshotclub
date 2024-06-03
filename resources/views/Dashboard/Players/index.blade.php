@@ -92,7 +92,8 @@
                                                 </td>
                                                 <td>
                                                     @foreach($player->playerPriceLists as $price_list)
-                                                        {{$price_list?->level->name}}<br>
+
+                                                        {{$price_list->level->name??'---'}}<br>
                                                     @endforeach
                                                 </td>
                                                 <td>{{$player->package->name ?? '---'}}</td>
