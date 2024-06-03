@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Custody;
+use App\Models\Receipts;
 use App\Models\SettlementRequest;
 use App\Http\Requests\StoreSettlementRequestRequest;
 use App\Http\Requests\UpdateSettlementRequestRequest;
+use Carbon\Carbon;
 
 class SettlementRequestController extends Controller
 {
@@ -16,7 +18,7 @@ class SettlementRequestController extends Controller
      */
     public function index()
     {
-        $settlements = SettlementRequest::paginate(10);
+        $settlements = SettlementRequest::where('status',0)->paginate(10);
         return view('Dashboard.SettlementRequests.index',compact('settlements'));
     }
 
@@ -81,9 +83,27 @@ class SettlementRequestController extends Controller
      * @param  \App\Models\SettlementRequest  $settlementRequest
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSettlementRequestRequest $request, SettlementRequest $settlementRequest)
+    public function update(UpdateSettlementRequestRequest $request)
     {
-        //
+       $SettlementRequest = SettlementRequest::query()->where('custody_id',$request->custody_id)->first();
+       $SettlementRequest->status = 1;
+       $SettlementRequest->date = Carbon::now();
+       $SettlementRequest->save();
+        Receipts::create([
+            'user_id'=>auth()->user()->id,
+            'payment_type'=>1,
+            'from'=>$request->custody_id,
+            'to'=>$SettlementRequest->to,
+            'type_of_amount'=>$request->type_of_amount,
+            'amount'=>$SettlementRequest->custody_expenses,
+            'statement'=>'تسوية عهده',
+            'branch_id'=>$request->branch_id,
+            'recipt_no'=>0,
+            'date_receipt'=>Carbon::now(),
+            'type_of'=>'others',
+            'receipt_type'=>2,
+        ]);
+       return response()->json(['msg'=>'done',200]);
     }
 
     /**

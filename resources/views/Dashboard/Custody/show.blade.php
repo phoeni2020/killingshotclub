@@ -45,7 +45,7 @@
 {{--                                            <a type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter"> <i class="ft-plus ft-md"></i> اضافة  مصروف</a>--}}
                                         </li>
                                         <li>
-                                            <a type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModalCustody"> <i class="ft-check-square ft-md"></i> تسويه العهده  </a>
+                                            <a type="button" class="btn btn-warning" id="cstudoy_done"> <i class="ft-check-square ft-md"></i> تسويه العهده  </a>
                                         </li>
                                 </div>
                             </div>
@@ -137,7 +137,7 @@
         $("#custody_id").change(function(){
             var price =  parseInt($("#custody_id").find('option:selected').data('price'));
             var custody_id = parseInt($("#custody_id").val());
-            $('#custody_price span').text(price);
+            $('#custody_price span').text(price);0
             $("#custody_val").val(custody_id);
             $("custody_val_id").val(custody_id);
             var total_custody =  parseInt($("#total_custody").text(price));
@@ -176,6 +176,25 @@
                         getExpenses(custody_id);
 
 
+                    }
+
+                });
+        });
+
+        $("#cstudoy_done").click(function (){
+            var Route = "{{route('settlement-request.update',$custody->id)}}";
+            jQuery.ajax(
+                {
+
+                    url: Route,
+                    type: "PUT",
+                    dataType: 'json',
+                    data: {
+                        custody_id : {{$custody->id}},
+                    },
+                    success: function (data) {
+                        $('#cstudoy_done').remove();
+                        alert("تم تسوية العهده");
                     }
 
                 });

@@ -54,11 +54,7 @@ class CustodyController extends Controller
     {
 //       dd($custody);
         $expenses = CustodyExpense::where('custody_id',$custody->id)->get();
-
-
         return view("Dashboard.Custody.show",compact('custody','expenses'));
-
-
     }
 
     /**
