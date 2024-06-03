@@ -60,7 +60,6 @@
 
                                         <div class="modal-body">
 
-
                                             <div class="row">
                                                 <div class="col-md-3 mt-2">
                                                     <div class="form-group">
@@ -78,6 +77,22 @@
                                                     <div class="form-group">
                                                         <label for="" class="control-label mb-1">بحث برقم هاتف الموظف</label>
                                                         <input type="text" name="phone">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">من التاريخ:</label>
+                                                        <input class="form-control" type="date" name="fromDate"
+                                                               value="{{request('fromDate')}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">الي التاريخ:</label>
+                                                        <input class="form-control" type="date" name="toDate"
+                                                               value="{{request('toDate')}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,6 +116,7 @@
                                             <th class="border-top-0">السيريال</th>
                                             <th class="border-top-0">اسم الموظف</th>
                                             <th class="border-top-0">اليوم</th>
+                                            <th class="border-top-0">عدد ساعات الحضور</th>
                                             <th class="border-top-0">من</th>
                                             <th class="border-top-0">الي</th>
                                         </tr>
@@ -109,7 +125,14 @@
                                         @forelse($employees as $employee )
                                             @php
                                                 $attendnce = [];
-                                                $attendnceRecord = \App\Models\EmpolyeeAttendance::where('user_id',$employee->id)->whereNotIn('id',$attendnce)->first();
+                                                $attendnceRecord = \App\Models\EmpolyeeAttendance::where('user_id',$employee->id)->whereNotIn('id',$attendnce);
+                                                //->whereBetween('created_at',[$fromDate,$toDate])->first();
+                                            if((!is_null($fromDate)&&!is_null($toDate))&&(!empty($fromDate)&&!empty($toDate))){
+                                                $attendnceRecord = $attendnceRecord->whereBetween('created_at',[$fromDate,$toDate])->first();
+                                            }else{
+                                                $attendnceRecord = $attendnceRecord->first();
+                                            }
+
                                             @endphp
                                             <tr class="row1" data-id="{{ $employee->id }}" >
                                                 <td>{{$employee->id}}</td>
@@ -121,6 +144,17 @@
                                                     }else{
                                                         echo 'لايوجد سجلات حضور حاليا';
                                                     }
+                                                    @endphp
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        if($attendnceRecord){
+                                                            $finsh = \Carbon\Carbon::parse(strtotime($attendnceRecord->check_out));
+                                                            $diff = $finsh->diffForHumans(\Carbon\Carbon::parse(strtotime($attendnceRecord->check_in)));
+                                                            echo $diff;
+                                                        }else{
+                                                            echo 'لايوجد سجلات حضور حاليا';
+                                                        }
                                                     @endphp
                                                 </td>
                                                 <td>

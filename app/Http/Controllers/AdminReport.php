@@ -1189,6 +1189,8 @@ class AdminReport extends Controller
         $filterMail = $request->mail;
         $filterName = $request->name;
         $filterPhone = $request->phone;
+        $fromDate = $request->fromDate;
+        $toDate = $request->toDate;
         $user = User::query();
 
         if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
@@ -1213,7 +1215,7 @@ class AdminReport extends Controller
             }
         }
         $employees = $employees->paginate(10);
-        return view('Dashboard.reports.attendance',compact('employees','employees','employees'));
+        return view('Dashboard.reports.attendance',compact('employees','fromDate','toDate'));
     }
 
     public function attendance_player(Request $request)
