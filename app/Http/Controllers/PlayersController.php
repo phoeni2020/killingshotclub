@@ -87,7 +87,7 @@ class PlayersController extends Controller
     public function store(StorePlayersRequest $request)
     {
         $collective = Packages::query()->find($request->package_id)->collective;
-        dd($request->dd());
+        //dd($request->dd());
       $player =  Players::create([
             'name'=>$request->name,
             'birth_day'=>$request->birth_day,
