@@ -234,7 +234,7 @@
                                                         @if($currentRow->players )
 
                                                             @foreach ($currentRow->players as $player)
-                                                                {{ $player?->players->name }} <br>
+                                                                {{ $player?->players?->name }} <br>
                                                             @endforeach
                                                         @else
                                                             غير محجوز
