@@ -1228,7 +1228,14 @@ class AdminReport extends Controller
         }
 
         $player = Players::query();
+        if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
+            if(!empty($filterName))
+                $player->orWhere('name', 'like', '%' .$filterName . '%');
 
+            if(!empty($filterMail))
+                $player->orWhere('email', 'like', '%' . $filterMail . '%');
+
+        }
         $player = $player->pluck('id')->toArray();
         $players = AttendancePlayers::query()->whereIn('player_id',$player);
 
@@ -1256,6 +1263,8 @@ class AdminReport extends Controller
         $filterName = $request->name;
         $filterMail = $request->email;
         $filterPhone = $request->phone;
+        $fromDate = $request->fromDate;
+        $toDate = $request->toDate;
 
         if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
             if(!empty($filterName))
@@ -1265,10 +1274,21 @@ class AdminReport extends Controller
                 $user->orWhere('email', 'like', '%' . $filterMail . '%');
 
             $ids = $user->pluck('id')->toArray();
-
-            $players = TrainerAttendance::query()->whereIn('trainer_id',$ids);
+            if((!is_null($fromDate)&&!is_null($toDate))&&(!empty($fromDate)&&!empty($toDate))){
+                $players = TrainerAttendance::query()->whereIn('trainer_id',$ids)->whereBetween('created_at',[$fromDate,$toDate])->first();
+            }
+            else{
+                $players =  TrainerAttendance::query()->whereIn('trainer_id',$ids);;
+            }
         }else{
-            $players = TrainerAttendance::query();
+            if((!is_null($fromDate)&&!is_null($toDate))&&(!empty($fromDate)&&!empty($toDate))){
+
+                $players = TrainerAttendance::query()->whereBetween('created_at',[$fromDate,$toDate]);
+                //dd($players);
+            }
+            else{
+                $players = TrainerAttendance::query();
+            }
         }
 
 

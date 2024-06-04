@@ -80,6 +80,23 @@
                                                 </div>
                                             </div>
 
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="" class="control-label mb-1">من التاريخ:</label>
+                                                    <input class="form-control" type="date" name="fromDate"
+                                                           value="{{request('fromDate')}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="" class="control-label mb-1">الي التاريخ:</label>
+                                                    <input class="form-control" type="date" name="toDate"
+                                                           value="{{request('toDate')}}">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
