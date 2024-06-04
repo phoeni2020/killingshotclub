@@ -1227,17 +1227,33 @@ class AdminReport extends Controller
             $branchIds = \Auth::user()->branches->pluck('id')->toArray();
         }
 
+        $filterName = $request->name;
+        $filterMail = $request->email;
+        $filterPhone = $request->phone;
+
+        $fromDate = $request->fromDate;
+        $toDate = $request->toDate;
+
         $player = Players::query();
+
         if(!empty($filterName)||!empty($filterMail) || !empty($filterPhone)){
             if(!empty($filterName))
                 $player->orWhere('name', 'like', '%' .$filterName . '%');
 
+            if(!empty($filterPhone))
+                $player->orWhere('father_phone', 'like', '%' .$filterPhone . '%');
+
             if(!empty($filterMail))
-                $player->orWhere('email', 'like', '%' . $filterMail . '%');
+                $player->orWhere('father_email', 'like', '%' . $filterMail . '%');
 
         }
         $player = $player->pluck('id')->toArray();
-        $players = AttendancePlayers::query()->whereIn('player_id',$player);
+        if((!is_null($fromDate)&&!is_null($toDate))&&(!empty($fromDate)&&!empty($toDate))){
+            $players = AttendancePlayers::query()->whereIn('player_id',$player)->whereBetween('created_at',[$fromDate,$toDate]);
+        }else{
+            $players = AttendancePlayers::query()->whereIn('player_id',$player);
+        }
+
 
         if ($request->filter){
             if($request->pdf){
@@ -1249,7 +1265,7 @@ class AdminReport extends Controller
             }
         }
         $players = $players->paginate(10);
-        return view('Dashboard.reports.player_attendance',compact('players','players','players'));
+        return view('Dashboard.reports.player_attendance',compact('players','fromDate','toDate'));
     }
     public function attendance_trinar(Request $request)
     {

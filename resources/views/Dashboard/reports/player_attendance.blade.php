@@ -51,6 +51,60 @@
                                             </li>
                                     </ul>
                                 </div>
+                                <div>
+                                    <form action="{{route('reports.player_attendance_report')}}" method="GET">
+
+                                        <input type="hidden" name="filter" value="1">
+
+                                        <div class="modal-body">
+
+                                            <div class="row">
+                                                <div class="col-md-3 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">بحث باسم اللاعب</label>
+                                                        <input type="text" name="name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">بحث بايميل والد اللاعب</label>
+                                                        <input type="email" name="email">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mt-2">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">بحث برقم هاتف والد اللاعب</label>
+                                                        <input type="text" name="phone">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">من التاريخ:</label>
+                                                        <input class="form-control" type="date" name="fromDate"
+                                                               value="{{request('fromDate')}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label mb-1">الي التاريخ:</label>
+                                                        <input class="form-control" type="date" name="toDate"
+                                                               value="{{request('toDate')}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                            <input type="submit" value="Confirm" class="btn btn-primary">
+                                            {{-- <button type="button"  class="btn btn-primary">Confirm</button> --}}
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                             <div class="card-content">
                                 <div class="table-responsive">
