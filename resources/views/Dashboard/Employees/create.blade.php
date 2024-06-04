@@ -573,6 +573,50 @@
                                                         <label><input name="permession[]" type="checkbox" value="player_attendance_report" />تقارير حضور اللاعبين</label>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <div class="checkbox">
+                                                        <h5 for="">التقارير الماليه</h5>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="income_list_month" />قائمة الدخل عن شهر معين</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="expenseAnalysis" />التحليل المالي</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="income_list" />قائمة الدخل</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="recipt_report" />تقرير الخزن</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="due_date_reports" />كشف حساب المستحق</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="rent_report" />تقرير ايرادات الملاعب</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="rent_report" />تقرير ايرادات الملاعب</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="rent_detial_report" /> تقارير الايجار</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="subscription_income_reports" />تقارير الاشتراكات</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="custody_reports" /> تقارير العهد</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="income_reports_comparison" /> تقارير المقارنه</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="tournament_reports" /> تقارير المسابقات</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="income_list_daily" /> تقارير يوميه</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-actions center">

@@ -387,12 +387,12 @@
             <li class=" nav-item"><a href="#"><i class="la la-clone"></i><span class="menu-title"
                                                                                data-i18n="nav.flot_charts.main"> القوائم الماليه </span></a>
                 <ul class="menu-content">
-                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('income_list') )
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('income_list_month') )
                         <li><a class="menu-item" href="{{route('lists.income_list_month')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                 قائمة الدخل عن شهر معين</a>
                         </li>
                     @endif
-                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('expenseAnalysis') )
                             <li><a class="menu-item" href="{{route('lists.expenseAnalysis')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                     تقارير التحليل المالي</a>
                             </li>
@@ -427,12 +427,12 @@
                                تقارير الاشتراكات</a>
                         </li>
                     @endif
-                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('custody_reports') )
                         <li><a class="menu-item" href="{{route('lists.custody_reports')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                  تقارير العهد</a>
                         </li>
                     @endif
-                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('income_reports_comparison') )
                         <li><a class="menu-item" href="{{route('lists.income_reports_comparison')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                 تقارير المقارنه</a>
                         </li>
@@ -442,7 +442,7 @@
                                 تقارير المسابقات</a>
                         </li>
                     @endif
-                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                        @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('income_list_daily') )
                             <li><a class="menu-item" href="{{route('lists.income_list_daily')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                     تقرير يومي</a>
                             </li>

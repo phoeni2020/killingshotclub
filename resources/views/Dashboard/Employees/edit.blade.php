@@ -556,6 +556,51 @@
                                                         <label><input name="permession[]" type="checkbox" @if($user->hasPermission('player_attendance_report')) checked  @endif value="player_attendance_report" />تقارير حضور اللاعبين</label>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <div class="checkbox">
+                                                        <h5 for="">التقارير الماليه</h5>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="income_list_month" />قائمة الدخل عن شهر معين</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('expenseAnalysis')) checked  @endif  value="expenseAnalysis" />التحليل المالي</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="income_list" />قائمة الدخل</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" @if($user->hasPermission('recipt_report')) checked  @endif value="recipt_report" />تقرير الخزن</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" @if($user->hasPermission('due_date_reports')) checked  @endif value="due_date_reports" />كشف حساب المستحق</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="rent_report" />تقرير ايرادات الملاعب</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" @if($user->hasPermission('rent_report')) checked  @endif value="rent_report" />تقرير ايرادات الملاعب</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" value="rent_detial_report" /> تقارير الايجار</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" @if($user->hasPermission('subscription_income_reports')) checked  @endif value="subscription_income_reports" />تقارير الاشتراكات</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('custody_reports')) checked  @endif value="custody_reports" /> تقارير العهد</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" @if($user->hasPermission('income_reports_comparison')) checked  @endif value="income_reports_comparison" /> تقارير المقارنه</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox" @if($user->hasPermission('tournament_reports')) checked  @endif value="tournament_reports" /> تقارير المسابقات</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label><input name="permession[]" type="checkbox"  @if($user->hasPermission('income_list_daily')) checked  @endif value="income_list_daily" /> تقارير يوميه</label>
+                                                    </div>
+                                                </div>
+
                                                 {{--                                                <div class="col-md-3">--}}
                                                 {{--                                                    <div class="checkbox">--}}
                                                 {{--                                                        <h5 for="">الطلاب</h5>--}}
