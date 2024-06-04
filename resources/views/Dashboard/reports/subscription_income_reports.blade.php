@@ -185,7 +185,7 @@
                                                     <td>{{$reportData->date}}</td>
                                                     <td>@lang('validation.'.$reportData->day)</td>
                                                     <td>{{$reportData->stadiums->name}}</td>
-                                                    <td>{{$reportData->traniers->name}}</td>
+                                                    <td>{{$reportData?->traniers?->name}}</td>
                                                     <td>{{$player->players?->name}}</td>
                                                     <td>{{$reportData->level->name}}</td>
                                                     <td>{{$player_price_list?->price}}</td>
