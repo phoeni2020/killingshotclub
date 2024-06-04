@@ -596,9 +596,6 @@
                                                         <label><input name="permession[]" type="checkbox" value="rent_report" />تقرير ايرادات الملاعب</label>
                                                     </div>
                                                     <div class="checkbox">
-                                                        <label><input name="permession[]" type="checkbox" value="rent_report" />تقرير ايرادات الملاعب</label>
-                                                    </div>
-                                                    <div class="checkbox">
                                                         <label><input name="permession[]" type="checkbox" value="rent_detial_report" /> تقارير الايجار</label>
                                                     </div>
                                                     <div class="checkbox">

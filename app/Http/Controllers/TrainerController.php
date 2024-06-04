@@ -83,7 +83,7 @@ class TrainerController extends Controller
             "degree" => $request->degree,
             "military_status" => $request->military_status,
             "image" => $fileNamePath,
-
+            "deleteable" => 1,
             "personal_image" => $request->personal_image,
             "national_image" => $request->national_image,
             "birth_certificate" => $request->birth_certificate,

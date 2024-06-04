@@ -83,6 +83,7 @@ class EmployeesController extends Controller
             "army_certificate" => $request->army_certificate,
             "feish" => $request->feish,
             "department" => $request->role,
+            "deleteable" => 1,
 
         ]);
         $admin->branches()->sync($request->branch_id);

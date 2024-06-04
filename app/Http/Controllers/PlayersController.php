@@ -112,6 +112,7 @@ class PlayersController extends Controller
             "father_national_image" => $request->father_national_image,
             "birth_certificate" => $request->birth_certificate,
             "medical" => $request->medical,
+            "deleteable" => 1,
 //        تقرير الخزينه اليومي جعل كل فرع يشوف خزنته فقط والادمن يشوف كل الخزن
         ]);
 

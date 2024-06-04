@@ -233,7 +233,7 @@
                                                     <td>{{\Carbon\Carbon::parse($reportData->time_from)->format('h:i A')}}</td>
                                                     <td>{{\Carbon\Carbon::parse($reportData->time_to)->format('h:i A')}}</td>
                                                     <td>{{$reportData->stadiums->name}}</td>
-                                                    <td>{{$reportData->traniers->name}}</td>
+                                                    <td>{{$reportData?->traniers->name}}</td>
                                                     <td>{{$player->players?->name}}</td>
                                                     <td>{{$reportData->level->name}}</td>
                                                     <td>{{$player_price_list?->price}}</td>
