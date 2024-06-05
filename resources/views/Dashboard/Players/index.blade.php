@@ -112,9 +112,8 @@
 
                                                         <a href="{{route('player.edit', $player->id)}}" class="btn btn-info btn-sm round"> تعديل</a>
                                                         @endif
-                                                            @if( auth()->user()->hasRole(['administrator','superadministrator']) || auth()->user()->hasPermission('players-delete')  )
-
-                                                            <form action="{{route('player.destroy' ,$player->id)}}" method="POST" class="btn-group">
+                                                            @if( auth()->user()->hasRole(['administrator','superadministrator']) || auth()->user()->hasPermission('players-delete') && $player->deleteable == 1 )
+                                                                <form action="{{route('player.destroy' ,$player->id)}}" method="POST" class="btn-group">
                                                             @csrf @method('delete')
                                                             <button
 

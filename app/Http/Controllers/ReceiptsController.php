@@ -138,6 +138,11 @@ use ZanySoft\LaravelPDF\PDF;
             }else{
                 $discount_approved = 1;
             }
+            if($request->from_type == 'players'){
+                $player = Players::find($from);
+                $player->deleteable = 0;
+                $player->update();
+            }
            $receipt =  Receipts::create([
                 'user_id'=>auth()->user()->id,
                 'type_of'=>$request->from_type,

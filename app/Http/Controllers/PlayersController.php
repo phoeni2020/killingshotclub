@@ -288,13 +288,16 @@ class PlayersController extends Controller
      */
     public function destroy(Players $player)
     {
-        PlayersFiles::where('player_id',$player->id)->delete();
-        PlayerPriceList::where('player_id',$player->id)->delete();
+        if($player->deleteable == 1){
+            PlayersFiles::where('player_id',$player->id)->delete();
+            PlayerPriceList::where('player_id',$player->id)->delete();
 
 
-        $player->delete();
-        return redirect()->route('player.index')->with('error','تم حذف اللاعب مع ملفاته بنجاح ');
-
+            $player->delete();
+            return redirect()->route('player.index')->with('error','تم حذف اللاعب مع ملفاته بنجاح ');
+        }else{
+            return redirect()->route('player.index')->with('error','لا يمكن حذف اللاعب ');
+        }
     }
 
 

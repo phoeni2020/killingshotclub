@@ -99,15 +99,17 @@ class TrainerAndPlayerController extends Controller
         $data = $request->all();
         $validator = Validator::make($data, [
             'to' => 'required|date_format:H:i|after:from',
+            'player_id' => 'required',
             // Add other validation rules here
         ], [
             'to.after' => 'من الساعة يجب ان يكون قبل الي الساعة',
+            'player_id.required' => 'يجب ادخال لاعب واحد علي الاقل',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
-                'error' => $validator->errors()->first('to')
+                'error' => $validator->errors()->first('to').'<br>'.$validator->errors()->first('player_id')
             ]);
         }
 
@@ -174,6 +176,9 @@ class TrainerAndPlayerController extends Controller
                             'player_id' => $player,
                             'event_id' => $event->id,
                         ]);
+                        $player = Players::find($player);
+                        $player->deleteable = 0;
+                        $player->save();
                     }
                 }
                 $startDate->addDay();

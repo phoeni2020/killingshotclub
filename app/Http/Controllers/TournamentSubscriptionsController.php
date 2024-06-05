@@ -52,6 +52,9 @@ class TournamentSubscriptionsController extends Controller
               'tournament_id'=>$request->tournament_id,
               'player_id'=>$request->player_id[$x],
           ]);
+           $player = Players::find($request->player_id[$x]);
+           $player->deleteable = 0;
+           $player->save();
 
        }
         return redirect()->route('tournament-subscription.index')->with('message','تم اضافه اشتراك  المسابقه بنجاح ');
