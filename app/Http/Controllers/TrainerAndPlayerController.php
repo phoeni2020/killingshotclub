@@ -234,6 +234,7 @@ class TrainerAndPlayerController extends Controller
         }
 
         if ($request->ajax()) {
+            dd($request);
             $events = [];
             $data = TrainerAndPlayer::with('stadiums')->with('traniers')
                 ->with('EventTrainer.players')
