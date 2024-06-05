@@ -232,10 +232,10 @@
                                                     <td>@lang('validation.'.$reportData->day)</td>
                                                     <td>{{\Carbon\Carbon::parse($reportData->time_from)->format('h:i A')}}</td>
                                                     <td>{{\Carbon\Carbon::parse($reportData->time_to)->format('h:i A')}}</td>
-                                                    <td>{{$reportData->stadiums->name}}</td>
-                                                    <td>{{$reportData?->traniers->name}}</td>
-                                                    <td>{{$player->players?->name}}</td>
-                                                    <td>{{$reportData->level->name}}</td>
+                                                    <td>{{$reportData?->stadiums?->name}}</td>
+                                                    <td>{{$reportData?->traniers?->name}}</td>
+                                                    <td>{{$player?->players?->name}}</td>
+                                                    <td>{{$reportData?->level?->name}}</td>
                                                     <td>{{$player_price_list?->price}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first() ? 'مشترك' : 'لم يسدد'}}</td>
                                                     <td>{{$player->players?->receipts->where('package_id',$player_price_list?->id)->first()?->amount}}</td>
