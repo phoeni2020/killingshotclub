@@ -234,13 +234,12 @@ class TrainerAndPlayerController extends Controller
         }
 
         if ($request->ajax()) {
-            dd($request);
             $events = [];
             $data = TrainerAndPlayer::with('stadiums')->with('traniers')
                 ->with('EventTrainer.players')
                 ->whereIn('branch_id',$branchIds)
                 ->where('id', $request->id)->first();
-//            dd($data);
+            dd($data);
             $players = '';
             $stadium_name = '';
             $trainer_name = '';
