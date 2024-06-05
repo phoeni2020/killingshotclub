@@ -1063,8 +1063,7 @@ class AdminReport extends Controller
         if (\Auth::user()->hasRole('administrator'))
             $branches = Branchs::query()->pluck('id')->toArray();
         else
-            $branches = auth()->user()->branches;
-
+            $branches = auth()->user()->branches->pluck('id')->toArray();;
 
         $startDate  =$request->input('fromDate');
         $barnchSport = [];
