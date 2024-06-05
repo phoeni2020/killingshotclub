@@ -244,7 +244,6 @@ class TrainerAndPlayerController extends Controller
                 ->with('EventTrainer.players')
                 ->whereIn('branch_id',$branchIds)
                 ->where('id', $request->id)->first();
-            dd($data->EventTrainer);
             $players = '';
             $stadium_name = '';
             $trainer_name = '';
