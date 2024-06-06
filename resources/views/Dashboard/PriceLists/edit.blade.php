@@ -68,6 +68,10 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-1 mt-2">
+                                                    <label>جماعي</label>
+                                                    <input class="form-control form-control-sm " @if($priceList->collective == 1) checked @endif name="collective" type="checkbox" value="1">
+                                                </div>
                                             </div>
 
                                                 <div class="row">

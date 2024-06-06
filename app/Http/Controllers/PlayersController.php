@@ -32,7 +32,7 @@ class PlayersController extends Controller
 
         if(!\Auth::user()->hasRole('administrator')){
                 $branchIds = \Auth::user()->branches->pluck('id')->toArray();
-                $players->whereIn('branch_id', $branchIds);
+                $players->whereIn('branch_id', $branchIds)->orWhere('collective',1);
             }
 
         $players = $players->get();
@@ -54,7 +54,8 @@ class PlayersController extends Controller
             $players = Players::whereHas('playerPriceLists',function ($q) use ($request){
                             $q->where('sport_id',$request->sport_id)
                                 ->where('level_id',$request->level_id);
-                        })->whereIn('branch_id',$branchIds)
+                        })
+                ->whereIn('branch_id',$branchIds)->orWhere('collective',1)
                 ->with('branches')->get();
 
         }

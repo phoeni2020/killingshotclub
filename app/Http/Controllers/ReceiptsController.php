@@ -88,7 +88,7 @@ use ZanySoft\LaravelPDF\PDF;
                 $branchIds = \Auth::user()->branches->pluck('id')->toArray();
             }
             $players =Players::with('PlayerSportPrice')
-                ->whereIn('branch_id', $branchIds)
+                ->whereIn('branch_id', $branchIds)->orWhere('collective',1)
                 ->get();
             if(\Auth::user()->hasRole('administrator'))
                 $branches = Branchs::get();
