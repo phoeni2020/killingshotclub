@@ -172,6 +172,8 @@ class TrainerAndPlayerController extends Controller
                         'event_repeated' => $uuid,
                     ]);
                     foreach ($request->player_id as $player) {
+                        $detail = Players::find($player)->with(['package','package.packages_details']);
+                        dd($detail);
                         EventTrainerPlayers::create([
                             'player_id' => $player,
                             'event_id' => $event->id,
@@ -198,10 +200,26 @@ class TrainerAndPlayerController extends Controller
                 'time_to' => $time_to,
             ]);
             foreach ($request->player_id as $player) {
-                EventTrainerPlayers::create([
-                    'player_id' => $player,
-                    'event_id' => $event->id,
-                ]);
+                $playerData = Players::find($player);
+                $packDetail = $playerData->package?->packages_details;
+                if(!is_null($packDetail)){
+                    $eventPlayer = EventTrainerPlayers::query()->where('player_id',$player)->pluck('event_id');
+                    $count = TrainerAndPlayer::query()->whereIn('id',$eventPlayer)->whereMonth('date',Carbon::make($request->day)->month)->count('id');
+                    if($count > $packDetail->number_of_training){
+                        return;
+                    }else{
+                        EventTrainerPlayers::create([
+                            'player_id' => $player,
+                            'event_id' => $event->id,
+                        ]);
+                    }
+                }else{
+                    EventTrainerPlayers::create([
+                        'player_id' => $player,
+                        'event_id' => $event->id,
+                    ]);
+                }
+
             }
         }
 
