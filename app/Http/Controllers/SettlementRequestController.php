@@ -45,6 +45,7 @@ class SettlementRequestController extends Controller
        SettlementRequest::create([
            'custody_id'=>$request->custody_id,
            'custody_expenses'=>$request->custody_expenses,
+           'remain'=>$request->remain,
            'to'=>$request->to,
        ]);
 
@@ -60,7 +61,7 @@ class SettlementRequestController extends Controller
      *
      * @param  \App\Models\SettlementRequest  $settlementRequest
      * @return \Illuminate\Http\Response
-     */
+     0*/
     public function show(SettlementRequest $settlementRequest)
     {
         //
@@ -94,10 +95,10 @@ class SettlementRequestController extends Controller
         Receipts::create([
             'user_id'=>auth()->user()->id,
             'payment_type'=>1,
-            'from'=>$request->custody_id,
+            'from'=>61,
             'to'=>$SettlementRequest->to,
             'type_of_amount'=>$request->type_of_amount,
-            'amount'=>$SettlementRequest->custody_expenses,
+            'amount'=>$SettlementRequest->remain,
             'statement'=>'تسوية عهده',
             'branch_id'=>$branch,
             'recipt_no'=>0,

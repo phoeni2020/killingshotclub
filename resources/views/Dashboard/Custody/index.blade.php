@@ -72,6 +72,7 @@
                                                 <div class="form-body">
                                                     <input type="hidden" name="custody_id"  id="custody_val_id" value="">
                                                     <input type="hidden" name="custody_expenses" id="custody_expenses" value="">
+                                                    <input type="hidden" name="remain" id="remain" value="">
 
                                                     <div class="form-group">
                                                         <label for="projectinput2">  الي  </label>
@@ -274,6 +275,7 @@
                         var price =  $("#custody_id").find('option:selected').data('price');
                         var  total_custody =data.total_price *1;
                         var remain  = price - total_custody;
+                        $("#remain").val(remain);
 
                         $("#remain").text(remain);
 
