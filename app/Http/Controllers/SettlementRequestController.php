@@ -92,10 +92,16 @@ class SettlementRequestController extends Controller
        $SettlementRequest->date = Carbon::now();
        $SettlementRequest->save();
         $branch = ReceiptTypes::query()->find($SettlementRequest->to)->branch_id;
+        $custody = ReceiptTypes::query()->where('branch_id',$branch)->where('type','Custody')->first()->toArray();
+        if(empty($custody)){
+            $custody = 62;
+        }else{
+            $custody = $custody['id'];
+        }
         Receipts::create([
             'user_id'=>auth()->user()->id,
             'payment_type'=>1,
-            'from'=>61,
+            'from'=>$custody,
             'to'=>$SettlementRequest->to,
             'type_of_amount'=>$request->type_of_amount,
             'amount'=>$SettlementRequest->remain,
