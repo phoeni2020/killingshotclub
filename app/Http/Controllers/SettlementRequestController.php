@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Custody;
 use App\Models\Receipts;
+use App\Models\ReceiptTypes;
 use App\Models\SettlementRequest;
 use App\Http\Requests\StoreSettlementRequestRequest;
 use App\Http\Requests\UpdateSettlementRequestRequest;
@@ -89,6 +90,7 @@ class SettlementRequestController extends Controller
        $SettlementRequest->status = 1;
        $SettlementRequest->date = Carbon::now();
        $SettlementRequest->save();
+        $branch = ReceiptTypes::query()->find($SettlementRequest->to)->branch_id;
         Receipts::create([
             'user_id'=>auth()->user()->id,
             'payment_type'=>1,
@@ -97,7 +99,7 @@ class SettlementRequestController extends Controller
             'type_of_amount'=>$request->type_of_amount,
             'amount'=>$SettlementRequest->custody_expenses,
             'statement'=>'تسوية عهده',
-            'branch_id'=>$request->branch_id,
+            'branch_id'=>$branch,
             'recipt_no'=>0,
             'date_receipt'=>Carbon::now(),
             'type_of'=>'others',
