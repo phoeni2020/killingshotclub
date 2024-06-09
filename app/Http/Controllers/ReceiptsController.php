@@ -101,8 +101,8 @@ use ZanySoft\LaravelPDF\PDF;
             $trainers = User::whereHas('branches',function($q) use ($branchIds){
                 $q->whereIn('branchs.id',$branchIds);
             })->get();
-
-            return view('Dashboard.Receipts.create',compact('players','rents','trainers','receiptTypes' , 'branches'));
+            $branchesSelect = Branchs::get();
+            return view('Dashboard.Receipts.create',compact('players','rents','trainers','receiptTypes' ,'branchesSelect', 'branches'));
         }
 
         /**

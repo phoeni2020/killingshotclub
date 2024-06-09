@@ -213,10 +213,14 @@ class LevelsController extends Controller
         $option = ' <option value="" >اختر مستوي </option>';
 
         foreach ($levels as $level) {
-
-            $option .= "
-      <option  value=$level->id > $level->name </option> ";
-
+            if ($level->id == $request->level_id){
+                $option .= "
+                <option selected value=$level->id > $level->name </option> ";
+            }
+            else{
+                $option .= "
+                <option  value=$level->id > $level->name </option> ";
+            }
         }
 
         return \Response::json(['data' => $option]);

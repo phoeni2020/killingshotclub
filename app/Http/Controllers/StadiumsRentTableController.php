@@ -259,6 +259,7 @@ class StadiumsRentTableController extends Controller
                 'date_receipt'=>Carbon::today(),
                 'payer'=>   $type ? $request->user_id : $name,
                 'branch_id'=>$stadium->branch_id,
+                'recipt_no'=>0,
             ]);
         }
 

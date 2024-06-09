@@ -201,24 +201,33 @@ class TrainerAndPlayerController extends Controller
             ]);
             foreach ($request->player_id as $player) {
                 $playerData = Players::find($player);
-                $packDetail = $playerData->package?->packages_details;
-                if(!is_null($packDetail)){
-                    $eventPlayer = EventTrainerPlayers::query()->where('player_id',$player)->pluck('event_id');
-                    $count = TrainerAndPlayer::query()->whereIn('id',$eventPlayer)->whereMonth('date',Carbon::make($request->day)->month)->count('id');
-                    if($count > $packDetail->number_of_training){
-                        return;
-                    }else{
-                        EventTrainerPlayers::create([
-                            'player_id' => $player,
-                            'event_id' => $event->id,
-                        ]);
+                $packDetails = $playerData->package?->packages_details;
+                $pack = 0;
+                foreach ($packDetails as $packDetail){
+                    $pack = 1;
+                    if(!is_null($packDetail)){
+                        $eventPlayer = EventTrainerPlayers::query()->where('player_id',$player)->pluck('event_id');
+                        $count = TrainerAndPlayer::query()->whereIn('id',$eventPlayer)->whereMonth('date',Carbon::make($request->day)->month)->count('id');
+                        if($count > $packDetail->number_of_training){
+                            return response()->json([
+                                'status' => 400,
+                                'error' => 'تم بلوغ اقصي عدد مرات حجز لهذا اللاعب'
+                            ]);
+                        }else{
+                            EventTrainerPlayers::create([
+                                'player_id' => $player,
+                                'event_id' => $event->id,
+                            ]);
+                        }
                     }
-                }else{
-                    EventTrainerPlayers::create([
-                        'player_id' => $player,
-                        'event_id' => $event->id,
-                    ]);
                 }
+               if($pack == 0){
+                   EventTrainerPlayers::create([
+                       'player_id' => $player,
+                       'event_id' => $event->id,
+                   ]);
+               }
+
 
             }
         }

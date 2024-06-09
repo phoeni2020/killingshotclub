@@ -94,7 +94,7 @@
                                                         <select class="select2-placeholder-multiple form-control" id="branch_id"  name="branch_id" >
                                                             <option value="" selected >اختر فرع </option>
 
-                                                            @foreach($branches as $branch)
+                                                            @foreach($branchesSelect as $branch)
                                                                 <option value="{{$branch->id}}">{{$branch->name}}</option>
 
                                                             @endforeach
