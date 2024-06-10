@@ -144,7 +144,7 @@
                                                         <select class="form-control" id="others_recipt" name="from_others">
                                                             <option value="" selected>جهات اخري</option>
                                                             @foreach($receiptTypes as $type)
-                                                                <option value="{{$type->id}}" data-type="{{$type->type}}">{{$type->name}}</option>
+                                                                <option value="{{$type->id}}" data-rent="{{$type->is_rent}}" data-type="{{$type->type}}">{{$type->name}}</option>
                                                             @endforeach
                                                         </select>
 
@@ -523,18 +523,11 @@
             }
         });
         $('#others_recipt').change(function (e) {
-            var select_val = $(e.currentTarget).val();
-            var ids =  [36,41,42,45,48]
-            if(ids.includes(parseInt(select_val))){
-                console.log('sssssssssssssssss')
+            var select_val = $(this).find('option:selected').data('rent');
+            if(select_val == 1){
                 $('#rentList').css('display','block')
             }else{
-                console.log('sssssssssssssssss')
-                console.log(ids.includes(parseInt(select_val)))
-                console.log(select_val)
-
                 $('#rentList').css('display','none')
-
             }
             //36,42,45,48,45
         });

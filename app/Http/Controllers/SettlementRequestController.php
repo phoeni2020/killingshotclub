@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Custody;
+use App\Models\CustodyExpense;
 use App\Models\Receipts;
 use App\Models\ReceiptTypes;
 use App\Models\SettlementRequest;
@@ -92,11 +93,15 @@ class SettlementRequestController extends Controller
        $SettlementRequest->date = Carbon::now();
        $SettlementRequest->save();
         $branch = ReceiptTypes::query()->find($SettlementRequest->to)->branch_id;
-        $custody = ReceiptTypes::query()->where('branch_id',$branch)->where('type','Custody')->first()->toArray();
-        if(empty($custody)){
+        $custody = ReceiptTypes::query()->where('branch_id',$branch)->where('type','Custody')->first();
+        $custodyExpenses = '';
+        if(is_null($custody)){
             $custody = 62;
+            $custodyExpenses = CustodyExpense::query()->where('custody_id',$request->custody_id)->get();
+
         }else{
             $custody = $custody['id'];
+            $custodyExpenses = CustodyExpense::query()->where('custody_id',$request->custody_id)->get();
         }
         Receipts::create([
             'user_id'=>auth()->user()->id,
@@ -112,6 +117,22 @@ class SettlementRequestController extends Controller
             'type_of'=>'others',
             'receipt_type'=>2,
         ]);
+        foreach ($custodyExpenses as $custodyExpens){
+            Receipts::create([
+                'user_id'=>auth()->user()->id,
+                'payment_type'=>1,
+                'from'=>$SettlementRequest->to,
+                'to'=>$custody,
+                'amount'=>$custodyExpens->price,
+                'statement'=>'عهده',
+                'branch_id'=>$branch,
+                'recipt_no'=>0,
+                'date_receipt'=>Carbon::now(),
+                'type_of'=>'others',
+                'receipt_type'=>1,
+            ]);
+        }
+
        return response()->json(['msg'=>'done',200]);
     }
 
