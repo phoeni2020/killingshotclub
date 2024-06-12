@@ -422,8 +422,8 @@
                                 تقارير الايجار</a>
                         </li>
                     @endif
-                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
-                        <li><a class="menu-item" href="{{route('lists.subscription_income_reports')}}" data-i18n="nav.flot_charts.flot_line_charts">
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports_read') )
+                        <li><a class="menu-item" href="{{route('lists.subscription_income_reports_read')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                تقارير الاشتراكات</a>
                         </li>
                     @endif
@@ -437,7 +437,7 @@
                                 تقارير المقارنه</a>
                         </li>
                     @endif
-                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports') )
+                    @if( auth()->user()->hasRole(['administrator']) ||auth()->user()->hasPermission('subscription_income_reports_read') )
                         <li><a class="menu-item" href="{{route('lists.tournament_reports')}}" data-i18n="nav.flot_charts.flot_line_charts">
                                 تقارير المسابقات</a>
                         </li>
