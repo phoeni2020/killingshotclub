@@ -599,7 +599,7 @@
                                                         <label><input name="permession[]" type="checkbox" value="rent_detial_report" /> تقارير الايجار</label>
                                                     </div>
                                                     <div class="checkbox">
-                                                        <label><input name="permession[]" type="checkbox" value="subscription_income_reports_read" />تقارير الاشتراكات</label>
+                                                        <label><input name="permession[]" type="checkbox" value="subscription_income_reports" />تقارير الاشتراكات</label>
                                                     </div>
                                                     <div class="checkbox">
                                                         <label><input name="permession[]" type="checkbox" value="custody_reports" /> تقارير العهد</label>
